@@ -63,6 +63,92 @@
 @media (max-width: 640px) {
   .nav-links { display: none; }
 }
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse 60% 60% at 70% 50%, rgba(224,32,32,0.12) 0%, transparent 70%), var(--bg);
+}
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 5vw;
+  gap: 2rem;
+}
+.hero-text {
+  flex: 1;
+  max-width: 560px;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 0.9s ease 0.3s forwards;
+}
+.hero-pre {
+  color: var(--red);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.hero-title span { color: var(--red); }
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--silver);
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.btn-red {
+  display: inline-block;
+  padding: 0.85rem 2.4rem;
+  background: var(--red);
+  color: var(--white);
+  text-decoration: none;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 50px;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 0 rgba(224,32,32,0);
+}
+.btn-red:hover {
+  background: #ff2828;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(224,32,32,0.45);
+}
+.hero-wheel {
+  flex: 1;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeIn 1.2s ease 0.8s forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+@media (max-width: 768px) {
+  .hero-content { flex-direction: column; padding-top: 100px; text-align: center; }
+  .hero-wheel { min-height: 280px; width: 100%; }
+}
   </style>
 </head>
 <body>
@@ -77,6 +163,17 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
+  <section id="hero">
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="hero-pre">Servicii Auto Profesionale</p>
+      <h1 class="hero-title">EXPERȚI ÎN<br/><span>ÎNGRIJIREA</span><br/>MAȘINII TALE</h1>
+      <p class="hero-sub">Calitate, precizie și pasiune pentru fiecare mașină</p>
+      <a href="#services" class="btn-red">Descoperă Serviciile</a>
+    </div>
+    <div class="hero-wheel" id="wheel-canvas-wrap"></div>
+  </div>
+</section>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     const navbar = document.getElementById('navbar');
