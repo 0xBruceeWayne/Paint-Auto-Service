@@ -22,13 +22,66 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--white); font-family: var(--font); overflow-x: hidden; }
+    #navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5vw;
+  height: 72px;
+  background: transparent;
+  transition: background 0.3s, backdrop-filter 0.3s;
+}
+#navbar.scrolled {
+  background: rgba(13,13,13,0.92);
+  backdrop-filter: blur(12px);
+}
+.nav-logo img { height: 48px; object-fit: contain; }
+.nav-links { list-style: none; display: flex; gap: 2.5rem; }
+.nav-links a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 2px;
+  background: var(--red);
+  transition: width 0.25s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+}
   </style>
 </head>
 <body>
-  <!-- Sections will be added in subsequent tasks -->
+  <nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <img src="file:///Users/brucewayne/Desktop/Screenshot%202026-04-02%20at%2020.29.32.png" alt="Paint Auto Service" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="#hero">Acasă</a></li>
+    <li><a href="#services">Servicii</a></li>
+    <li><a href="#about">Despre</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
-    // JS will be added in subsequent tasks
+    const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
   </script>
 </body>
 </html>
