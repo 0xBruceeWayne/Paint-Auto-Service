@@ -191,7 +191,6 @@ window.addEventListener('scroll', () => {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(W, H);
-  renderer.shadowMap.enabled = true;
   wrap.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
@@ -303,22 +302,26 @@ window.addEventListener('scroll', () => {
   wheel.rotation.x = 0.18;
 
   // Animation loop
-  function animate() {
+  function animate(t) {
     requestAnimationFrame(animate);
     wheel.rotation.y += 0.008;
     // Pulse the red light
-    redPoint.intensity = 3 + Math.sin(Date.now() * 0.001) * 0.6;
+    redPoint.intensity = 3 + Math.sin(t * 0.001) * 0.6;
     renderer.render(scene, camera);
   }
-  animate();
+  animate(0);
 
-  // Responsive resize
+  // Responsive resize (debounced)
+  let resizeTimer;
   window.addEventListener('resize', () => {
-    const nW = wrap.clientWidth;
-    const nH = wrap.clientHeight;
-    camera.aspect = nW / nH;
-    camera.updateProjectionMatrix();
-    renderer.setSize(nW, nH);
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const nW = wrap.clientWidth;
+      const nH = wrap.clientHeight;
+      camera.aspect = nW / nH;
+      camera.updateProjectionMatrix();
+      renderer.setSize(nW, nH);
+    }, 100);
   });
 })();
   </script>
