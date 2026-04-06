@@ -149,6 +149,40 @@
   .hero-content { flex-direction: column; padding-top: 100px; text-align: center; }
   .hero-wheel { min-height: 280px; width: 100%; }
 }
+.stats-strip {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  background: rgba(224,32,32,0.08);
+  border-top: 1px solid rgba(224,32,32,0.2);
+  border-bottom: 1px solid rgba(224,32,32,0.2);
+}
+.stat {
+  flex: 1;
+  max-width: 280px;
+  text-align: center;
+  padding: 3rem 2rem;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.stat:last-child { border-right: none; }
+.stat-num {
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+}
+.stat-suffix {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--red);
+}
+.stat p {
+  color: var(--silver);
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
   </style>
 </head>
 <body>
@@ -172,6 +206,20 @@
       <a href="#services" class="btn-red">Descoperă Serviciile</a>
     </div>
     <div class="hero-wheel" id="wheel-canvas-wrap"></div>
+  </div>
+</section>
+  <section id="about" class="stats-strip">
+  <div class="stat">
+    <span class="stat-num" data-target="15">0</span><span class="stat-suffix">+</span>
+    <p>Ani de Experiență</p>
+  </div>
+  <div class="stat">
+    <span class="stat-num" data-target="2000">0</span><span class="stat-suffix">+</span>
+    <p>Mașini Reparate</p>
+  </div>
+  <div class="stat">
+    <span class="stat-num" data-target="98">0</span><span class="stat-suffix">%</span>
+    <p>Clienți Mulțumiți</p>
   </div>
 </section>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -324,6 +372,32 @@ window.addEventListener('scroll', () => {
     }, 100);
   });
 })();
+
+// Stats count-up on scroll
+function countUp(el) {
+  const target = parseInt(el.dataset.target, 10);
+  const duration = 1800;
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target);
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+
+const statNums = document.querySelectorAll('.stat-num');
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      countUp(e.target);
+      statsObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+statNums.forEach(n => statsObserver.observe(n));
   </script>
 </body>
 </html>
