@@ -183,6 +183,95 @@
   text-transform: uppercase;
   margin-top: 0.5rem;
 }
+.services-section {
+  padding: 7rem 5vw;
+  background: var(--bg);
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.section-pre {
+  color: var(--red);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.section-title span { color: var(--red); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.service-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2.5rem 2rem 2rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(224,32,32,0.18);
+}
+.card-top-border {
+  position: absolute;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  background: var(--red);
+  transition: width 0.4s ease;
+}
+.service-card:hover .card-top-border { width: 100%; }
+.card-icon {
+  width: 52px;
+  height: 52px;
+  color: var(--red);
+  margin-bottom: 1.25rem;
+}
+.card-icon svg { width: 100%; height: 100%; }
+.service-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.6rem;
+}
+.service-card p {
+  color: var(--silver);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+@media (max-width: 900px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .services-grid { grid-template-columns: 1fr; }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
   </style>
 </head>
 <body>
@@ -220,6 +309,88 @@
   <div class="stat">
     <span class="stat-num" data-target="98">0</span><span class="stat-suffix">%</span>
     <p>Clienți Mulțumiți</p>
+  </div>
+</section>
+  <section id="services" class="services-section">
+  <div class="section-header reveal">
+    <p class="section-pre">Ce Oferim</p>
+    <h2 class="section-title">SERVICIILE <span>NOASTRE</span></h2>
+  </div>
+  <div class="services-grid">
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 36c0 0 4-8 16-8s16 8 16 8"/><circle cx="24" cy="18" r="6"/>
+          <path d="M4 40h40"/><path d="M12 40V28"/><path d="M36 40V28"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Vopsire Auto</h3>
+      <p>Vopsire profesională pentru un finish impecabil și durabil</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="14" width="36" height="20" rx="4"/>
+          <path d="M6 22h36"/><path d="M16 14v-4"/><path d="M32 14v-4"/>
+          <circle cx="14" cy="34" r="4"/><circle cx="34" cy="34" r="4"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Reparații Caroserie</h3>
+      <p>Eliminăm loviturile și zgârieturile rapid și eficient</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 38l4-4 4 4-4 4z"/><path d="M14 34L34 14"/><path d="M34 14l4-4 4 4-4 4z"/>
+          <path d="M6 18l8-8"/><path d="M26 38l8-8"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Lucrări Tablă</h3>
+      <p>Intervenții precise asupra structurii caroseriei</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="24" r="16"/><circle cx="24" cy="24" r="8"/>
+          <path d="M24 8v4"/><path d="M24 36v4"/><path d="M8 24h4"/><path d="M36 24h4"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Polish & Lustruire</h3>
+      <p>Redăm strălucirea originală a lacului mașinii tale</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 34c0-8 4-14 10-16"/><path d="M42 34c0-8-4-14-10-16"/>
+          <path d="M16 18c0 0 2 6 8 6s8-6 8-6"/><path d="M24 24v10"/><path d="M18 34h12"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Detailing Complet</h3>
+      <p>Curățare și îngrijire totală, interior și exterior</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 28l4-4 8 8-4 4z"/><path d="M32 8l4 4-14 14-4-4z"/>
+          <circle cx="36" cy="12" r="4"/><path d="M18 30l-8 8"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Mecanică Generală</h3>
+      <p>Diagnoză și repararea sistemelor mecanice ale vehiculului</p>
+    </div>
+
   </div>
 </section>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -398,6 +569,18 @@ const statsObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 statNums.forEach(n => statsObserver.observe(n));
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('revealed');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObserver.observe(el));
   </script>
 </body>
 </html>
