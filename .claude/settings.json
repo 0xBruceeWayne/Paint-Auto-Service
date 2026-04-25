@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'tell application \"Google Chrome\" to tell front window to reload active tab' 2>/dev/null || osascript -e 'tell application \"Safari\" to do JavaScript \"location.reload()\" in front document' 2>/dev/null || true",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

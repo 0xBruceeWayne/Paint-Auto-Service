@@ -1,0 +1,23 @@
+{
+  "name": "voss-web-libs",
+  "version": "1.0.0",
+  "description": "All web libraries for VOSS premium website builds",
+  "private": true,
+  "dependencies": {
+    "three": "^0.175.0",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.18",
+    "@barba/core": "^2.10.3",
+    "splitting": "^1.0.6",
+    "animejs": "^3.2.2",
+    "@rive-app/canvas": "^2.21.0",
+    "curtainsjs": "^8.1.6",
+    "motion": "^12.0.0",
+    "ogl": "^1.0.0",
+    "@theatre/core": "^0.5.1",
+    "@theatre/studio": "^0.5.1",
+    "howler": "^2.2.4",
+    "@splinetool/viewer": "^1.9.28",
+    "postprocessing": "^6.36.0"
+  }
+}

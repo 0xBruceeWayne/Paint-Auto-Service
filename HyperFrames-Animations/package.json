@@ -1,0 +1,14 @@
+{
+  "name": "voss-hyperframes-animations",
+  "version": "1.0.0",
+  "description": "Omma-style scroll-based 3D animated backgrounds — rendered to video via HyperFrames",
+  "type": "module",
+  "scripts": {
+    "preview": "npx hyperframes preview compositions/omma-sphere.html",
+    "render": "npx hyperframes render compositions/omma-sphere.html --output dist/omma-sphere.mp4",
+    "preview:tunnel": "npx hyperframes preview compositions/camera-tunnel.html",
+    "render:tunnel": "npx hyperframes render compositions/camera-tunnel.html --output dist/camera-tunnel.mp4",
+    "preview:particles": "npx hyperframes preview compositions/particle-field.html",
+    "render:particles": "npx hyperframes render compositions/particle-field.html --output dist/particle-field.mp4"
+  }
+}

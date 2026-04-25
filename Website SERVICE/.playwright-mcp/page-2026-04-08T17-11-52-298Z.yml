@@ -1,0 +1,113 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "Paint Auto Service" [ref=e3] [cursor=pointer]:
+      - /url: "#hero"
+      - img "Paint Auto Service" [ref=e4]
+    - list [ref=e5]:
+      - listitem [ref=e6]:
+        - link "Acasă" [ref=e7] [cursor=pointer]:
+          - /url: "#hero"
+      - listitem [ref=e8]:
+        - link "Servicii" [ref=e9] [cursor=pointer]:
+          - /url: "#services"
+      - listitem [ref=e10]:
+        - link "Despre" [ref=e11] [cursor=pointer]:
+          - /url: "#about"
+      - listitem [ref=e12]:
+        - link "Contact" [ref=e13] [cursor=pointer]:
+          - /url: "#contact"
+  - generic [ref=e16]:
+    - paragraph [ref=e17]: Servicii Auto Profesionale
+    - heading "EXPERȚI ÎN ÎNGRIJIREA MAȘINII TALE" [level=1] [ref=e18]:
+      - text: EXPERȚI ÎN
+      - text: ÎNGRIJIREA
+      - text: MAȘINII TALE
+    - paragraph [ref=e19]: Calitate, precizie și pasiune pentru fiecare mașină
+    - link "Descoperă Serviciile" [ref=e20] [cursor=pointer]:
+      - /url: "#services"
+  - generic [ref=e23]:
+    - generic [ref=e24]:
+      - text: 0+
+      - paragraph [ref=e25]: Ani de Experiență
+    - generic [ref=e26]:
+      - text: 0+
+      - paragraph [ref=e27]: Mașini Reparate
+    - generic [ref=e28]:
+      - text: 0%
+      - paragraph [ref=e29]: Clienți Mulțumiți
+  - generic [ref=e30]:
+    - generic [ref=e31]:
+      - paragraph [ref=e32]: Ce Oferim
+      - heading "SERVICIILE NOASTRE" [level=2] [ref=e33]
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - img [ref=e37]
+        - heading "Vopsire Auto" [level=3] [ref=e40]
+        - paragraph [ref=e41]: Vopsire profesională pentru un finish impecabil și durabil
+      - generic [ref=e42]:
+        - img [ref=e44]
+        - heading "Reparații Caroserie" [level=3] [ref=e48]
+        - paragraph [ref=e49]: Eliminăm loviturile și zgârieturile rapid și eficient
+      - generic [ref=e50]:
+        - img [ref=e52]
+        - heading "Lucrări Tablă" [level=3] [ref=e58]
+        - paragraph [ref=e59]: Intervenții precise asupra structurii caroseriei
+      - generic [ref=e60]:
+        - img [ref=e62]
+        - heading "Polish & Lustruire" [level=3] [ref=e65]
+        - paragraph [ref=e66]: Redăm strălucirea originală a lacului mașinii tale
+      - generic [ref=e67]:
+        - img [ref=e69]
+        - heading "Detailing Complet" [level=3] [ref=e73]
+        - paragraph [ref=e74]: Curățare și îngrijire totală, interior și exterior
+      - generic [ref=e75]:
+        - img [ref=e77]
+        - heading "Mecanică Generală" [level=3] [ref=e82]
+        - paragraph [ref=e83]: Diagnoză și repararea sistemelor mecanice ale vehiculului
+  - generic [ref=e84]:
+    - generic [ref=e85]:
+      - paragraph [ref=e86]: De Ce Noi
+      - heading "CALITATE ȘI PRECIZIE ÎN FIECARE DETALIU" [level=2] [ref=e87]:
+        - text: CALITATE ȘI PRECIZIE
+        - text: ÎN FIECARE DETALIU
+      - paragraph [ref=e88]: Echipament modern, tehnicieni certificați și garanție pentru fiecare lucrare efectuată.
+    - generic [ref=e89]:
+      - generic [ref=e90]:
+        - img [ref=e92]
+        - generic [ref=e94]: Garanție Lucrări
+      - generic [ref=e95]:
+        - img [ref=e97]
+        - generic [ref=e100]: Intervenție Rapidă
+      - generic [ref=e101]:
+        - img [ref=e103]
+        - generic [ref=e105]: Diagnoză Precisă
+      - generic [ref=e106]:
+        - img [ref=e108]
+        - generic [ref=e113]: Personal Calificat
+  - generic [ref=e114]:
+    - generic [ref=e115]:
+      - paragraph [ref=e116]: Unde Ne Găsești
+      - heading "CONTACTEAZĂ-NE" [level=2] [ref=e117]
+    - generic [ref=e118]:
+      - generic [ref=e119]:
+        - img [ref=e121]
+        - heading "Telefon" [level=4] [ref=e123]
+        - paragraph [ref=e124]: —
+      - generic [ref=e125]:
+        - img [ref=e127]
+        - heading "Adresă" [level=4] [ref=e130]
+        - paragraph [ref=e131]: —
+      - generic [ref=e132]:
+        - img [ref=e134]
+        - heading "Program" [level=4] [ref=e137]
+        - paragraph [ref=e138]: —
+  - contentinfo [ref=e139]:
+    - img "Paint Auto Service" [ref=e140]
+    - generic [ref=e141]:
+      - link "Facebook" [ref=e142] [cursor=pointer]:
+        - /url: "#"
+        - img [ref=e143]
+      - link "Instagram" [ref=e145] [cursor=pointer]:
+        - /url: "#"
+        - img [ref=e146]
+    - paragraph [ref=e149]: © 2026 Paint Auto Service. Toate drepturile rezervate.

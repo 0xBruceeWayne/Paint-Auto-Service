@@ -1,0 +1,507 @@
+- generic [ref=e1]:
+  - dialog "Administrează consimțământul" [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: Administrează consimțământul
+      - button "Închide dialogul" [active] [ref=e5] [cursor=pointer]:
+        - img [ref=e6]: 
+    - generic [ref=e9]: Pentru a oferi cea mai bună experiență, folosim tehnologii, cum ar fi cookie-uri, pentru a stoca și/sau accesa informațiile despre dispozitive. Consimțământul pentru aceste tehnologii ne permite să procesăm date, cum ar fi comportamentul de navigare sau ID-uri unice pe acest site. Dacă nu îți dai consimțământul sau îți retragi consimțământul dat poate avea afecte negative asupra unor anumite funcționalități și funcții.
+    - generic [ref=e10]:
+      - button "Acceptă" [ref=e11] [cursor=pointer]
+      - button "Refuză" [ref=e12] [cursor=pointer]
+      - button "Vezi preferințele" [ref=e13] [cursor=pointer]
+    - list [ref=e15]:
+      - listitem:
+        - link:
+          - /url: https://www.revizieautoservice.ro/2025/12/18/service-auto-non-stop-in-sector-2-solutii-eficiente-pentru-urgente/
+      - listitem [ref=e16]:
+        - link "GDPR" [ref=e17] [cursor=pointer]:
+          - /url: https://www.revizieautoservice.ro/gdpr/
+      - listitem
+  - text:     
+  - generic [ref=e18]:
+    - banner [ref=e19]:
+      - navigation [ref=e21]:
+        - generic [ref=e22]:
+          - link "logo" [ref=e24] [cursor=pointer]:
+            - /url: https://www.revizieautoservice.ro/
+            - img "logo" [ref=e25]
+          - generic [ref=e26]:
+            - list
+          - generic [ref=e28]:
+            - text: 
+            - list [ref=e29]:
+              - listitem [ref=e30]:
+                - link "Service auto" [ref=e31] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/
+              - listitem [ref=e32]:
+                - link "Diagnoza auto" [ref=e33] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/diagnoza-computerizata/
+                  - text: Diagnoza auto
+                  - generic [ref=e34]: 
+              - listitem [ref=e35]:
+                - link "Mecanica auto" [ref=e36] [cursor=pointer]:
+                  - /url: "#"
+                  - text: Mecanica auto
+                  - generic [ref=e37]: 
+              - listitem [ref=e38]:
+                - link "Revizie auto" [ref=e39] [cursor=pointer]:
+                  - /url: "#"
+                  - text: Revizie auto
+                  - generic [ref=e40]: 
+              - listitem [ref=e41]:
+                - link "Marci auto" [ref=e42] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/marci-auto/
+                  - text: Marci auto
+                  - generic [ref=e43]: 
+              - listitem [ref=e44]:
+                - link "Piese auto second hand" [ref=e45] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/bazar-sh/
+              - listitem [ref=e46]:
+                - link "Programari service online" [ref=e47] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/programari-online/
+              - listitem [ref=e48]:
+                - link "Lista preturi" [ref=e49] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/preturi-revizie-auto-service/
+              - listitem [ref=e50]:
+                - link "Zona clienti" [ref=e51] [cursor=pointer]:
+                  - /url: https://revizieautoservice.ro/zona-client/zona-clienti.php
+              - listitem [ref=e52]:
+                - link "Despre noi" [ref=e53] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/despre-noi/
+              - listitem [ref=e54]:
+                - link "Contact" [ref=e55] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/contact-service/
+    - generic [ref=e56]:
+      - generic [ref=e58]:
+        - generic [ref=e66]:
+          - generic [ref=e74] [cursor=pointer]: 
+          - generic [ref=e75] [cursor=pointer]: 
+        - generic [ref=e80]:
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - figure:
+                - link:
+                  - /url: tel:+40733336735
+            - figure [ref=e86]:
+              - link [ref=e87] [cursor=pointer]:
+                - /url: tel:+40727378423
+                - img [ref=e88]
+          - figure [ref=e93]:
+            - link [ref=e94] [cursor=pointer]:
+              - /url: https://www.revizieautoservice.ro/cere-oferta-pentru-piese-auto/
+              - img [ref=e95]
+        - generic [ref=e99]:
+          - generic [ref=e103]:
+            - generic [ref=e104]:
+              - generic [ref=e105]: BINE ATI VENIT LA
+              - heading "SERVICE AUTO BUCURESTI SECTOR 2" [level=1] [ref=e107]:
+                - strong [ref=e108]: SERVICE
+                - text: AUTO BUCURESTI SECTOR 2
+              - generic [ref=e110]: 
+            - generic:
+              - list [ref=e111]:
+                - listitem [ref=e112]:
+                  - link [ref=e113] [cursor=pointer]:
+                    - /url: https://www.revizieautoservice.ro/despre-noi/
+                    - img [ref=e114]
+                    - generic [ref=e116]: despre noi
+                - listitem [ref=e117]:
+                  - link [ref=e118] [cursor=pointer]:
+                    - /url: ""
+                    - img [ref=e119]
+                    - generic [ref=e121]: revizie opel
+              - list [ref=e122]:
+                - listitem [ref=e123]:
+                  - link [ref=e124] [cursor=pointer]:
+                    - /url: http://www.revizieautoservice.ro/programari-online/
+                    - img [ref=e125]
+                    - generic [ref=e127]: programari
+                - listitem [ref=e128]:
+                  - link [ref=e129] [cursor=pointer]:
+                    - /url: http://www.revizieautoservice.ro/contact/
+                    - img [ref=e130]
+                    - generic [ref=e132]: contact
+          - generic [ref=e133]:
+            - generic [ref=e138]:
+              - paragraph [ref=e139]:
+                - text: In service-ul nostru puteti efectua orice lucrare de mecanica sau electrica pentru orice autoturism , SUV sau duba de mici dimensiuni. Avem 16 puncte de lucru individuale , la care se adauga stand de geometrie computerizata de ultima generatie, stand de frane si servicii de vulcanizare si echilibrare roti. Va putem oferi si servicii de
+                - link "diagnoza computerizata" [ref=e140] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/2025/10/14/diagnoza-auto-bucuresti-afla-rapid-orice-problema-a-masinii-tale/
+                - text: pentru marea majoritate a autovehiculelor moderne. Ne puteti contacta chiar si daca tot ce aveti nevoie este un simplu sfat.
+              - paragraph [ref=e141]: Va asteptam!
+            - generic [ref=e146]:
+              - heading "Auto service sector 2 – Ce iti oferim?" [level=2] [ref=e148]
+              - list [ref=e151]:
+                - listitem [ref=e152]:
+                  - generic [ref=e153]: 
+                  - text: Service pentru autoturisme /SUV-uri/dube mici
+                - listitem [ref=e154]:
+                  - generic [ref=e155]: 
+                  - text: 16 puncte lucru individuale
+                - listitem [ref=e156]:
+                  - generic [ref=e157]: 
+                  - text: Servicii diagnoza
+              - paragraph
+          - generic [ref=e158]:
+            - link [ref=e164] [cursor=pointer]:
+              - /url: "https://www.revizieautoservice.ro/diagnoza-computerizata/ "
+              - img [ref=e165]
+            - generic [ref=e168]:
+              - link [ref=e171] [cursor=pointer]:
+                - /url: https://www.revizieautoservice.ro/manopera-schimb-distributie-lant/
+                - img [ref=e172]
+              - link [ref=e175] [cursor=pointer]:
+                - /url: https://www.revizieautoservice.ro/manopera-schimb-distributie/
+                - img [ref=e176]
+            - generic [ref=e179]:
+              - link [ref=e182] [cursor=pointer]:
+                - /url: https://www.revizieautoservice.ro/manopera-schimbare-placute-frana/
+                - img [ref=e183]
+              - link [ref=e186] [cursor=pointer]:
+                - /url: https://www.revizieautoservice.ro/manopera-schimbare-ambreiaj/
+                - img [ref=e187]
+          - paragraph [ref=e194]:
+            - link " VEZI OFERTA COMPLETA " [ref=e195] [cursor=pointer]:
+              - /url: https://www.revizieautoservice.ro/tarife/
+              - generic [ref=e196]: 
+              - text: VEZI OFERTA COMPLETA
+              - generic [ref=e197]: 
+        - generic [ref=e206]:
+          - heading "Atelier auto – Serviciile noastre" [level=3] [ref=e207]
+          - paragraph [ref=e208]
+          - paragraph [ref=e209]: Avem 13 puncte de lucru individuale , la care se adauga stand de geometrie computerizata de ultima generatie, stand de frane si servicii de vulcanizare si echilibrare roti.
+          - paragraph [ref=e210]
+        - generic [ref=e216]:
+          - generic [ref=e219]: Despre Noi
+          - generic [ref=e220]:
+            - generic [ref=e223]:
+              - generic [ref=e226]:
+                - generic [ref=e227]: 
+                - text: Bine ati venit la Revizie Service Auto!
+              - paragraph [ref=e232]: Service-ul deschis in luna mai anul 2013 vine echipat la standardele actuale. Suntem situati intr-o fosta platforma industriala – fosta fabrica FRB – unde ocupam in acest moment o hala de peste 1500 m2.
+              - paragraph [ref=e237]:
+                - text: 14 elevatoare, dintre care 6 cu o capacitate de ridicare de 4 tone, o stație completă de vulcanizare și echilibrare roți, trei aparate profesionale de încărcare freon și diagnosticare instalație AC, standuri de frână și geometrie computerizată, programe moderne de testare și
+                - link "diagnosticare computerizată" [ref=e238] [cursor=pointer]:
+                  - /url: https://www.revizieautoservice.ro/2025/02/27/diagnoza-auto-revizie-auto-service/
+                - text: ", toate operate de personal calificat, vă stau la dispoziție 6 zile din 7 pentru a rezolva problemele complexe care pot apărea la mașina dvs."
+              - paragraph [ref=e243]: Service-ul beneficiaza de autorizare RAR si poate presta toate opratiunile de mecanica si electrica auto autorizate de legile si reglementarile in vigoare. Garantia lucrarilor efectuate in service-ul nostru este de 3 luni calendaristice de la data efectuarii.
+              - paragraph [ref=e248]: Zona speciala de asteptare clienti permite vizualizarea permanenta a interventiilor care se efectueaza asupra masinii iar daca doriti puteti sta in permanenta alaturi de masina dvs pe toata durata reparatiilor.
+              - generic [ref=e252]:
+                - paragraph [ref=e253]:
+                  - link "FA O PROGRAMARE!" [ref=e254] [cursor=pointer]:
+                    - /url: revizieautoservice.ro/programari
+                - paragraph [ref=e256]:
+                  - link "TRIMITE UN MESAJ!" [ref=e257] [cursor=pointer]:
+                    - /url: https://www.revizieautoservice.ro/service-auto-sector-2/
+                - paragraph [ref=e259]:
+                  - link "APELEAZA-NE ACUM!" [ref=e260] [cursor=pointer]:
+                    - /url: https://www.revizieautoservice.ro/service-auto-sector-2/
+            - figure [ref=e265]:
+              - img [ref=e267]
+        - generic [ref=e272]:
+          - generic [ref=e275]:
+            - generic [ref=e276]: STATISTICI
+            - paragraph [ref=e278]: Experienta dicteaza calitatea
+          - list [ref=e279]:
+            - listitem [ref=e280]:
+              - generic [ref=e281]: 
+              - generic [ref=e282]:
+                - generic [ref=e283]: 500+
+                - generic [ref=e284]: PIESE VANDUTE
+            - listitem [ref=e285]:
+              - generic [ref=e286]: 
+              - generic [ref=e287]:
+                - generic [ref=e288]: 200+
+                - generic [ref=e289]: PROBLEME SOLUTIONATE
+            - listitem [ref=e290]:
+              - generic [ref=e291]: 
+              - generic [ref=e292]:
+                - generic [ref=e293]: 100+
+                - generic [ref=e294]: CLIENTI CARE AU REVENIT
+        - generic [ref=e298]:
+          - generic [ref=e301]:
+            - generic [ref=e302]: Magazinele noastre
+            - paragraph [ref=e304]: Te invitam sa vizitezi magazinele noastre!
+          - generic [ref=e305]:
+            - link [ref=e306]:
+              - /url: http://mustanggarage.ro
+              - img [ref=e307]
+            - link [ref=e308]:
+              - /url: https://www.raoauto.ro/
+              - img [ref=e309]
+            - link [ref=e310]:
+              - /url: http://reviziemoto.ro/
+              - img [ref=e311]
+        - generic [ref=e318]:
+          - generic [ref=e321]:
+            - generic [ref=e322]: GALERIE
+            - paragraph [ref=e324]: Va introducem in atmosfera de la noi din service
+          - generic [ref=e325]:
+            - paragraph [ref=e337]:
+              - strong [ref=e338]: Schimb cabluri frana de mana
+            - strong [ref=e350]: Revizie periodica Ford Mustang
+            - paragraph [ref=e362]:
+              - strong [ref=e363]: Reconditionare motor
+            - paragraph [ref=e375]:
+              - strong [ref=e376]: Desfacere motor Opel Insignia
+        - generic [ref=e385]: CONTACTEAZA-NE
+        - generic [ref=e391]:
+          - generic [ref=e394]: 
+          - generic [ref=e395]: NU EZITA SA NE SCRII UN MESAJSAU DOAR SA NE ADRESEZI O INTREBARE
+        - generic [ref=e402]:
+          - generic [ref=e403]:
+            - status
+            - list
+          - form "Contact form" [ref=e404]:
+            - generic [ref=e405]:
+              - generic [ref=e406]:
+                - paragraph [ref=e408]:
+                  - textbox "Nume" [ref=e410]
+                - paragraph [ref=e412]:
+                  - textbox "Prenume" [ref=e414]
+              - generic [ref=e415]:
+                - paragraph [ref=e417]:
+                  - textbox "Email" [ref=e419]
+                - paragraph [ref=e421]:
+                  - textbox "Numar de telefon" [ref=e423]
+              - generic [ref=e424]:
+                - paragraph [ref=e426]:
+                  - textbox "Subiect" [ref=e428]
+                - paragraph [ref=e430]:
+                  - textbox [ref=e432]
+              - generic [ref=e434]:
+                - paragraph [ref=e435]:
+                  - generic [ref=e439]:
+                    - checkbox "Prin continuarea trimiterii acestui formular sunteți de acord cu politica de confidentialitate a site-ului." [ref=e440]
+                    - generic [ref=e441]:
+                      - text: Prin continuarea trimiterii acestui formular sunteți de acord cu
+                      - link "politica de confidentialitate a site-ului." [ref=e442] [cursor=pointer]:
+                        - /url: https://www.revizieautoservice.ro/politica-confidentialitate/
+                - paragraph [ref=e445] [cursor=pointer]:
+                  - button "Trimite mesaj" [disabled] [ref=e446]
+      - list [ref=e455]:
+        - generic [ref=e457]:
+          - listitem [ref=e459]:
+            - link "alfaromeo" [ref=e460] [cursor=pointer]:
+              - /url: /service-auto-alfa-romeo/
+              - img "alfaromeo" [ref=e461]
+          - listitem [ref=e463]:
+            - link "audi" [ref=e464] [cursor=pointer]:
+              - /url: /service-auto-audi/
+              - img "audi" [ref=e465]
+          - listitem [ref=e467]:
+            - link "bmw" [ref=e468] [cursor=pointer]:
+              - /url: /service-auto-bmw/
+              - img "bmw" [ref=e469]
+          - listitem [ref=e471]:
+            - link "chevrolet" [ref=e472] [cursor=pointer]:
+              - /url: /service-auto-chevrolet/
+              - img "chevrolet" [ref=e473]
+          - listitem [ref=e475]:
+            - link "chrysler" [ref=e476] [cursor=pointer]:
+              - /url: /service-auto-chrysler/
+              - img "chrysler" [ref=e477]
+          - listitem [ref=e479]:
+            - link "citroen" [ref=e480] [cursor=pointer]:
+              - /url: /service-auto-citroen/
+              - img "citroen" [ref=e481]
+          - listitem [ref=e483]:
+            - link "dacia" [ref=e484] [cursor=pointer]:
+              - /url: /service-auto-dacia/
+              - img "dacia" [ref=e485]
+          - listitem [ref=e487]:
+            - link "daewoo" [ref=e488] [cursor=pointer]:
+              - /url: /service-auto-daewoo/
+              - img "daewoo" [ref=e489]
+          - listitem [ref=e491]:
+            - link "fiat" [ref=e492] [cursor=pointer]:
+              - /url: /service-auto-fiat/
+              - img "fiat" [ref=e493]
+          - listitem [ref=e495]:
+            - link "ford" [ref=e496] [cursor=pointer]:
+              - /url: /service-auto-ford/
+              - img "ford" [ref=e497]
+          - listitem [ref=e499]:
+            - link "honda" [ref=e500] [cursor=pointer]:
+              - /url: /service-auto-honda/
+              - img "honda" [ref=e501]
+          - listitem [ref=e503]:
+            - link "hyundai" [ref=e504] [cursor=pointer]:
+              - /url: /service-auto-hyundai/
+              - img "hyundai" [ref=e505]
+          - listitem [ref=e507]:
+            - link "infiniti" [ref=e508] [cursor=pointer]:
+              - /url: /service-auto-infiniti/
+              - img "infiniti" [ref=e509]
+          - listitem [ref=e511]:
+            - link "isuzu" [ref=e512] [cursor=pointer]:
+              - /url: /service-auto-isuzu/
+              - img "isuzu" [ref=e513]
+          - listitem [ref=e515]:
+            - link "iveco" [ref=e516] [cursor=pointer]:
+              - /url: /service-auto-iveco/
+              - img "iveco" [ref=e517]
+          - listitem [ref=e519]:
+            - link "jaguar" [ref=e520] [cursor=pointer]:
+              - /url: /service-auto-jaguar/
+              - img "jaguar" [ref=e521]
+          - listitem [ref=e523]:
+            - link "jeep" [ref=e524] [cursor=pointer]:
+              - /url: /service-auto-jeep/
+              - img "jeep" [ref=e525]
+          - listitem [ref=e527]:
+            - link "kia" [ref=e528] [cursor=pointer]:
+              - /url: /service-auto-kia/
+              - img "kia" [ref=e529]
+          - listitem [ref=e531]:
+            - link "lancia" [ref=e532] [cursor=pointer]:
+              - /url: /service-auto-lancia/
+              - img "lancia" [ref=e533]
+          - listitem [ref=e535]:
+            - link "landrover" [ref=e536] [cursor=pointer]:
+              - /url: /service-auto-land-rover/
+              - img "landrover" [ref=e537]
+          - listitem [ref=e539]:
+            - link "lexus" [ref=e540] [cursor=pointer]:
+              - /url: /service-auto-lexus/
+              - img "lexus" [ref=e541]
+          - listitem [ref=e543]:
+            - link "mazda" [ref=e544] [cursor=pointer]:
+              - /url: /service-auto-mazda/
+              - img "mazda" [ref=e545]
+          - listitem [ref=e547]:
+            - link "mercedes" [ref=e548] [cursor=pointer]:
+              - /url: /service-auto-mercedes/
+              - img "mercedes" [ref=e549]
+          - listitem [ref=e551]:
+            - link "mini" [ref=e552] [cursor=pointer]:
+              - /url: /service-auto-mini/
+              - img "mini" [ref=e553]
+          - listitem [ref=e555]:
+            - link "mitsubishi" [ref=e556] [cursor=pointer]:
+              - /url: /service-auto-mitsubishi/
+              - img "mitsubishi" [ref=e557]
+          - listitem [ref=e559]:
+            - link "nissan" [ref=e560] [cursor=pointer]:
+              - /url: /service-auto-nissan/
+              - img "nissan" [ref=e561]
+          - listitem [ref=e563]:
+            - link "opel" [ref=e564] [cursor=pointer]:
+              - /url: /service-auto-opel/
+              - img "opel" [ref=e565]
+          - listitem [ref=e567]:
+            - link "peugeot" [ref=e568] [cursor=pointer]:
+              - /url: /service-auto-peugeot/
+              - img "peugeot" [ref=e569]
+          - listitem [ref=e571]:
+            - link "porsche" [ref=e572] [cursor=pointer]:
+              - /url: /service-auto-porsche/
+              - img "porsche" [ref=e573]
+          - listitem [ref=e575]:
+            - link "renault" [ref=e576] [cursor=pointer]:
+              - /url: /service-auto-renault/
+              - img "renault" [ref=e577]
+          - listitem [ref=e579]:
+            - link "rover" [ref=e580] [cursor=pointer]:
+              - /url: /service-auto-rover/
+              - img "rover" [ref=e581]
+          - listitem [ref=e583]:
+            - link "saab" [ref=e584] [cursor=pointer]:
+              - /url: /service-auto-saab/
+              - img "saab" [ref=e585]
+          - listitem [ref=e587]:
+            - link "seat" [ref=e588] [cursor=pointer]:
+              - /url: /service-auto-seat/
+              - img "seat" [ref=e589]
+          - listitem [ref=e591]:
+            - link "skoda" [ref=e592] [cursor=pointer]:
+              - /url: /service-auto-skoda/
+              - img "skoda" [ref=e593]
+          - listitem [ref=e595]:
+            - link "smart" [ref=e596] [cursor=pointer]:
+              - /url: /service-auto-smart/
+              - img "smart" [ref=e597]
+          - listitem [ref=e599]:
+            - link "ssangyong" [ref=e600] [cursor=pointer]:
+              - /url: /service-auto-ssangyong/
+              - img "ssangyong" [ref=e601]
+          - listitem [ref=e603]:
+            - link "subaru" [ref=e604] [cursor=pointer]:
+              - /url: /service-auto-subaru/
+              - img "subaru" [ref=e605]
+          - listitem [ref=e607]:
+            - link "suzuki" [ref=e608] [cursor=pointer]:
+              - /url: /service-auto-suzuki/
+              - img "suzuki" [ref=e609]
+          - listitem [ref=e611]:
+            - link "toyota" [ref=e612] [cursor=pointer]:
+              - /url: /service-auto-toyota/
+              - img "toyota" [ref=e613]
+          - listitem [ref=e615]:
+            - link "vauxhall" [ref=e616] [cursor=pointer]:
+              - /url: /service-auto-vauxhall/
+              - img "vauxhall" [ref=e617]
+          - listitem [ref=e619]:
+            - link "volvo" [ref=e620] [cursor=pointer]:
+              - /url: /service-auto-volvo/
+              - img "volvo" [ref=e621]
+          - listitem [ref=e623]:
+            - link "volkswagen" [ref=e624] [cursor=pointer]:
+              - /url: /service-auto-volkswagen/
+              - img "volkswagen" [ref=e625]
+      - contentinfo [ref=e656]:
+        - generic [ref=e662]:
+          - link "Footer Logo" [ref=e665] [cursor=pointer]:
+            - /url: https://www.revizieautoservice.ro/
+            - img "Footer Logo" [ref=e666]
+          - paragraph [ref=e671]:
+            - text: ADRESA NOASTRA
+            - generic [ref=e672]: Soseaua Morarilor, Șoseaua Morarilor 2, București 022452
+          - paragraph [ref=e673]
+          - generic [ref=e674]:
+            - generic [ref=e675]:
+              - text: "ORANGE:"
+              - link "0728.672.787" [ref=e676] [cursor=pointer]:
+                - /url: tel:+40728672787
+            - generic [ref=e677]:
+              - text: "DIGI:"
+              - link "0773.903.669" [ref=e678] [cursor=pointer]:
+                - /url: tel:+40773903669
+            - generic [ref=e679]:
+              - text: "VODAFONE:"
+              - link "0726.081.693" [ref=e680] [cursor=pointer]:
+                - /url: tel:+40726081693
+            - generic [ref=e681]:
+              - text: "VODAFONE:"
+              - link "0727.378.423" [ref=e682] [cursor=pointer]:
+                - /url: tel:+40727378423
+          - generic [ref=e685]:
+            - generic [ref=e686]:
+              - generic [ref=e687]: "Email:"
+              - generic [ref=e688]: service@revizieopel.ro
+            - generic [ref=e689]:
+              - generic [ref=e690]: "Program:"
+              - generic [ref=e691]: "L – V : 8:30 – 18:30 , S -D: ÎNCHIS"
+            - heading "Blog" [level=4] [ref=e692]:
+              - link "Blog" [ref=e693] [cursor=pointer]:
+                - /url: https://www.revizieautoservice.ro/blog/
+          - paragraph
+        - link "top" [ref=e695] [cursor=pointer]:
+          - /url: javascript:void(0);
+        - generic [ref=e697]:
+          - text: © 20 Copyright RevizieAutoService | Toate drepturile rezervate |
+          - link "ANPC" [ref=e698] [cursor=pointer]:
+            - /url: https://www.anpc.gov.ro/
+          - text: "|"
+          - link "Politica de confidentialitate" [ref=e699] [cursor=pointer]:
+            - /url: https://www.revizieautoservice.ro/politica-confidentialitate/
+          - text: Design by
+          - link "Art Of Web Design" [ref=e700] [cursor=pointer]:
+            - /url: https://artofwebdesign.ro/
+          - generic [ref=e701]:
+            - text: REVIZIE AUTO SERVICE FACE PARTE DIN
+            - strong [ref=e702]:
+              - link "GRUP REVIZIE ROMÂNIA" [ref=e703] [cursor=pointer]:
+                - /url: http://gruprevizieromania.ro/
+              - text: "!"
+  - status [ref=e704]

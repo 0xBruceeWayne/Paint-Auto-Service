@@ -1,0 +1,277 @@
+<style>
+  .concepts { display: flex; gap: 2rem; justify-content: center; align-items: flex-start; padding: 1rem 0 2rem; flex-wrap: wrap; }
+  .concept-card {
+    flex: 1; min-width: 240px; max-width: 280px;
+    background: #111; border-radius: 12px; overflow: hidden;
+    cursor: pointer; border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .concept-card:hover { transform: translateY(-4px); }
+  .concept-card.selected { border-color: #e02020 !important; }
+  .concept-card .label-badge {
+    position: absolute; top: 10px; left: 10px;
+    background: #e02020; color: #fff; font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 4px; z-index: 10;
+  }
+  .preview-area {
+    height: 340px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  /* shared hero mini layout */
+  .mini-hero {
+    width: 100%; height: 100%;
+    background: #fff;
+    display: flex; align-items: center; gap: 0; position: relative;
+  }
+  .mini-text-col { flex: 1; padding: 0 0 0 18px; display: flex; flex-direction: column; gap: 6px; }
+  .mini-title { background: #111; height: 8px; border-radius: 3px; width: 80%; }
+  .mini-title.r { background: #e02020; width: 55%; height: 8px; }
+  .mini-subtitle { background: #ccc; height: 5px; border-radius: 2px; width: 65%; }
+  .mini-btn { background: #e02020; height: 14px; width: 50%; border-radius: 20px; margin-top: 6px; }
+  .mini-turbo-col { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; }
+  .mini-turbo {
+    width: 90px; height: 90px;
+    background: radial-gradient(circle at 40% 40%, #555 0%, #222 60%, #111 100%);
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .mini-turbo::after {
+    content: ''; position: absolute; inset: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #888 0%, #333 100%);
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
+  }
+  .card-info { padding: 14px 16px 18px; background: #1a1a1a; }
+  .card-info h3 { color: #fff; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 5px; }
+  .card-info p { color: #888; font-size: 0.78rem; line-height: 1.5; }
+
+  /* ── CONCEPT A: Twin Racing Stripe ── */
+  .sep-a {
+    position: absolute; top: 0; bottom: 0;
+    left: 50%; transform: translateX(-50%);
+    width: 22px; z-index: 5;
+    display: flex; gap: 4px; align-items: stretch;
+  }
+  .sep-a .stripe1 {
+    flex: 2; background: #e02020;
+    box-shadow: 0 0 18px rgba(224,32,32,0.7), 2px 0 8px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .sep-a .stripe2 {
+    flex: 1; background: #111;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px,
+      transparent 1px, transparent 5px
+    );
+    box-shadow: 1px 0 6px rgba(0,0,0,0.5);
+  }
+  .sep-a .stripe1::before {
+    content: ''; position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.1) 100%);
+  }
+  /* diamond badge center */
+  .sep-a .diamond {
+    position: absolute; top: 50%; left: 50%; width: 18px; height: 18px;
+    background: #e02020; border: 2px solid #fff;
+    transform: translate(-50%,-50%) rotate(45deg);
+    box-shadow: 0 0 12px rgba(224,32,32,0.8);
+    z-index: 10;
+  }
+
+  /* ── CONCEPT B: Carbon Blade ── */
+  .sep-b {
+    position: absolute; top: 0; bottom: 0;
+    left: 50%; transform: translateX(-50%) perspective(200px) rotateY(-6deg);
+    width: 28px; z-index: 5;
+    transform-style: preserve-3d;
+  }
+  .sep-b .cf-panel {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px,
+        transparent 1px, transparent 6px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px,
+        transparent 1px, transparent 6px
+      );
+    background-color: #1a1a1a;
+    box-shadow: 3px 0 16px rgba(0,0,0,0.6), -1px 0 6px rgba(0,0,0,0.3);
+  }
+  .sep-b .red-blade {
+    position: absolute; top: 0; bottom: 0; right: 0; width: 3px;
+    background: linear-gradient(180deg, transparent 0%, #e02020 20%, #ff3030 50%, #e02020 80%, transparent 100%);
+    box-shadow: 0 0 12px rgba(224,32,32,0.9), 0 0 24px rgba(224,32,32,0.5);
+  }
+  .sep-b .red-blade-top {
+    position: absolute; left: 0; right: 0; top: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, #e02020, transparent);
+    box-shadow: 0 0 8px rgba(224,32,32,0.8);
+  }
+  .sep-b .red-blade-bot {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, #e02020, transparent);
+    box-shadow: 0 0 8px rgba(224,32,32,0.8);
+  }
+
+  /* ── CONCEPT C: Speed Vent Stack ── */
+  .sep-c {
+    position: absolute; top: 0; bottom: 0;
+    left: 50%; transform: translateX(-50%);
+    width: 40px; z-index: 5;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  }
+  .sep-c .vent {
+    width: 100%;
+    height: 6px;
+    background: #222;
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px,
+        transparent 1px, transparent 5px
+      );
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+  .sep-c .vent::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  }
+  .sep-c .vent.red {
+    background: #e02020;
+    box-shadow: 0 0 10px rgba(224,32,32,0.7), 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .sep-c .vent.red::after {
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+  }
+</style>
+
+<h2>Separator Concept Direction</h2>
+<p class="subtitle">Three distinct takes on a vertical red + carbon divider between the hero text and turbocharger. Click one to select.</p>
+
+<div class="concepts">
+
+  <!-- A -->
+  <div class="concept-card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="label-badge">A</div>
+    <div class="preview-area">
+      <div class="mini-hero">
+        <div class="mini-text-col">
+          <div class="mini-title"></div>
+          <div class="mini-title r"></div>
+          <div class="mini-subtitle"></div>
+          <div class="mini-btn"></div>
+        </div>
+        <!-- Separator A: Twin Racing Stripe -->
+        <div class="sep-a">
+          <div class="stripe1"><div class="diamond"></div></div>
+          <div class="stripe2"></div>
+        </div>
+        <div class="mini-turbo-col">
+          <div class="mini-turbo"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-info">
+      <h3>Twin Racing Stripe</h3>
+      <p>A bold double stripe — thick red + slim carbon — like classic GT livery. Glowing red, with a diamond badge at center. Clean, iconic, instantly automotive.</p>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="concept-card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="label-badge">B</div>
+    <div class="preview-area">
+      <div class="mini-hero">
+        <div class="mini-text-col">
+          <div class="mini-title"></div>
+          <div class="mini-title r"></div>
+          <div class="mini-subtitle"></div>
+          <div class="mini-btn"></div>
+        </div>
+        <!-- Separator B: Carbon Blade -->
+        <div class="sep-b">
+          <div class="cf-panel">
+            <div class="red-blade-top"></div>
+            <div class="red-blade"></div>
+            <div class="red-blade-bot"></div>
+          </div>
+        </div>
+        <div class="mini-turbo-col">
+          <div class="mini-turbo"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-info">
+      <h3>Carbon Blade</h3>
+      <p>A thick 3D-tilted carbon fiber panel with a glowing red light trim on the edge. Like a body kit blade or aero splitter. Subtle, premium, real depth.</p>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="concept-card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="label-badge">C</div>
+    <div class="preview-area">
+      <div class="mini-hero">
+        <div class="mini-text-col">
+          <div class="mini-title"></div>
+          <div class="mini-title r"></div>
+          <div class="mini-subtitle"></div>
+          <div class="mini-btn"></div>
+        </div>
+        <!-- Separator C: Speed Vent Stack -->
+        <div class="sep-c">
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent red"></div>
+          <div class="vent red"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent red"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent red"></div>
+          <div class="vent red"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent red"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent red"></div>
+          <div class="vent red"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent red"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+          <div class="vent red"></div>
+          <div class="vent red"></div>
+          <div class="vent"></div>
+          <div class="vent"></div>
+        </div>
+        <div class="mini-turbo-col">
+          <div class="mini-turbo"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-info">
+      <h3>Speed Vent Stack</h3>
+      <p>Stacked horizontal vents — like a car hood vent or brake duct — in carbon + glowing red accents. Mechanical, aggressive, motorsport engineering feel.</p>
+    </div>
+  </div>
+
+</div>
