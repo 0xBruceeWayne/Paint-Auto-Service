@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paint Auto Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #e02020;
+      --red-dark: #a01010;
+      --bg: #ffffff;
+      --bg-section: #f5f5f6;
+      --bg-dark: #0d0d0d;
+      --bg-card: #ffffff;
+      --border: #e4e4e4;
+      --text: #111111;
+      --text-muted: #666666;
+      --white: #ffffff;
+      --gray: #888888;
+      --font: 'Barlow Condensed', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); overflow-x: hidden; }
+    #navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 5vw;
+  height: 80px;
+  background: transparent;
+  transition: background 0.3s, backdrop-filter 0.3s, box-shadow 0.3s;
+}
+#navbar.scrolled {
+  background: rgba(255,255,255,0.95);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+}
+/* Logo floats centered over the left text column */
+.nav-logo {
+  position: absolute;
+  left: 25%;
+  transform: translateX(-50%);
+}
+.nav-logo img { height: 116px; object-fit: contain; }
+
+/* ── 3D Black Nav Buttons ── */
+.nav-links { list-style: none; display: flex; gap: 0.75rem; align-items: center; }
+.nav-links a {
+  display: inline-block;
+  padding: 0.52rem 1.3rem;
+  background: #111111;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 5px;
+  /* 3D depth illusion */
+  box-shadow:
+    0 4px 0 #000000,
+    0 6px 14px rgba(0,0,0,0.28);
+  transform: perspective(500px) rotateX(0deg) rotateY(0deg) translateY(0px);
+  transition:
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    transform 0.22s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+.nav-links a:hover {
+  background: #1a1a1a;
+  box-shadow:
+    0 4px 0 #b01010,
+    0 6px 22px rgba(224,32,32,0.52),
+    0 0 18px rgba(224,32,32,0.38);
+}
+.nav-links a:active {
+  box-shadow:
+    0 1px 0 #900000,
+    0 2px 10px rgba(224,32,32,0.30);
+}
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+}
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: radial-gradient(ellipse 55% 55% at 70% 50%, rgba(224,32,32,0.07) 0%, transparent 70%), var(--bg);
+}
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+  gap: 0;
+}
+.hero-text {
+  flex: 0 0 50%;
+  max-width: 50%;
+  padding: 0 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 0.9s ease 0.3s forwards;
+}
+.hero-pre {
+  color: var(--red);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.hero-title {
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.03;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.hero-title span {
+  color: var(--red);
+  transition: color 0.35s ease, text-shadow 0.35s ease;
+  cursor: default;
+}
+.hero-title span:hover {
+  color: #ff4444;
+  text-shadow:
+    0 0 18px rgba(224,32,32,0.42),
+    0 0 40px rgba(224,32,32,0.28),
+    0 0 70px rgba(224,32,32,0.14);
+}
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.btn-red {
+  display: inline-block;
+  padding: 0.85rem 2.4rem;
+  background: var(--red);
+  color: var(--white);
+  text-decoration: none;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 50px;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 0 rgba(224,32,32,0);
+}
+.btn-red:hover {
+  background: #ff2828;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(224,32,32,0.45);
+}
+.hero-wheel {
+  flex: 0 0 50%;
+  max-width: 50%;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeIn 1.2s ease 0.8s forwards;
+  padding: 0 5vw;
+}
+.hero-wheel canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+@media (max-width: 768px) {
+  .hero-content { flex-direction: column; padding-top: 100px; text-align: center; }
+  .hero-wheel { min-height: 280px; width: 100%; }
+}
+/* ── STATS STRIP — premium dark redesign ── */
+.stats-strip {
+  position: relative;
+  min-height: 100svh;
+  background: #070707;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+/* Animated red grid */
+.stats-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(224,32,32,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(224,32,32,0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  animation: stats-grid-scroll 22s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes stats-grid-scroll {
+  0%   { background-position: 0 0; }
+  100% { background-position: 72px 72px; }
+}
+/* Central ambient glow */
+.stats-strip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(224,32,32,0.09) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+/* Cursor spotlight */
+.stats-cursor-glow {
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(224,32,32,0.13) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  left: 50%; top: 50%;
+}
+.stats-strip:hover .stats-cursor-glow { opacity: 1; }
+
+.stats-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  padding: 5rem 5vw;
+}
+.stats-section-title { color: #ffffff !important; }
+
+/* Cards grid */
+.stats-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+/* Stat card — carbon fibre identical to service cards */
+.stat-card {
+  position: relative;
+  background-color: #191919;
+  background-image:
+    repeating-linear-gradient(45deg,  rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
+    repeating-linear-gradient(45deg,  rgba(0,0,0,0.22) 0px, rgba(0,0,0,0.22) 1px, transparent 1px, transparent 7px);
+  background-size: 7px 7px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 2.8rem 2rem 2.4rem;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.06) inset;
+  transition: box-shadow 0.3s ease, transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+  will-change: transform;
+  transform-style: preserve-3d;
+  cursor: default;
+}
+/* Glare */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(255,255,255,0.10) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.28s;
+}
+.stat-card:hover::before { opacity: 1; }
+.stat-card:hover {
+  box-shadow: 0 24px 70px rgba(0,0,0,0.65), 0 0 0 1px rgba(224,32,32,0.3), 0 1px 0 rgba(255,255,255,0.08) inset;
+}
+/* Red top border */
+.stat-card-top-border {
+  position: absolute;
+  top: 0; left: 0;
+  height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--red), #ff4040);
+  box-shadow: 0 0 12px rgba(224,32,32,0.8);
+  transition: width 0.45s ease;
+  z-index: 3;
+}
+.stat-card:hover .stat-card-top-border { width: 100%; }
+/* Icon */
+.stat-card-icon {
+  width: 52px; height: 52px;
+  color: var(--red);
+  margin: 0 auto 1.4rem;
+  filter: drop-shadow(0 0 8px rgba(224,32,32,0.5));
+  position: relative; z-index: 1;
+}
+.stat-card-icon svg { width: 100%; height: 100%; }
+/* Number row */
+.stat-num-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 0.5rem;
+  position: relative; z-index: 1;
+}
+.stat-num {
+  font-size: clamp(3.4rem, 5.5vw, 5.2rem);
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+  text-shadow: 0 0 32px rgba(224,32,32,0.38);
+}
+.stat-suffix {
+  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+  font-weight: 700;
+  color: var(--red);
+}
+.stat-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 0.9rem;
+  position: relative; z-index: 1;
+}
+.stat-desc {
+  font-size: 0.91rem;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.65;
+  font-weight: 400;
+  position: relative; z-index: 1;
+}
+.services-section {
+  padding: 7rem 5vw;
+  background: var(--bg-section);
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.section-pre {
+  color: var(--red);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.section-title span { color: var(--red); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.service-card {
+  position: relative;
+  /* Carbon fibre base */
+  background-color: #191919;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px,
+      transparent 1px, transparent 7px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px,
+      transparent 1px, transparent 7px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,0,0,0.22) 0px, rgba(0,0,0,0.22) 1px,
+      transparent 1px, transparent 7px
+    );
+  background-size: 7px 7px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 2.5rem 2rem 2rem;
+  overflow: hidden;
+  box-shadow:
+    0 4px 24px rgba(0,0,0,0.4),
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 -1px 0 rgba(0,0,0,0.5) inset;
+  transition: box-shadow 0.25s ease, transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+/* Cursor glare overlay */
+.service-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255,255,255,0.10) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.service-card:hover::before { opacity: 1; }
+.service-card:hover {
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(224,32,32,0.25),
+    0 1px 0 rgba(255,255,255,0.08) inset;
+}
+.card-top-border {
+  position: absolute;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, var(--red), #ff4040);
+  box-shadow: 0 0 10px rgba(224,32,32,0.7);
+  transition: width 0.4s ease;
+  z-index: 3;
+}
+.service-card:hover .card-top-border { width: 100%; }
+.card-icon {
+  width: 52px;
+  height: 52px;
+  color: var(--red);
+  margin-bottom: 1.25rem;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 6px rgba(224,32,32,0.5));
+}
+.card-icon svg { width: 100%; height: 100%; }
+.service-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.6rem;
+  color: #ffffff;
+  position: relative;
+  z-index: 1;
+}
+.service-card p {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 900px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .services-grid { grid-template-columns: 1fr; }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-section {
+  padding: 7rem 5vw;
+  background: var(--bg);
+}
+.contact-cards {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+.contact-card {
+  flex: 1;
+  min-width: 220px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(224,32,32,0.1);
+}
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  color: var(--red);
+  margin: 0 auto 1rem;
+}
+.contact-icon svg { width: 100%; height: 100%; }
+.contact-card h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.contact-card p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.site-footer {
+  background: var(--bg-dark);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 3rem 5vw;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+.footer-logo { height: 52px; object-fit: contain; }
+.footer-socials { display: flex; gap: 1.25rem; }
+.footer-socials a {
+  width: 38px; height: 38px;
+  color: var(--gray);
+  transition: color 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.footer-socials a:hover { color: var(--red); }
+.footer-socials svg { width: 22px; height: 22px; }
+.footer-copy {
+  color: var(--gray);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+.footer-socials a { color: var(--gray); }
+.footer-socials a:hover { color: var(--red); }
+
+/* ── Live Map ── */
+.map-wrap {
+  position: relative;
+  max-width: 900px;
+  margin: 3rem auto 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+.map-wrap iframe {
+  display: block;
+  width: 100%;
+  height: 360px;
+  border: none;
+}
+.map-gps-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1.35rem;
+  background: var(--red);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--font);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(224,32,32,0.45);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.map-gps-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.map-gps-btn:hover {
+  background: #ff2828;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(224,32,32,0.55);
+}
+
+/* ── Daune section ── */
+.daune-section {
+  padding: 7rem 5vw;
+  background: var(--bg-section);
+}
+.daune-inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.daune-lead {
+  font-size: 1.08rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0 0 2.5rem;
+  font-weight: 400;
+}
+.daune-points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+.daune-points li {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  /* Carbon fibre — identical to .service-card */
+  background-color: #191919;
+  background-image:
+    repeating-linear-gradient(45deg,  rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
+    repeating-linear-gradient(45deg,  rgba(0,0,0,0.22)        0px, rgba(0,0,0,0.22)        1px, transparent 1px, transparent 7px);
+  background-size: 7px 7px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  overflow: hidden;
+  box-shadow:
+    0 4px 24px rgba(0,0,0,0.4),
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 -1px 0 rgba(0,0,0,0.5) inset;
+  transition: box-shadow 0.25s ease, transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+/* Cursor glare overlay */
+.daune-points li::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255,255,255,0.10) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.daune-points li:hover::before { opacity: 1; }
+.daune-points li:hover {
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(224,32,32,0.25),
+    0 1px 0 rgba(255,255,255,0.08) inset;
+}
+/* Red top border slide-in — identical to .card-top-border */
+.daune-top-border {
+  position: absolute;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, var(--red), #ff4040);
+  box-shadow: 0 0 10px rgba(224,32,32,0.7);
+  transition: width 0.4s ease;
+  z-index: 3;
+}
+.daune-points li:hover .daune-top-border { width: 100%; }
+.daune-point-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  color: var(--red);
+  margin-top: 1px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 0 6px rgba(224,32,32,0.5));
+}
+.daune-point-icon svg { width: 100%; height: 100%; }
+.daune-points li div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+  z-index: 1;
+}
+.daune-points strong {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.daune-points span {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+/* ── Placeholder sections ── */
+.placeholder-section {
+  padding: 7rem 5vw;
+  background: var(--bg-section);
+  text-align: center;
+}
+.placeholder-section .section-pre { margin-bottom: 0.75rem; }
+.placeholder-section .section-title { margin-bottom: 1rem; }
+.placeholder-section .placeholder-note {
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 1.5rem;
+}
+
+/* ── Floating call button ── */
+.fab-call {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 200;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--red);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 4px 24px rgba(224,32,32,0.55), 0 2px 8px rgba(0,0,0,0.25);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.2s;
+}
+.fab-call svg { width: 26px; height: 26px; flex-shrink: 0; position: relative; z-index: 1; }
+.fab-call:hover {
+  background: #ff2828;
+  transform: scale(1.1);
+  box-shadow: 0 8px 36px rgba(224,32,32,0.75), 0 2px 10px rgba(0,0,0,0.3);
+}
+.fab-call:active { transform: scale(0.96); }
+/* Pulse rings */
+.fab-call::before,
+.fab-call::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(224,32,32,0.65);
+  animation: fab-ring 2.8s ease-out infinite;
+  pointer-events: none;
+}
+.fab-call::after { animation-delay: 1.4s; }
+@keyframes fab-ring {
+  0%   { transform: scale(1);   opacity: 0.75; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+/* Tooltip on desktop hover */
+.fab-call .fab-label {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #111;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0.4rem 0.85rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.fab-call .fab-label::after {
+  content: '';
+  position: absolute;
+  top: 50%; right: -5px;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: #111;
+  border-right: 0;
+}
+.fab-call:hover .fab-label { opacity: 1; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-section); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+/* Text selection */
+::selection { background: var(--red); color: var(--white); }
+
+/* Smooth section spacing on mobile */
+@media (max-width: 640px) {
+  .services-section, .contact-section { padding: 4rem 1.2rem; }
+  .stats-strip { flex-direction: column; }
+  .stat { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+/* ── Hero image ── */
+.hero-wheel {
+  position: relative;
+  transform-origin: center center;
+  will-change: transform;
+  margin-left: auto;
+  padding-right: 2vw;
+}
+.hero-wheel::after {
+  content: '';
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 74%;
+  height: 44px;
+  background: radial-gradient(ellipse 100% 100% at 50% 50%, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.12) 45%, transparent 100%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+.hero-image {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 28px 32px rgba(0,0,0,0.13))
+    drop-shadow(0 6px 12px rgba(0,0,0,0.08));
+  animation: fadeIn 1.2s ease 0.8s both;
+}
+@media (max-width: 768px) {
+  .hero-image { max-width: 100%; }
+}
+
+/* ── Hero wireframe canvas ── */
+#hero-mesh {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Hero Racing Stripe Separator ── */
+.hero-separator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  display: flex;
+  z-index: 1;
+  pointer-events: none;
+  /* left is set dynamically by JS to the exact midpoint between text and turbo */
+}
+.sep-red {
+  flex: 0 0 16px;
+  background: linear-gradient(180deg,
+    #b01010 0%,
+    #e02020 20%,
+    #ff2828 50%,
+    #e02020 80%,
+    #b01010 100%
+  );
+  box-shadow:
+    0 0 24px rgba(224,32,32,0.68),
+    0 0 48px rgba(224,32,32,0.28),
+    inset -2px 0 0 rgba(255,120,120,0.28),
+    inset 0 0 12px rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.sep-red::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.18) 0%, transparent 55%);
+  pointer-events: none;
+}
+.sep-red::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.22) 0%,
+    transparent 18%,
+    transparent 82%,
+    rgba(255,255,255,0.10) 100%
+  );
+  pointer-events: none;
+}
+.sep-carbon {
+  flex: 0 0 10px;
+  background-color: #1c1c1c;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px,
+      transparent 1px, transparent 7px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px,
+      transparent 1px, transparent 7px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px,
+      transparent 1px, transparent 7px
+    );
+  background-size: 7px 7px;
+  box-shadow:
+    inset 1px 0 0 rgba(255,255,255,0.05),
+    2px 0 8px rgba(0,0,0,0.55);
+}
+.sep-diamond {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 24px;
+  height: 24px;
+  background: radial-gradient(circle at 35% 35%, #ff4040, #e02020 60%, #990000);
+  border: 2.5px solid #ffffff;
+  box-shadow:
+    0 0 18px rgba(224,32,32,1),
+    0 0 36px rgba(224,32,32,0.65),
+    0 0 70px rgba(224,32,32,0.35);
+  z-index: 10;
+  animation: diamond-pulse 2.8s ease-in-out infinite;
+}
+@keyframes diamond-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 18px rgba(224,32,32,1),
+      0 0 36px rgba(224,32,32,0.65),
+      0 0 70px rgba(224,32,32,0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 28px rgba(224,32,32,1),
+      0 0 60px rgba(224,32,32,0.85),
+      0 0 110px rgba(224,32,32,0.45);
+  }
+}
+@media (max-width: 768px) {
+  .hero-separator { display: none; }
+}
+
+/* ── Parallax dark band (inspired by revizieautoservice.ro) ── */
+.parallax-band {
+  position: relative;
+  padding: 8rem 5vw;
+  background: var(--bg-dark);
+  text-align: center;
+  overflow: hidden;
+  clip-path: polygon(0 6%, 100% 0%, 100% 94%, 0 100%);
+  margin: -3rem 0;
+  z-index: 1;
+}
+.parallax-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(224,32,32,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.parallax-band .section-pre {
+  color: var(--red);
+}
+.parallax-band .section-title {
+  color: var(--white);
+}
+.parallax-band .section-title span {
+  color: var(--red);
+}
+.parallax-band .band-sub {
+  color: rgba(255,255,255,0.55);
+  font-size: 1.1rem;
+  font-weight: 400;
+  max-width: 560px;
+  margin: 1.25rem auto 0;
+  line-height: 1.6;
+}
+.band-features {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+.band-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--white);
+}
+.band-feature-icon {
+  width: 40px; height: 40px;
+  color: var(--red);
+}
+.band-feature-icon svg { width: 100%; height: 100%; }
+.band-feature span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+}
+/* ── Turbo floating symbols ── */
+.turbo-symbols {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+.tsym {
+  position: absolute;
+  color: rgba(224,32,32,0.65);
+}
+.tsym svg { display: block; }
+
+/* 2 symbols that sit ON TOP of the turbo image */
+.tsym-over {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+  color: rgba(224,32,32,0.65);
+}
+.tsym-over svg { display: block; }
+
+@keyframes tsym-float {
+  0%,100% { transform: translateY(0px) rotate(0deg);    opacity: 0.60; }
+  50%      { transform: translateY(-18px) rotate(5deg);  opacity: 0.85; }
+}
+@keyframes tsym-float-r {
+  0%,100% { transform: translateY(0px) rotate(0deg);     opacity: 0.60; }
+  50%      { transform: translateY(-14px) rotate(-6deg);  opacity: 0.82; }
+}
+@keyframes tsym-spin-float {
+  0%   { transform: translateY(0px)   rotate(0deg);    opacity: 0.60; }
+  50%  { transform: translateY(-15px) rotate(180deg);  opacity: 0.88; }
+  100% { transform: translateY(0px)   rotate(360deg);  opacity: 0.60; }
+}
+@keyframes tsym-pulse {
+  0%,100% { transform: translateY(0px) scale(1);        opacity: 0.60; }
+  50%      { transform: translateY(-12px) scale(1.10);   opacity: 0.90; }
+}
+@keyframes tsym-over-pulse {
+  0%,100% { transform: translateY(0px) rotate(0deg);    opacity: 0.65; }
+  50%      { transform: translateY(-9px) rotate(8deg);   opacity: 0.92; }
+}
+
+/* ── Clock-face spread around turbo ── */
+/* behind turbo (z-index:0) */
+.tsym-1 { top:calc(3% - 1.5cm); left:42%; animation: tsym-spin-float 14s linear infinite; } /* 12 o'clock */
+.tsym-2 { top:10%;   right:6%;   animation: tsym-float      10s ease-in-out infinite 1s; }   /* 1-2 o'clock */
+.tsym-3 { top:42%;   right:2%;   animation: tsym-pulse       7s ease-in-out infinite 0.5s; } /* 3 o'clock */
+.tsym-4 { bottom:6%; right:20%;  animation: tsym-spin-float 18s linear     infinite 2s; }    /* 4-5 o'clock */
+.tsym-5 { bottom:3%; left:40%;   animation: tsym-float-r    11s ease-in-out infinite 0.8s; } /* 6 o'clock */
+.tsym-6 { bottom:10%; left:5%;   animation: tsym-float       9s ease-in-out infinite 1.5s; } /* 7-8 o'clock */
+.tsym-7 { top:42%;   left:2%;    animation: tsym-float-r    13s ease-in-out infinite 0.3s; } /* 9 o'clock */
+.tsym-8 { top:10%;   left:6%;    animation: tsym-float      15s ease-in-out infinite 2.5s; } /* 10-11 o'clock */
+.tsym-9 { top:25%;   left:18%;   animation: tsym-pulse       8s ease-in-out infinite 1.2s; } /* between 9-12 */
+
+/* 2 over-turbo symbols — top of turbo */
+.tsym-10 { top:7%; left:22%;  animation: tsym-over-pulse  9s ease-in-out infinite 0.4s; }
+.tsym-11 { top:7%; right:18%; animation: tsym-over-pulse 11s ease-in-out infinite 1.8s; }
+
+.hero-image {
+  position: relative;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCROLL SNAP — every section locks to top of viewport
+═══════════════════════════════════════════════════════ */
+#hero,
+.daune-section,
+.services-section,
+.stats-strip,
+.parallax-band,
+#gallery,
+.contact-section,
+.site-footer {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100svh;
+}
+/* Footer doesn't need to be full height */
+.site-footer {
+  min-height: unset;
+  scroll-snap-align: start;
+}
+/* Center short sections vertically so content doesn't sit at the very top */
+.stats-strip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.placeholder-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE HAMBURGER + OVERLAY MENU
+═══════════════════════════════════════════════════════ */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5.5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 110;
+  flex-shrink: 0;
+}
+.nav-hamburger span {
+  display: block;
+  width: 26px;
+  height: 2.5px;
+  background: #111;
+  border-radius: 2px;
+  transform-origin: center;
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.22s ease, background 0.2s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* Fullscreen overlay menu */
+.nav-mobile-overlay {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 105;
+  background: rgba(6,6,6,0.97);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.nav-mobile-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.mobile-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  line-height: 1;
+}
+.mobile-close:hover, .mobile-close:active { background: rgba(224,32,32,0.25); color: var(--red); }
+.mobile-overlay-logo {
+  margin-bottom: 2.2rem;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.4s ease 0.05s, transform 0.4s ease 0.05s;
+}
+.nav-mobile-overlay.open .mobile-overlay-logo { opacity: 1; transform: translateY(0); }
+.mobile-overlay-logo img { height: 68px; object-fit: contain; }
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0 1.8rem;
+}
+.mobile-nav-links a {
+  display: block;
+  width: 100%;
+  max-width: 310px;
+  text-align: center;
+  padding: 0.9rem 2rem;
+  font-family: var(--font);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  background: #141414;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 5px 0 #050505, 0 8px 20px rgba(0,0,0,0.6);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.32s ease, transform 0.32s ease, background 0.18s, box-shadow 0.18s;
+}
+.nav-mobile-overlay.open .mobile-nav-links a { opacity: 1; transform: translateY(0); }
+.nav-mobile-overlay.open .mobile-nav-links a:nth-child(1) { transition-delay: 0.06s; }
+.nav-mobile-overlay.open .mobile-nav-links a:nth-child(2) { transition-delay: 0.12s; }
+.nav-mobile-overlay.open .mobile-nav-links a:nth-child(3) { transition-delay: 0.18s; }
+.nav-mobile-overlay.open .mobile-nav-links a:nth-child(4) { transition-delay: 0.24s; }
+.nav-mobile-overlay.open .mobile-nav-links a:nth-child(5) { transition-delay: 0.30s; }
+.mobile-nav-links a:active {
+  transform: translateY(4px) !important;
+  box-shadow: 0 1px 0 #800000, 0 2px 8px rgba(224,32,32,0.3) !important;
+  background: #1a0000 !important;
+}
+.mobile-nav-links a:first-child {
+  background: var(--red);
+  box-shadow: 0 5px 0 #800000, 0 8px 24px rgba(224,32,32,0.4);
+  border-color: rgba(255,100,100,0.18);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE LAYOUT  —  max-width: 768px
+═══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Navbar */
+  .nav-hamburger { display: flex; }
+  .nav-links { display: none !important; }
+  #navbar {
+    justify-content: space-between;
+    padding: 0 1.2rem;
+    height: 64px;
+  }
+  .nav-logo { position: static; transform: none; left: auto; }
+  .nav-logo img { height: 72px; }
+  .nav-hamburger span { background: #111; }
+  #navbar.scrolled .nav-hamburger span { background: #111; }
+
+  /* Hero — single column, text above turbo */
+  #hero { min-height: 100svh; align-items: flex-start; padding-top: 0; }
+  .hero-content {
+    flex-direction: column;
+    align-items: center;
+    padding: 90px 1.4rem 2.5rem;
+    gap: 1.5rem;
+    text-align: center;
+    width: 100%;
+  }
+  .hero-text {
+    flex: unset;
+    max-width: 100%;
+    padding: 0;
+    order: 1;
+    align-items: center;
+  }
+  .hero-title { font-size: clamp(2.6rem, 11vw, 4rem); line-height: 1.0; }
+  .hero-wheel {
+    flex: unset;
+    max-width: 100%;
+    width: 100%;
+    min-height: 200px;
+    padding: 0;
+    margin: 0;
+    order: 2;
+  }
+  .hero-image { max-width: 78vw; margin: 0 auto; }
+  /* Reduce symbols — keep only 5 around turbo */
+  .tsym-2, .tsym-4, .tsym-6, .tsym-8 { display: none; }
+  .tsym-over { display: none; }
+
+  /* Sections */
+  .daune-section { padding: 5rem 1.2rem; }
+  .services-section { padding: 5rem 1.2rem; }
+  .contact-section { padding: 5rem 1.2rem; }
+  .section-header { margin-bottom: 2.5rem; }
+
+  /* Parallax band */
+  .parallax-band {
+    padding: 5rem 1.2rem;
+    clip-path: polygon(0 3%, 100% 0%, 100% 97%, 0 100%);
+    margin: -1.5rem 0;
+  }
+  .band-features { gap: 1.5rem 2rem; margin-top: 2rem; }
+
+  /* Stats strip */
+  .stats-cards-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .stat-card { padding: 2rem 1.5rem; }
+  .stats-inner { padding: 4rem 1.2rem; }
+
+  /* Contact */
+  .contact-cards { flex-direction: column; gap: 0.85rem; }
+  .contact-card { min-width: 100%; padding: 1.6rem 1.4rem; }
+  .map-wrap iframe { height: 250px; }
+  .map-gps-btn { font-size: 0.82rem; padding: 0.52rem 1rem; bottom: 12px; right: 12px; }
+
+  /* Footer */
+  .site-footer { padding: 2.5rem 1.2rem; }
+
+  /* Cards: skip JS transform transitions on touch — CSS snap-back only */
+  .service-card, .daune-points li { transition: box-shadow 0.25s ease; }
+}
+
+@media (max-width: 420px) {
+  .hero-title { font-size: clamp(2.1rem, 12vw, 2.9rem); }
+  .btn-red { font-size: 0.88rem; padding: 0.72rem 1.7rem; }
+  .hero-image { max-width: 88vw; }
+  .mobile-nav-links a { font-size: 1.1rem; }
+}
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <img src="assets/logo-clean.png" alt="Paint Auto Service" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="#daune">Consultanță Daune</a></li>
+    <li><a href="#services">Servicii</a></li>
+    <li><a href="#about">Despre Noi</a></li>
+    <li><a href="#gallery">Galerie</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburgerBtn" aria-label="Deschide meniu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile fullscreen overlay menu -->
+<div class="nav-mobile-overlay" id="mobileMenu" aria-hidden="true">
+  <button class="mobile-close" id="mobileClose" aria-label="Închide meniu">✕</button>
+  <div class="mobile-overlay-logo">
+    <img src="assets/logo-clean.png" alt="Paint Auto Service" />
+  </div>
+  <nav class="mobile-nav-links">
+    <a href="#daune">Consultanță Daune</a>
+    <a href="#services">Servicii</a>
+    <a href="#about">Despre Noi</a>
+    <a href="#gallery">Galerie</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</div>
+  <section id="hero">
+  <canvas id="hero-mesh"></canvas>
+  <div class="hero-separator" aria-hidden="true">
+    <div class="sep-red"></div>
+    <div class="sep-carbon"></div>
+    <div class="sep-diamond"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="hero-pre">Servicii Auto Profesionale</p>
+      <h1 class="hero-title">EXPERȚI ÎN<br/><span>ÎNGRIJIREA</span><br/>MAȘINII TALE</h1>
+      <p class="hero-sub">Calitate, precizie și pasiune pentru fiecare mașină</p>
+      <a href="#services" class="btn-red">Descoperă Serviciile</a>
+    </div>
+
+    <div class="hero-wheel">
+      <div class="turbo-symbols" aria-hidden="true">
+
+        <!-- Gear large -->
+        <div class="tsym tsym-1">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+
+        <!-- Wrench -->
+        <div class="tsym tsym-2">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
+
+        <!-- Lightning bolt -->
+        <div class="tsym tsym-3">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+
+        <!-- Activity / EKG -->
+        <div class="tsym tsym-4">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+
+        <!-- Flame -->
+        <div class="tsym tsym-5">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+        </div>
+
+        <!-- Oil drop -->
+        <div class="tsym tsym-6">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+          </svg>
+        </div>
+
+        <!-- Shield check -->
+        <div class="tsym tsym-7">
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
+
+
+        <!-- Battery -->
+        <div class="tsym tsym-9">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="6" width="18" height="12" rx="2" ry="2"/>
+            <line x1="23" y1="13" x2="23" y2="11"/>
+            <line x1="7" y1="10" x2="7" y2="14"/>
+            <line x1="11" y1="12" x2="3" y2="12"/>
+          </svg>
+        </div>
+
+      </div>
+      <img src="images/turbine.png" alt="Turbocharger" class="hero-image" />
+
+      <!-- Symbols that float ON TOP of the turbo -->
+      <!-- Thermometer -->
+      <div class="tsym-over tsym-10" aria-hidden="true">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+        </svg>
+      </div>
+      <!-- Compass -->
+      <div class="tsym-over tsym-11" aria-hidden="true">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ── Daune section ── -->
+<section id="daune" class="daune-section">
+  <div class="daune-inner">
+    <div class="section-header reveal">
+      <p class="section-pre">Evaluare & Asistență</p>
+      <h2 class="section-title">CONSULTANȚĂ <span>DAUNE</span></h2>
+    </div>
+    <p class="daune-lead reveal">Te ajutăm să gestionezi daunele auto rapid și fără stres. Ne ocupăm de evaluare, documentație și relația cu asiguratorul, pentru ca tu să economisești timp și să eviți complicațiile.</p>
+    <ul class="daune-points">
+      <li class="reveal">
+        <div class="daune-top-border"></div>
+        <div class="daune-point-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </div>
+        <div>
+          <strong>Evaluare rapidă a daunelor</strong>
+          <span>Identificăm corect toate problemele încă de la început</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="daune-top-border"></div>
+        <div class="daune-point-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div>
+          <strong>Asistență completă</strong>
+          <span>Te ghidăm pas cu pas în procesul de despăgubire</span>
+        </div>
+      </li>
+      <li class="reveal">
+        <div class="daune-top-border"></div>
+        <div class="daune-point-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <strong>Gestionarea documentelor</strong>
+          <span>Ne ocupăm de actele necesare și relația cu asiguratorul</span>
+        </div>
+      </li>
+    </ul>
+    <a href="#contact" class="btn-red reveal">Contactează-ne pentru detalii</a>
+  </div>
+</section>
+
+  <section id="services" class="services-section">
+  <div class="section-header reveal">
+    <p class="section-pre">Ce Oferim</p>
+    <h2 class="section-title">SERVICIILE <span>NOASTRE</span></h2>
+  </div>
+  <div class="services-grid">
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 36c0 0 4-8 16-8s16 8 16 8"/><circle cx="24" cy="18" r="6"/>
+          <path d="M4 40h40"/><path d="M12 40V28"/><path d="M36 40V28"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Vopsire Auto</h3>
+      <p>Vopsire profesională pentru un finish impecabil și durabil</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="14" width="36" height="20" rx="4"/>
+          <path d="M6 22h36"/><path d="M16 14v-4"/><path d="M32 14v-4"/>
+          <circle cx="14" cy="34" r="4"/><circle cx="34" cy="34" r="4"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Reparații Caroserie</h3>
+      <p>Eliminăm loviturile și zgârieturile rapid și eficient</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 38l4-4 4 4-4 4z"/><path d="M14 34L34 14"/><path d="M34 14l4-4 4 4-4 4z"/>
+          <path d="M6 18l8-8"/><path d="M26 38l8-8"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Tinichigerie</h3>
+      <p>Intervenții precise asupra structurii caroseriei</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="24" r="16"/><circle cx="24" cy="24" r="8"/>
+          <path d="M24 8v4"/><path d="M24 36v4"/><path d="M8 24h4"/><path d="M36 24h4"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Polish & Lustruire</h3>
+      <p>Redăm strălucirea originală a lacului mașinii tale</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- brake disc + calliper icon -->
+          <circle cx="24" cy="24" r="14"/><circle cx="24" cy="24" r="6"/>
+          <path d="M24 10v4"/><path d="M24 34v4"/><path d="M10 24h4"/><path d="M34 24h4"/>
+          <path d="M14.1 14.1l2.8 2.8"/><path d="M31.1 31.1l2.8 2.8"/>
+          <path d="M33.9 14.1l-2.8 2.8"/><path d="M16.9 31.1l-2.8 2.8"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Suspensie & Frâne</h3>
+      <p>Diagnoză și reparare a sistemelor de suspensie, frânare și direcție</p>
+    </div>
+
+    <div class="service-card reveal">
+      <div class="card-icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 28l4-4 8 8-4 4z"/><path d="M32 8l4 4-14 14-4-4z"/>
+          <circle cx="36" cy="12" r="4"/><path d="M18 30l-8 8"/>
+        </svg>
+      </div>
+      <div class="card-top-border"></div>
+      <h3>Mecanică Generală</h3>
+      <p>Diagnoză și repararea sistemelor mecanice ale vehiculului</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Despre Noi — stats strip ── -->
+<section id="about" class="stats-strip">
+  <div class="stats-cursor-glow" id="statsCursorGlow"></div>
+  <div class="stats-inner">
+    <div class="section-header reveal">
+      <p class="section-pre">Rezultatele Noastre</p>
+      <h2 class="section-title stats-section-title">CIFRE CARE <span>VORBESC</span></h2>
+    </div>
+    <div class="stats-cards-grid">
+
+      <div class="stat-card reveal">
+        <div class="stat-card-top-border"></div>
+        <div class="stat-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <div class="stat-num-row">
+          <span class="stat-num" data-target="10">0</span><span class="stat-suffix">+</span>
+        </div>
+        <p class="stat-label">Ani de Experiență</p>
+        <p class="stat-desc">Un deceniu de expertiză în vopsitorie auto și reparații caroserie la cel mai înalt standard</p>
+      </div>
+
+      <div class="stat-card reveal">
+        <div class="stat-card-top-border"></div>
+        <div class="stat-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 17H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3l2-2h4l2 2h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2z"/>
+            <circle cx="12" cy="11" r="3"/>
+          </svg>
+        </div>
+        <div class="stat-num-row">
+          <span class="stat-num" data-target="2000">0</span><span class="stat-suffix">+</span>
+        </div>
+        <p class="stat-label">Mașini Reparate</p>
+        <p class="stat-desc">Mii de vehicule readuse la strălucirea lor originală cu precizie și tehnologie de ultimă generație</p>
+      </div>
+
+      <div class="stat-card reveal">
+        <div class="stat-card-top-border"></div>
+        <div class="stat-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div class="stat-num-row">
+          <span class="stat-num" data-target="98">0</span><span class="stat-suffix">%</span>
+        </div>
+        <p class="stat-label">Clienți Mulțumiți</p>
+        <p class="stat-desc">Rata de satisfacție excepțională reflectă angajamentul nostru față de calitate și servicii impecabile</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="parallax-band reveal">
+  <div class="section-header">
+    <p class="section-pre">De Ce Noi</p>
+    <h2 class="section-title">CALITATE ȘI PRECIZIE<br/>ÎN FIECARE <span>DETALIU</span></h2>
+    <p class="band-sub">Echipament modern, tehnicieni certificați și garanție pentru fiecare lucrare efectuată.</p>
+  </div>
+  <div class="band-features">
+    <div class="band-feature">
+      <div class="band-feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </div>
+      <span>Garanție Lucrări</span>
+    </div>
+    <div class="band-feature">
+      <div class="band-feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <span>Intervenție Rapidă</span>
+    </div>
+    <div class="band-feature">
+      <div class="band-feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <span>Diagnoză Precisă</span>
+    </div>
+    <div class="band-feature">
+      <div class="band-feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <span>Personal Calificat</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Gallery section ── -->
+<section id="gallery" class="placeholder-section" style="background: var(--bg);">
+  <div class="section-header reveal">
+    <p class="section-pre">Lucrările Noastre</p>
+    <h2 class="section-title">GALERIE <span>FOTO</span></h2>
+  </div>
+  <p class="placeholder-note reveal">Galerie foto în curs de completare.</p>
+</section>
+
+<section id="contact" class="contact-section">
+  <div class="section-header reveal">
+    <p class="section-pre">Unde Ne Găsești</p>
+    <h2 class="section-title">CONTACTEAZĂ<span>-NE</span></h2>
+  </div>
+  <div class="contact-cards">
+    <div class="contact-card reveal">
+      <div class="contact-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.31h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      </div>
+      <h4>Telefon</h4>
+      <p>—</p>
+    </div>
+    <div class="contact-card reveal">
+      <div class="contact-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h4>Adresă</h4>
+      <p>Strada Fabrica de Chibrituri 24-26, Sector 5, București</p>
+    </div>
+    <div class="contact-card reveal">
+      <div class="contact-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <h4>Program</h4>
+      <p>Luni – Vineri: 08:00 – 17:00</p>
+    </div>
+  </div>
+
+  <!-- Live Map — replace the src with your actual Google Maps Embed URL -->
+  <div class="map-wrap reveal">
+    <iframe
+      src="https://maps.google.com/maps?q=Strada+Fabrica+de+Chibrituri+24-26,+Sector+5,+Bucuresti&t=&z=16&ie=UTF8&iwloc=&output=embed"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Locație Paint Auto Service"
+    ></iframe>
+    <a
+      href="https://www.google.com/maps/dir/?api=1&destination=Strada+Fabrica+de+Chibrituri+24-26,+Sector+5,+Bucuresti,+Romania"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="map-gps-btn"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+      </svg>
+      Navighează cu GPS
+    </a>
+  </div>
+</section>
+
+<!-- ── Floating call button — replace +40700000000 with real number ── -->
+<a href="tel:+40700000000" class="fab-call" aria-label="Sună acum">
+  <span class="fab-label">Sună Acum</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.31h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+  </svg>
+</a>
+
+<footer class="site-footer">
+  <img src="assets/logo-clean.png" alt="Paint Auto Service" class="footer-logo" />
+  <div class="footer-socials">
+    <a href="#" aria-label="Facebook">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="#" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+  </div>
+  <p class="footer-copy">© 2026 Paint Auto Service. Toate drepturile rezervate.</p>
+</footer>
+  <script>
+    const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+
+// Stats count-up on scroll
+function countUp(el) {
+  const target = parseInt(el.dataset.target, 10);
+  const duration = 1800;
+  const start = performance.now();
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target);
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+
+const statNums = document.querySelectorAll('.stat-num');
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      countUp(e.target);
+      statsObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+statNums.forEach(n => statsObserver.observe(n));
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('revealed');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObserver.observe(el));
+
+// ── Interactive wireframe mesh (HD, cursor-reactive) ──
+(function() {
+  const canvas = document.getElementById('hero-mesh');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const COLS        = 28;
+  const ROWS        = 18;
+  const MOUSE_R     = 220;
+  const MOUSE_FORCE = 7.5;
+  const SPRING      = 0.036;
+  const DAMP        = 0.79;
+  const BASE_ALPHA  = 0.038;
+  const BASE_NODE   = 0.055;
+
+  let W, H, dpr, pts;
+  const mouse = { x: -9999, y: -9999 };
+
+  function buildGrid() {
+    pts = [];
+    const cw = W / COLS, ch = H / ROWS;
+    for (let r = 0; r <= ROWS; r++) {
+      for (let c = 0; c <= COLS; c++) {
+        const jx = (Math.random() - 0.5) * cw * 0.38;
+        const jy = (Math.random() - 0.5) * ch * 0.38;
+        const ox = c * cw + jx, oy = r * ch + jy;
+        pts.push({ x: ox, y: oy, ox, oy, vx: 0, vy: 0, phase: Math.random() * Math.PI * 2 });
+      }
+    }
+  }
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W   = canvas.offsetWidth;
+    H   = canvas.offsetHeight;
+    canvas.width  = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildGrid();
+  }
+
+  let frame = 0;
+  function tick() {
+    frame++;
+    const t = frame * 0.007;
+    ctx.clearRect(0, 0, W, H);
+
+    /* ── update physics ── */
+    pts.forEach(p => {
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < MOUSE_R * MOUSE_R && d2 > 0.1) {
+        const d = Math.sqrt(d2);
+        const f = (1 - d / MOUSE_R) * MOUSE_FORCE;
+        p.vx += (dx / d) * f;
+        p.vy += (dy / d) * f;
+      }
+      // gentle idle breathing
+      const bx = Math.sin(t + p.phase)       * 0.55;
+      const by = Math.cos(t * 0.8 + p.phase) * 0.55;
+      p.vx += (p.ox + bx - p.x) * SPRING;
+      p.vy += (p.oy + by - p.y) * SPRING;
+      p.vx *= DAMP; p.vy *= DAMP;
+      p.x  += p.vx; p.y  += p.vy;
+    });
+
+    /* ── draw triangulated mesh ── */
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const i = r * (COLS + 1) + c;
+        const a = pts[i], b = pts[i + 1];
+        const d = pts[i + COLS + 1], e = pts[i + COLS + 2];
+
+        const da = Math.hypot(a.x - a.ox, a.y - a.oy);
+        const db = Math.hypot(b.x - b.ox, b.y - b.oy);
+        const dd = Math.hypot(d.x - d.ox, d.y - d.oy);
+        const avg = (da + db + dd) / 3;
+
+        const alpha = Math.min(BASE_ALPHA + avg * 0.009, 0.16);
+        const lw    = 0.35 + Math.min(avg * 0.018, 0.45);
+
+        ctx.lineWidth   = lw;
+        ctx.strokeStyle = `rgba(14,14,14,${alpha.toFixed(3)})`;
+
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineTo(d.x, d.y); ctx.closePath(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(e.x, e.y); ctx.lineTo(d.x, d.y); ctx.closePath(); ctx.stroke();
+      }
+    }
+
+    /* ── draw nodes ── */
+    pts.forEach(p => {
+      const dist  = Math.hypot(p.x - p.ox, p.y - p.oy);
+      const alpha = Math.min(BASE_NODE + dist * 0.005, 0.18);
+      const rad   = 0.7 + Math.min(dist * 0.04, 1.2);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, rad, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(14,14,14,${alpha.toFixed(3)})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(tick);
+  }
+
+  const hero = document.getElementById('hero');
+  document.addEventListener('mousemove', e => {
+    const rect = hero.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  document.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+  let rsz;
+  window.addEventListener('resize', () => { clearTimeout(rsz); rsz = setTimeout(resize, 120); });
+
+  resize();
+  tick();
+})();
+
+// ── Nav buttons: per-button 3D cursor tilt ──
+document.querySelectorAll('.nav-links a').forEach(btn => {
+  let cachedRect = null;
+
+  btn.addEventListener('mouseenter', () => {
+    // Disable transition briefly so the rect is captured before any transform
+    btn.style.transition = 'box-shadow 0.18s ease, background 0.18s ease';
+    btn.style.transform = 'perspective(500px) rotateX(0deg) rotateY(0deg) translateZ(0) translateY(0)';
+    // Cache the natural (untransformed) bounding rect
+    cachedRect = btn.getBoundingClientRect();
+    btn.style.transition = '';
+  });
+
+  btn.addEventListener('mousemove', e => {
+    if (!cachedRect) return;
+    const cx = cachedRect.left + cachedRect.width  / 2;
+    const cy = cachedRect.top  + cachedRect.height / 2;
+    const dx = Math.max(-1, Math.min(1, (e.clientX - cx) / (cachedRect.width  / 2)));
+    const dy = Math.max(-1, Math.min(1, (e.clientY - cy) / (cachedRect.height / 2)));
+    const rx = -dy * 12;
+    const ry =  dx * 16;
+    btn.style.transform =
+      `perspective(500px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateZ(4px) translateY(-3px)`;
+    btn.style.boxShadow =
+      `0 7px 0 #b01010, 0 10px 26px rgba(224,32,32,0.52), 0 0 20px rgba(224,32,32,0.38)`;
+  });
+
+  btn.addEventListener('mouseleave', () => {
+    cachedRect = null;
+    btn.style.transform = 'perspective(500px) rotateX(0deg) rotateY(0deg) translateZ(0) translateY(0)';
+    btn.style.boxShadow = '0 4px 0 #000000, 0 6px 14px rgba(0,0,0,0.28)';
+  });
+
+  btn.addEventListener('mousedown', () => {
+    btn.style.transform = 'perspective(500px) rotateX(4deg) rotateY(0deg) translateZ(0) translateY(2px)';
+    btn.style.boxShadow = '0 1px 0 #900000, 0 2px 10px rgba(224,32,32,0.30)';
+  });
+
+  btn.addEventListener('mouseup', () => {
+    btn.style.transform = 'perspective(500px) rotateX(0deg) rotateY(0deg) translateZ(0) translateY(-3px)';
+    btn.style.boxShadow = '0 7px 0 #b01010, 0 10px 26px rgba(224,32,32,0.52), 0 0 20px rgba(224,32,32,0.38)';
+  });
+});
+
+// ── Carbon 3D tilt + glare — service cards & daune boxes ──
+document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r  = card.getBoundingClientRect();
+    const cx = r.left + r.width  / 2;
+    const cy = r.top  + r.height / 2;
+    const dx = (e.clientX - cx) / (r.width  / 2);
+    const dy = (e.clientY - cy) / (r.height / 2);
+    const rx = -dy * 9;
+    const ry =  dx * 9;
+    card.style.transform =
+      `perspective(700px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateZ(10px)`;
+    card.style.setProperty('--gx', ((e.clientX - r.left) / r.width  * 100) + '%');
+    card.style.setProperty('--gy', ((e.clientY - r.top)  / r.height * 100) + '%');
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+  });
+});
+
+// ── Separator: dynamically center between text and turbo ──
+(function() {
+  const sep   = document.querySelector('.hero-separator');
+  const textEl = document.querySelector('.hero-text');
+  const wheelEl = document.querySelector('.hero-wheel');
+  const hero  = document.getElementById('hero');
+  if (!sep || !textEl || !wheelEl || !hero) return;
+
+  function positionSep() {
+    const heroRect   = hero.getBoundingClientRect();
+    const textRect   = textEl.getBoundingClientRect();
+    const imgEl      = document.querySelector('.hero-image');
+    const imgRect    = (imgEl || wheelEl).getBoundingClientRect();
+
+    // right edge of text content (column right minus its right padding)
+    const padR       = parseFloat(getComputedStyle(textEl).paddingRight) || 0;
+    const textRight  = textRect.right - padR;
+
+    // left edge of the actual turbo image
+    const imgLeft    = imgRect.left;
+
+    const midX = (textRight + imgLeft) / 2;
+    sep.style.left      = (midX - heroRect.left) + 'px';
+    sep.style.transform = 'translateX(-50%)';
+  }
+
+  // run after layout settles (after CSS animations kick in)
+  requestAnimationFrame(() => requestAnimationFrame(positionSep));
+  window.addEventListener('resize', positionSep);
+})();
+
+// ── Turbine: float + cursor-reactive 3D tilt ──
+(function() {
+  const wrap = document.querySelector('.hero-wheel');
+  const hero = document.getElementById('hero');
+  if (!wrap || !hero) return;
+
+  let targetX = 0, targetY = 0;
+  let currentX = 0, currentY = 0;
+  let floatT = 0;
+
+  // track mouse relative to hero centre — only while hero is visible
+  document.addEventListener('mousemove', e => {
+    const r = hero.getBoundingClientRect();
+    // if hero has scrolled out of view, reset and ignore
+    if (r.bottom < 0 || r.top > window.innerHeight) {
+      targetX = 0; targetY = 0; return;
+    }
+    const cx = r.left + r.width  / 2;
+    const cy = r.top  + r.height / 2;
+    const dx = Math.max(-1, Math.min(1, (e.clientX - cx) / (r.width  / 2)));
+    const dy = Math.max(-1, Math.min(1, (e.clientY - cy) / (r.height / 2)));
+    targetX = -dy * 6;   // tilt up/down  (max ±6°)
+    targetY =  dx * 9;   // tilt left/right (max ±9°)
+  });
+
+  document.addEventListener('mouseleave', () => { targetX = 0; targetY = 0; });
+  window.addEventListener('scroll', () => {
+    const r = hero.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) { targetX = 0; targetY = 0; }
+  }, { passive: true });
+
+  function animateTurbine() {
+    floatT += 0.014;
+    const floatY = Math.sin(floatT) * 11; // gentle 11px float
+
+    // smooth lerp toward cursor target
+    currentX += (targetX - currentX) * 0.055;
+    currentY += (targetY - currentY) * 0.055;
+
+    wrap.style.transform =
+      `perspective(900px) rotateX(${currentX.toFixed(3)}deg) rotateY(${currentY.toFixed(3)}deg) translateY(${floatY.toFixed(2)}px)`;
+
+    requestAnimationFrame(animateTurbine);
+  }
+
+  animateTurbine();
+})();
+
+// ── Stats section: cursor spotlight + 3D card tilt ──
+(function() {
+  const section = document.getElementById('about');
+  const glow    = document.getElementById('statsCursorGlow');
+  if (!section || !glow) return;
+
+  // Cursor spotlight follows mouse
+  let glowX = 0, glowY = 0, targetGX = 0, targetGY = 0;
+  section.addEventListener('mousemove', e => {
+    const r = section.getBoundingClientRect();
+    targetGX = e.clientX - r.left;
+    targetGY = e.clientY - r.top;
+  });
+  // Lerp spotlight for smooth movement
+  (function animateGlow() {
+    glowX += (targetGX - glowX) * 0.1;
+    glowY += (targetGY - glowY) * 0.1;
+    glow.style.left = glowX + 'px';
+    glow.style.top  = glowY + 'px';
+    requestAnimationFrame(animateGlow);
+  })();
+
+  // 3D tilt + glare for each stat card (same as service cards)
+  let statCardRects = new WeakMap();
+  document.querySelectorAll('.stat-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      statCardRects.set(card, card.getBoundingClientRect());
+    });
+    card.addEventListener('mousemove', e => {
+      const r = statCardRects.get(card);
+      if (!r) return;
+      const cx = r.left + r.width  / 2;
+      const cy = r.top  + r.height / 2;
+      const dx = Math.max(-1, Math.min(1, (e.clientX - cx) / (r.width  / 2)));
+      const dy = Math.max(-1, Math.min(1, (e.clientY - cy) / (r.height / 2)));
+      card.style.transform = `perspective(700px) rotateX(${(-dy * 10).toFixed(2)}deg) rotateY(${(dx * 10).toFixed(2)}deg) translateZ(12px)`;
+      card.style.setProperty('--gx', ((e.clientX - r.left) / r.width  * 100) + '%');
+      card.style.setProperty('--gy', ((e.clientY - r.top)  / r.height * 100) + '%');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+    });
+  });
+})();
+
+// ── Mobile hamburger menu ──
+(function() {
+  const btn     = document.getElementById('hamburgerBtn');
+  const overlay = document.getElementById('mobileMenu');
+  const closeBtn = document.getElementById('mobileClose');
+  if (!btn || !overlay) return;
+
+  function openMenu() {
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', () => {
+    btn.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+
+  // Close on any menu link click (smooth scroll takes over)
+  overlay.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+  // Close on Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+  // Touch on cards: glare follows finger
+  const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
+  document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
+    card.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--gx', ((t.clientX - r.left) / r.width  * 100) + '%');
+      card.style.setProperty('--gy', ((t.clientY - r.top)  / r.height * 100) + '%');
+      // Show glare via inline style since :hover won't fire on touch
+      card.querySelector('*')  // trigger repaint with class
+      card.style.setProperty('--glare', '1');
+    }, { passive: true });
+    card.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--gx', ((t.clientX - r.left) / r.width  * 100) + '%');
+      card.style.setProperty('--gy', ((t.clientY - r.top)  / r.height * 100) + '%');
+    }, { passive: true });
+  });
+})();
+
+  </script>
+</body>
+</html>
