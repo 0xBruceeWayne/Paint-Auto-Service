@@ -25,9 +25,9 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html {
       scroll-behavior: smooth;
-      scroll-snap-type: y mandatory;
+      height: 100%;
     }
-    body { background: var(--bg); color: var(--text); font-family: var(--font); overflow-x: hidden; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); height: 100%; overflow-x: hidden; overflow-y: scroll; scroll-snap-type: y mandatory; }
     #navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -141,15 +141,20 @@
 }
 .hero-title span {
   color: var(--red);
-  transition: color 0.35s ease, text-shadow 0.35s ease;
+  transition: color 0.35s ease, text-shadow 0.35s ease, filter 0.35s ease;
   cursor: default;
+  position: relative;
+  z-index: 2;
+  display: inline-block;
 }
 .hero-title span:hover {
-  color: #ff4444;
+  color: #ff6666;
   text-shadow:
-    0 0 18px rgba(224,32,32,0.42),
-    0 0 40px rgba(224,32,32,0.28),
-    0 0 70px rgba(224,32,32,0.14);
+    0 0 12px rgba(224,32,32,0.75),
+    0 0 28px rgba(224,32,32,0.55),
+    0 0 55px rgba(224,32,32,0.35),
+    0 0 90px rgba(224,32,32,0.18);
+  filter: brightness(1.25);
 }
 .hero-sub {
   font-size: 1.1rem;
@@ -2198,7 +2203,8 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
     btn.setAttribute('aria-expanded', 'false');
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+    document.body.style.overflowY = 'scroll';
+    document.body.style.overflowX = 'hidden';
   }
 
   btn.addEventListener('click', () => {
