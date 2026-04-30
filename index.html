@@ -23,8 +23,8 @@
       --font: 'Barlow Condensed', sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: var(--font); overflow-x: hidden; }
+    html { scroll-behavior: smooth; height: 100%; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); height: 100%; overflow-x: hidden; overflow-y: scroll; scroll-snap-type: y mandatory; }
     #navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -128,7 +128,23 @@
   text-transform: uppercase;
   margin-bottom: 1.5rem;
 }
-.hero-title span { color: var(--red); }
+.hero-title span {
+  color: var(--red);
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  transition: color 0.35s ease, text-shadow 0.35s ease, filter 0.35s ease;
+  cursor: default;
+}
+.hero-title span:hover {
+  color: #ff6666;
+  text-shadow:
+    0 0 12px rgba(224,32,32,0.75),
+    0 0 28px rgba(224,32,32,0.55),
+    0 0 55px rgba(224,32,32,0.35),
+    0 0 90px rgba(224,32,32,0.18);
+  filter: brightness(1.25);
+}
 .hero-sub {
   font-size: 1.1rem;
   color: var(--text-muted);
@@ -788,6 +804,25 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.65);
+}
+
+/* ══════════════════════════════════════════
+   SCROLL SNAP — every section locks to viewport
+═══════════════════════════════════════════ */
+#hero,
+.daune-section,
+.services-section,
+.stats-strip,
+.parallax-band,
+.placeholder-section,
+.contact-section,
+.site-footer {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100svh;
+}
+.site-footer {
+  min-height: unset;
 }
   </style>
 </head>
