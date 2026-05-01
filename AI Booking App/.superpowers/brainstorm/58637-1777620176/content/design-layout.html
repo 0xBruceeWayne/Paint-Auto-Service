@@ -1,0 +1,93 @@
+<h2>Design: Page Layout & Sections</h2>
+<p class="subtitle">7 sections, one immersive scroll. Liquid Glass UI floats over the shifting 3D atmosphere. Approve the structure before we spec each section.</p>
+
+<div class="section">
+  <div style="display:flex;flex-direction:column;gap:8px;font-family:monospace;font-size:13px;">
+
+    <div style="background:#0D1B3E;border:1px solid #1A9FE0;border-radius:12px;padding:16px;">
+      <div style="color:#1A9FE0;font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">01 — HERO (100vh)</div>
+      <div style="color:#fff;font-weight:700;font-size:15px;margin-bottom:6px;">AI Wizard + Animated Travel Illustration Background</div>
+      <div style="color:#8B97A8;font-size:12px;line-height:1.6;">
+        • Fixed 3D canvas — your illustration animates as the hero background (sky-blue fog + cyan particles)<br>
+        • Centered Liquid Glass panel: "Where do you want to go?" prompt<br>
+        • Step-by-step wizard: Destination → Dates → Vibe → Budget → Results<br>
+        • Navbar: Logo left · Links center · "Sign Up" CTA right (all Liquid Glass)<br>
+        • Spring-physics cursor: moves cyan point light across the scene
+      </div>
+    </div>
+
+    <div style="background:#0D1B3E;border:1px solid rgba(107,33,168,0.5);border-radius:12px;padding:16px;">
+      <div style="color:#A78BFA;font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">02 — HOW IT WORKS (100vh)</div>
+      <div style="color:#fff;font-weight:700;font-size:15px;margin-bottom:6px;">3-Step Visual Flow</div>
+      <div style="color:#8B97A8;font-size:12px;line-height:1.6;">
+        • 3D atmosphere: deep indigo space with purple nebula wisps<br>
+        • 3 Liquid Glass cards scroll-revealed by GSAP ScrollTrigger (stagger, fade+slide up)<br>
+        • Step 1: "Tell the AI your dream" · Step 2: "AI builds your trip" · Step 3: "Book in one tap"<br>
+        • Animated connector line between steps (GSAP draw-on)
+      </div>
+    </div>
+
+    <div style="background:#0D1B3E;border:1px solid rgba(0,212,255,0.4);border-radius:12px;padding:16px;">
+      <div style="color:#00D4FF;font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">03 — DESTINATIONS (120vh)</div>
+      <div style="color:#fff;font-weight:700;font-size:15px;margin-bottom:6px;">Featured Destination Cards</div>
+      <div style="color:#8B97A8;font-size:12px;line-height:1.6;">
+        • 3D atmosphere: cyan ocean aerial, soft cloud layer<br>
+        • Horizontal scroll card row (6 destinations) with 3D tilt on hover<br>
+        • Each card: Liquid Glass · full-bleed image · destination name · avg price · "Explore" CTA<br>
+        • Cards animate in with staggered GSAP reveal
+      </div>
+    </div>
+
+    <div style="background:#0D1B3E;border:1px solid rgba(26,159,224,0.4);border-radius:12px;padding:16px;">
+      <div style="color:#1A9FE0;font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">04 — AI FEATURES (100vh)</div>
+      <div style="color:#fff;font-weight:700;font-size:15px;margin-bottom:6px;">What the AI Does</div>
+      <div style="color:#8B97A8;font-size:12px;line-height:1.6;">
+        • 3D atmosphere: dark indigo · electric blue data-flow particles · grid shader<br>
+        • Split layout: left = large AI chat mockup (live-typed demo) · right = 4 feature pills<br>
+        • Features: Smart Bundling · Price Prediction · Vibe Matching · Instant Rebooking<br>
+        • Each pill has icon + one-line description · Liquid Glass surface
+      </div>
+    </div>
+
+    <div style="background:#0D1B3E;border:1px solid rgba(107,33,168,0.4);border-radius:12px;padding:16px;">
+      <div style="color:#A78BFA;font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">05 — TESTIMONIALS (80vh)</div>
+      <div style="color:#fff;font-weight:700;font-size:15px;margin-bottom:6px;">Social Proof</div>
+      <div style="color:#8B97A8;font-size:12px;line-height:1.6;">
+        • 3D atmosphere: purple starfield, warm glow<br>
+        • 3 Liquid Glass quote cards, auto-rotating carousel<br>
+        • Avatar + name + destination traveled + star rating + quote<br>
+        • GSAP fade transition between cards
+      </div>
+    </div>
+
+    <div style="background:#0D1B3E;border:1px solid rgba(0,212,255,0.3);border-radius:12px;padding:16px;">
+      <div style="color:#00D4FF;font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">06 — PRICING (100vh)</div>
+      <div style="color:#fff;font-weight:700;font-size:15px;margin-bottom:6px;">3 Tiers</div>
+      <div style="color:#8B97A8;font-size:12px;line-height:1.6;">
+        • 3D atmosphere: deep space starfield · slow white particle drift<br>
+        • Explorer (free) · Voyager ($12/mo) · Elite ($29/mo)<br>
+        • Middle card elevated with Liquid Glass glow border + "Most Popular" badge<br>
+        • Toggle: Monthly / Annual (GSAP price flip animation)
+      </div>
+    </div>
+
+    <div style="background:#0D1B3E;border:1px solid #1A9FE0;border-radius:12px;padding:16px;">
+      <div style="color:#1A9FE0;font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;">07 — FOOTER CTA (60vh)</div>
+      <div style="color:#fff;font-weight:700;font-size:15px;margin-bottom:6px;">Close with the Wizard</div>
+      <div style="color:#8B97A8;font-size:12px;line-height:1.6;">
+        • 3D atmosphere loops back to sky-blue hero cloudscape<br>
+        • Large heading: "Your next trip starts with one question."<br>
+        • Re-embed the AI wizard prompt centered<br>
+        • Footer links below: minimal, 2 rows
+      </div>
+    </div>
+
+    <div style="background:rgba(26,159,224,0.08);border:1px solid rgba(26,159,224,0.2);border-radius:12px;padding:12px;margin-top:4px;">
+      <div style="color:#00D4FF;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Sticky Element (always visible)</div>
+      <div style="color:#8B97A8;font-size:12px;">Floating wizard bubble — bottom-right corner after hero passes viewport. Pulsing cyan glow. Click to re-open AI wizard panel overlay.</div>
+    </div>
+
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:12px;">Does this section structure look right? Approve and we write the full spec doc.</p>

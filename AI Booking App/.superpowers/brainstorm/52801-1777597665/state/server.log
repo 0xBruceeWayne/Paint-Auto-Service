@@ -1,0 +1,5 @@
+{"type":"server-started","port":62294,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:62294","screen_dir":"/Users/brucewayne/Desktop/VOSSWeb3D Design/AI Booking App/.superpowers/brainstorm/52801-1777597665/content","state_dir":"/Users/brucewayne/Desktop/VOSSWeb3D Design/AI Booking App/.superpowers/brainstorm/52801-1777597665/state"}
+{"type":"screen-added","file":"/Users/brucewayne/Desktop/VOSSWeb3D Design/AI Booking App/.superpowers/brainstorm/52801-1777597665/content/booking-type.html"}
+{"source":"user-event","type":"click","text":"B\n    \n      Travel & Hospitality\n      Hotels, villas, car rentals, flights — AI recommends destinations, bundles, and upgrades based on preferences.","choice":"b","id":null,"timestamp":1777597728154}
+{"type":"screen-added","file":"/Users/brucewayne/Desktop/VOSSWeb3D Design/AI Booking App/.superpowers/brainstorm/52801-1777597665/content/market-position.html"}
+{"type":"server-stopped","reason":"idle timeout"}
