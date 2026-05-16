@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOSS Studio — Project Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06060f;
+  --surface:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);
+  --accent:#7c3aed;
+  --accent-l:#a78bfa;
+  --text:#f0f0ff;
+  --muted:#6060888;
+  --r:20px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* GRID BG */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+
+/* RADIAL GLOW */
+.glow-tl{position:fixed;top:-180px;left:-180px;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,0.18) 0%,transparent 65%);pointer-events:none;z-index:0;}
+.glow-br{position:fixed;bottom:-150px;right:-150px;width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(167,139,250,0.1) 0%,transparent 65%);pointer-events:none;z-index:0;}
+
+/* CURSOR */
+#cur{position:fixed;width:9px;height:9px;border-radius:50%;
+  background:#fff;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);mix-blend-mode:difference;}
+#cur-r{position:fixed;width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.3);pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s;}
+body.ch #cur-r{width:56px;height:56px;border-color:rgba(167,139,250,0.7);}
+
+/* WRAP */
+.wrap{position:relative;z-index:1;max-width:1260px;margin:0 auto;padding:0 44px 80px;}
+
+/* HEADER */
+header{padding:60px 0 52px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.header-left{}
+.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,0.3);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--accent-l);
+  box-shadow:0 0 8px var(--accent-l);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+header h1{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,60px);
+  font-weight:600;letter-spacing:-.025em;line-height:1.1;}
+header h1 em{color:var(--accent-l);font-style:italic;}
+header h1 span{color:rgba(255,255,255,0.12);}
+.header-right{text-align:right;}
+.project-count{font-size:48px;font-family:'Playfair Display',serif;
+  font-weight:600;color:rgba(255,255,255,0.06);line-height:1;}
+.project-count-label{font-size:12px;color:rgba(255,255,255,0.25);margin-top:4px;letter-spacing:.06em;}
+
+/* DIVIDER */
+.divider{height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,0.08),transparent);
+  margin-bottom:48px;}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+
+/* CARD */
+.card{
+  position:relative;border-radius:var(--r);overflow:hidden;
+  background:var(--surface);
+  border:1px solid var(--border);
+  text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;
+  transition:border-color .35s,box-shadow .35s;
+  --mx:50%;--my:50%;
+}
+.card::before{/* shimmer */
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,0.055) 0%,transparent 50%);
+}
+.card::after{/* top specular rim */
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(255,255,255,0.18),transparent);
+}
+.card:hover{border-color:rgba(167,139,250,0.4);
+  box-shadow:0 24px 72px rgba(0,0,0,0.6),0 0 0 1px rgba(124,58,237,0.2),inset 0 1px 0 rgba(255,255,255,0.06);}
+
+/* PREVIEW AREA */
+.preview{
+  height:260px;position:relative;overflow:hidden;
+  flex-shrink:0;
+}
+
+/* PSYCHICS preview */
+.prev-psychics{
+  background:linear-gradient(155deg,#04040e 0%,#0d0820 40%,#150730 100%);
+}
+.prev-psychics .orb-main{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(139,92,246,0.85) 0%,rgba(109,40,217,0.4) 50%,transparent 70%);
+  box-shadow:0 0 60px rgba(139,92,246,0.6),inset 0 0 30px rgba(255,255,255,0.1);
+  animation:orbFloat 4s ease-in-out infinite;
+}
+@keyframes orbFloat{0%,100%{transform:translate(-50%,-52%)}50%{transform:translate(-50%,-48%)}}
+.prev-psychics .ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(139,92,246,0.2);}
+.prev-psychics .ring:nth-child(2){width:200px;height:200px;margin:-100px 0 0 -100px;animation:spin 18s linear infinite;}
+.prev-psychics .ring:nth-child(3){width:300px;height:300px;margin:-150px 0 0 -150px;animation:spin 28s linear infinite reverse;}
+.prev-psychics .ring:nth-child(4){width:420px;height:420px;margin:-210px 0 0 -210px;border-color:rgba(139,92,246,0.08);animation:spin 40s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.prev-psychics .stars{position:absolute;inset:0;}
+.prev-psychics .stars::before,.prev-psychics .stars::after{
+  content:'';position:absolute;border-radius:50%;background:white;
+  box-shadow:8px 20px 0 rgba(255,255,255,.6),40px 10px 0 rgba(255,255,255,.4),
+    80px 35px 0 rgba(255,255,255,.5),120px 15px 0 rgba(167,139,250,.7),
+    160px 45px 0 rgba(255,255,255,.3),200px 8px 0 rgba(255,255,255,.6),
+    240px 30px 0 rgba(232,184,75,.5),280px 18px 0 rgba(255,255,255,.4),
+    320px 40px 0 rgba(255,255,255,.5),60px 60px 0 rgba(255,255,255,.3),
+    100px 80px 0 rgba(167,139,250,.5),180px 70px 0 rgba(255,255,255,.4),
+    260px 65px 0 rgba(255,255,255,.6),20px 90px 0 rgba(232,184,75,.4);
+  width:2px;height:2px;top:20px;left:0;
+}
+.prev-psychics .stars::after{top:110px;box-shadow:15px 10px 0 rgba(255,255,255,.5),55px 5px 0 rgba(167,139,250,.6),95px 25px 0 rgba(255,255,255,.3),135px 8px 0 rgba(255,255,255,.5),175px 30px 0 rgba(232,184,75,.4),215px 12px 0 rgba(255,255,255,.6),255px 22px 0 rgba(167,139,250,.4),295px 35px 0 rgba(255,255,255,.5);}
+.prev-psychics .label-preview{
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  font-family:'Playfair Display',serif;font-size:22px;font-style:italic;
+  color:rgba(255,255,255,0.85);white-space:nowrap;letter-spacing:.02em;
+  text-shadow:0 0 20px rgba(139,92,246,0.8);
+}
+
+/* SERVICE preview */
+.prev-service{
+  background:linear-gradient(155deg,#05080f 0%,#0a1020 40%,#080d1a 100%);
+}
+.prev-service .car-silhouette{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  width:200px;height:80px;
+}
+.prev-service .car-body{
+  position:absolute;bottom:0;left:10px;right:10px;height:45px;
+  background:linear-gradient(135deg,rgba(30,40,80,0.9),rgba(15,20,50,0.9));
+  border-radius:8px 20px 4px 4px;
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 0 30px rgba(59,130,246,0.25);
+}
+.prev-service .car-top{
+  position:absolute;bottom:38px;left:30px;right:30px;height:36px;
+  background:linear-gradient(135deg,rgba(40,55,100,0.9),rgba(25,35,70,0.9));
+  border-radius:10px 10px 0 0;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.prev-service .wheel{position:absolute;bottom:-8px;width:24px;height:24px;border-radius:50%;
+  background:#0a0a14;border:3px solid rgba(100,120,200,0.5);
+  box-shadow:0 0 10px rgba(59,130,246,0.4);}
+.prev-service .wheel.l{left:18px;}
+.prev-service .wheel.r{right:18px;}
+.prev-service .glow-line{position:absolute;bottom:28px;left:20px;right:20px;height:1px;
+  background:linear-gradient(to right,transparent,rgba(59,130,246,0.6),transparent);}
+.prev-service .grid-floor{
+  position:absolute;bottom:0;left:0;right:0;height:80px;
+  background:repeating-linear-gradient(to bottom,transparent,transparent 18px,rgba(255,255,255,0.02) 18px,rgba(255,255,255,0.02) 19px),
+    repeating-linear-gradient(to right,transparent,transparent 30px,rgba(255,255,255,0.02) 30px,rgba(255,255,255,0.02) 31px);
+  mask-image:linear-gradient(to top,rgba(0,0,0,0.5) 0%,transparent 100%);
+}
+.prev-service .title-prev{
+  position:absolute;top:24px;left:0;right:0;text-align:center;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+}
+.prev-service .big-title{
+  position:absolute;top:44px;left:0;right:0;text-align:center;
+  font-family:'Playfair Display',serif;font-size:20px;font-weight:600;
+  color:rgba(255,255,255,0.8);letter-spacing:.02em;
+}
+
+/* CAR RENT preview */
+.prev-carrent{
+  background:linear-gradient(155deg,#050810 0%,#0a0c18 40%,#060810 100%);
+}
+.prev-carrent .luxury-car{
+  position:absolute;bottom:35px;left:50%;transform:translateX(-50%);
+  width:220px;height:70px;
+}
+.prev-carrent .c-body{
+  position:absolute;bottom:0;left:5px;right:5px;height:40px;
+  background:linear-gradient(135deg,rgba(180,140,40,0.15),rgba(100,80,20,0.1));
+  border-radius:6px 18px 4px 4px;
+  border:1px solid rgba(232,184,75,0.2);
+  box-shadow:0 0 40px rgba(232,184,75,0.15);
+}
+.prev-carrent .c-roof{
+  position:absolute;bottom:36px;left:35px;right:35px;height:30px;
+  background:linear-gradient(135deg,rgba(200,160,50,0.12),rgba(120,90,25,0.08));
+  border-radius:10px 10px 0 0;border:1px solid rgba(232,184,75,0.15);
+}
+.prev-carrent .c-wheel{position:absolute;bottom:-7px;width:22px;height:22px;border-radius:50%;
+  background:#060810;border:2px solid rgba(232,184,75,0.4);box-shadow:0 0 12px rgba(232,184,75,0.3);}
+.prev-carrent .c-wheel.l{left:14px;}
+.prev-carrent .c-wheel.r{right:14px;}
+.prev-carrent .gold-line{position:absolute;top:50%;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(232,184,75,0.15),transparent);}
+.prev-carrent .brand-prev{
+  position:absolute;top:22px;left:0;right:0;text-align:center;
+  font-family:'Playfair Display',serif;font-size:18px;font-style:italic;
+  color:rgba(232,184,75,0.75);letter-spacing:.04em;
+}
+.prev-carrent .sub-prev{position:absolute;top:46px;left:0;right:0;text-align:center;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,0.2);}
+
+/* AI BOOKING preview */
+.prev-booking{
+  background:linear-gradient(155deg,#040812 0%,#080d20 50%,#04080f 100%);
+}
+.prev-booking .plane{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:42px;animation:fly 4s ease-in-out infinite;
+}
+@keyframes fly{0%,100%{transform:translate(-50%,-50%) rotate(-5deg)}50%{transform:translate(-50%,-58%) rotate(5deg)}}
+.prev-booking .path{
+  position:absolute;top:50%;left:20%;right:20%;height:1px;
+  background:linear-gradient(to right,transparent,rgba(99,179,237,0.4),transparent);
+}
+.prev-booking .path::before,.prev-booking .path::after{
+  content:'';position:absolute;top:-3px;width:7px;height:7px;
+  border-radius:50%;background:rgba(99,179,237,0.6);
+}
+.prev-booking .path::before{left:25%;}
+.prev-booking .path::after{right:25%;}
+.prev-booking .dest{
+  position:absolute;bottom:24px;left:0;right:0;text-align:center;
+  font-size:12px;color:rgba(255,255,255,0.25);letter-spacing:.12em;text-transform:uppercase;
+}
+.prev-booking .brand-b{
+  position:absolute;top:22px;left:0;right:0;text-align:center;
+  font-family:'Playfair Display',serif;font-size:18px;font-weight:600;
+  color:rgba(255,255,255,0.7);
+}
+.prev-booking .pill{
+  position:absolute;bottom:45px;left:50%;transform:translateX(-50%);
+  padding:5px 16px;border-radius:100px;
+  background:rgba(99,179,237,0.1);border:1px solid rgba(99,179,237,0.25);
+  font-size:11px;color:rgba(99,179,237,0.8);white-space:nowrap;
+}
+
+/* HOVER OVERLAY */
+.hover-overlay{
+  position:absolute;inset:0;z-index:4;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(4,4,14,0.55);backdrop-filter:blur(4px);
+  opacity:0;transition:opacity .3s;
+}
+.card:hover .hover-overlay{opacity:1;}
+.launch-btn{
+  display:flex;align-items:center;gap:9px;
+  padding:13px 30px;border-radius:100px;
+  background:rgba(255,255,255,0.92);color:#06060f;
+  font-size:14px;font-weight:700;font-family:'Space Grotesk',sans-serif;
+  transform:scale(0.92);transition:transform .25s;
+  pointer-events:none;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+.card:hover .launch-btn{transform:scale(1);}
+
+/* INFO */
+.info{padding:22px 26px 26px;flex:1;display:flex;flex-direction:column;gap:0;position:relative;z-index:2;}
+.info-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:9px;gap:12px;}
+.title{font-size:18px;font-weight:600;color:#fff;letter-spacing:-.01em;}
+.badge{padding:4px 11px;border-radius:100px;font-size:10px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;flex-shrink:0;margin-top:2px;}
+.badge.live{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.22);}
+.badge.wip{background:rgba(234,179,8,.1);color:#fbbf24;border:1px solid rgba(234,179,8,.18);}
+.desc{font-size:13px;color:rgba(255,255,255,0.42);line-height:1.62;margin-bottom:14px;flex:1;}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;}
+.tag{padding:3px 10px;border-radius:100px;font-size:11px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);color:rgba(255,255,255,0.5);}
+.tag.accent{background:rgba(124,58,237,.1);border-color:rgba(167,139,250,.2);color:var(--accent-l);}
+.card-footer{display:flex;justify-content:space-between;align-items:center;
+  padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);}
+.url-path{font-size:11px;color:rgba(255,255,255,0.2);font-family:monospace;}
+.arrow{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.25);
+  font-weight:500;transition:color .2s,gap .2s;}
+.card:hover .arrow{color:rgba(255,255,255,0.7);gap:9px;}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div class="glow-tl"></div>
+<div class="glow-br"></div>
+
+<div class="wrap">
+  <header>
+    <div class="header-left">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>VOSS Studio</div>
+      <h1>Project<em> Hub</em><span>.</span></h1>
+    </div>
+    <div class="header-right">
+      <div class="project-count">04</div>
+      <div class="project-count-label">Active Projects</div>
+    </div>
+  </header>
+  <div class="divider"></div>
+
+  <div class="grid">
+
+    <!-- LUMINARY PSYCHICS -->
+    <a class="card" href="Website Psychics/index.html" target="_blank">
+      <div class="preview prev-psychics">
+        <div class="stars"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="orb-main"></div>
+        <div class="label-preview">Luminary</div>
+      </div>
+      <div class="hover-overlay"><div class="launch-btn">↗ Open Live</div></div>
+      <div class="info">
+        <div class="info-row">
+          <div class="title">Luminary — Psychics Platform</div>
+          <span class="badge wip">In Progress</span>
+        </div>
+        <p class="desc">Modern psychic reading marketplace. Three.js cosmos, AI advisor matching, Liquid Glass cards, and pay-per-minute sessions.</p>
+        <div class="tags">
+          <span class="tag accent">Three.js</span>
+          <span class="tag accent">AI Matching</span>
+          <span class="tag">GSAP</span>
+          <span class="tag">Lenis</span>
+          <span class="tag">Pay-per-min</span>
+        </div>
+        <div class="card-footer">
+          <span class="url-path">Website Psychics/</span>
+          <span class="arrow">Open live <span>→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- PAINT AUTO SERVICE -->
+    <a class="card" href="Website SERVICE/index.html" target="_blank">
+      <div class="preview prev-service">
+        <div class="grid-floor"></div>
+        <div class="glow-line"></div>
+        <div class="title-prev">Premium Auto</div>
+        <div class="big-title">Paint Service</div>
+        <div class="car-silhouette">
+          <div class="car-top"></div>
+          <div class="car-body">
+            <div class="wheel l"></div>
+            <div class="wheel r"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hover-overlay"><div class="launch-btn">↗ Open Live</div></div>
+      <div class="info">
+        <div class="info-row">
+          <div class="title">Paint Auto Service</div>
+          <span class="badge live">Live</span>
+        </div>
+        <p class="desc">Premium automotive service website. 3D turbocharger Blender render, Liquid Glass panels, GSAP scroll reveals.</p>
+        <div class="tags">
+          <span class="tag accent">Three.js</span>
+          <span class="tag">Blender</span>
+          <span class="tag">GSAP</span>
+          <span class="tag">Automotive</span>
+        </div>
+        <div class="card-footer">
+          <span class="url-path">Website SERVICE/</span>
+          <span class="arrow">Open live <span>→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- CAR RENT DAN -->
+    <a class="card" href="Website Car Rent Dan/index.html" target="_blank">
+      <div class="preview prev-carrent">
+        <div class="gold-line"></div>
+        <div class="brand-prev">Car Rent Dan</div>
+        <div class="sub-prev">Luxury Fleet</div>
+        <div class="luxury-car">
+          <div class="c-roof"></div>
+          <div class="c-body">
+            <div class="c-wheel l"></div>
+            <div class="c-wheel r"></div>
+          </div>
+        </div>
+      </div>
+      <div class="hover-overlay"><div class="launch-btn">↗ Open Live</div></div>
+      <div class="info">
+        <div class="info-row">
+          <div class="title">Car Rent Dan</div>
+          <span class="badge live">Live</span>
+        </div>
+        <p class="desc">Luxury car rental platform. Cinematic 3D hero, interactive vehicle showcase, premium booking experience.</p>
+        <div class="tags">
+          <span class="tag accent">Three.js</span>
+          <span class="tag">GSAP</span>
+          <span class="tag">Luxury</span>
+          <span class="tag">Rental</span>
+        </div>
+        <div class="card-footer">
+          <span class="url-path">Website Car Rent Dan/</span>
+          <span class="arrow">Open live <span>→</span></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- AI BOOKING -->
+    <a class="card" href="AI Booking App/index.html" target="_blank">
+      <div class="preview prev-booking">
+        <div class="brand-b">AI Booking</div>
+        <div class="path"></div>
+        <div class="plane">✈️</div>
+        <div class="pill">AI-powered itinerary</div>
+        <div class="dest">Travel · Hotels · Experiences</div>
+      </div>
+      <div class="hover-overlay"><div class="launch-btn">↗ Open Live</div></div>
+      <div class="info">
+        <div class="info-row">
+          <div class="title">AI Booking App</div>
+          <span class="badge wip">In Progress</span>
+        </div>
+        <p class="desc">Intelligent travel booking. AI itinerary generation, single-scroll UX, modern explorer aesthetic with indigo/sky palette.</p>
+        <div class="tags">
+          <span class="tag accent">AI</span>
+          <span class="tag">Travel</span>
+          <span class="tag">GSAP</span>
+          <span class="tag">Booking</span>
+        </div>
+        <div class="card-footer">
+          <span class="url-path">AI Booking App/</span>
+          <span class="arrow">Open live <span>→</span></span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<script>
+// Cursor
+const cur = document.getElementById('cur');
+const curR = document.getElementById('cur-r');
+let rx=window.innerWidth/2, ry=window.innerHeight/2;
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+});
+(function loop(){
+  requestAnimationFrame(loop);
+  const r = cur.getBoundingClientRect();
+  rx += (r.left - rx) * 0.13;
+  ry += (r.top  - ry) * 0.13;
+  curR.style.left = rx + 'px';
+  curR.style.top  = ry + 'px';
+})();
+document.querySelectorAll('a').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('ch'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('ch'));
+});
+
+// Card shimmer + subtle tilt
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const cx = (e.clientX - r.left) / r.width;
+    const cy = (e.clientY - r.top)  / r.height;
+    card.style.transform = `perspective(1100px) rotateX(${(cy-.5)*-6}deg) rotateY(${(cx-.5)*6}deg)`;
+    card.style.setProperty('--mx', cx*100+'%');
+    card.style.setProperty('--my', cy*100+'%');
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform .5s ease, border-color .35s, box-shadow .35s';
+    setTimeout(() => card.style.transition = '', 500);
+  });
+});
+
+// Entrance stagger
+document.querySelectorAll('.card').forEach((card, i) => {
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(24px)';
+  card.style.transition = 'none';
+  setTimeout(() => {
+    card.style.transition = 'opacity .65s ease, transform .65s ease, border-color .35s, box-shadow .35s';
+    card.style.opacity = '1';
+    card.style.transform = '';
+  }, 80 + i * 110);
+});
+</script>
+</body>
+</html>
