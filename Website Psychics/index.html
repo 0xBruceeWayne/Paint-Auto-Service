@@ -15,32 +15,49 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
-  --bg:   #0c0b14;
+  --bg:   #ffffff;
   --p:    #7c3aed;
-  --pl:   #a78bfa;
-  --pll:  #c4b5fd;
+  --pl:   #6d28d9;
+  --pll:  #8b5cf6;
   --pd:   #5b21b6;
-  --w:    #ffffff;
-  --wm:   rgba(255,255,255,0.58);
-  --bd:   rgba(255,255,255,0.08);
+  --w:    #111111;
+  --wm:   rgba(0,0,0,0.55);
+  --bd:   rgba(0,0,0,0.09);
+  --glass-bg: rgba(255,255,255,0.70);
+  --glass-border: rgba(0,0,0,0.08);
+  --glass-top: rgba(255,255,255,0.95);
 }
 
 html{scroll-behavior:auto}
 body{
-  background:var(--bg);
+  background:#ffffff;
   color:var(--w);
   font-family:'Space Grotesk',sans-serif;
   overflow-x:hidden;
   cursor:none;
 }
-
-/* ── Full-screen Three.js canvas ── */
+/* Subtle fixed ambient glow — white with ghost purple radials */
+/* ── Canvas: solid white bg, sphere dissolves into white at edges via mask ── */
+/* alpha:false in Three.js so bloom/composer don't break transparency.        */
+/* Mask center calibrated: sphere projects to ~70% x, 50% y at SX=4.2       */
 #bg{
   position:fixed;inset:0;
   z-index:0;
   pointer-events:none;
   display:block;
   width:100%;height:100%;
+  -webkit-mask-image:radial-gradient(ellipse 40% 55% at 70% 50%,
+    black 0%,
+    black 40%,
+    rgba(0,0,0,.85) 56%,
+    rgba(0,0,0,.4) 70%,
+    transparent 86%);
+  mask-image:radial-gradient(ellipse 40% 55% at 70% 50%,
+    black 0%,
+    black 40%,
+    rgba(0,0,0,.85) 56%,
+    rgba(0,0,0,.4) 70%,
+    transparent 86%);
 }
 
 /* ── Cursor ── */
@@ -50,16 +67,16 @@ body{
   pointer-events:none;z-index:9999;
   transform:translate(-50%,-50%);
   transition:width .15s,height .15s,background .2s;
-  mix-blend-mode:screen;
+  mix-blend-mode:multiply;
 }
 #cur-ring{
   position:fixed;width:38px;height:38px;
-  border:1px solid rgba(167,139,250,.5);border-radius:50%;
+  border:1px solid rgba(109,40,217,.4);border-radius:50%;
   pointer-events:none;z-index:9998;
   transform:translate(-50%,-50%);
   transition:width .22s,height .22s;
 }
-body.hov #cur-dot {width:12px;height:12px;background:var(--pll)}
+body.hov #cur-dot {width:12px;height:12px;background:var(--p)}
 body.hov #cur-ring{width:56px;height:56px;border-color:var(--pl)}
 
 /* ── Nav ── */
@@ -70,163 +87,235 @@ nav{
   transition:background .4s,padding .3s;
 }
 nav.scrolled{
-  background:rgba(10,9,18,.88);
+  background:rgba(255,255,255,.92);
   backdrop-filter:blur(22px);
   padding:17px 56px;
-  border-bottom:1px solid var(--bd);
+  border-bottom:1px solid rgba(0,0,0,.08);
+  box-shadow:0 1px 24px rgba(0,0,0,.07);
 }
 .nav-logo{
   font-family:'Playfair Display',serif;
   font-size:22px;font-weight:700;
-  color:var(--w);text-decoration:none;letter-spacing:.01em;
+  color:#111;text-decoration:none;letter-spacing:.01em;
 }
-.nav-logo em{color:var(--pl);font-style:italic;font-weight:400}
+.nav-logo em{color:var(--p);font-style:italic;font-weight:400}
 .nav-links{display:flex;gap:40px;align-items:center}
 .nav-links a{
-  color:rgba(255,255,255,.6);font-size:14px;font-weight:500;
+  color:rgba(0,0,0,.5);font-size:14px;font-weight:500;
   text-decoration:none;letter-spacing:.02em;
   transition:color .2s;
 }
-.nav-links a:hover{color:#fff}
+.nav-links a:hover{color:#111}
 .nav-cta{
   padding:10px 22px;
   background:var(--p);border:none;border-radius:100px;
   color:#fff;font-size:13px;font-weight:600;
   font-family:'Space Grotesk',sans-serif;
   cursor:none;text-decoration:none;
-  box-shadow:0 0 22px rgba(124,58,237,.45);
+  box-shadow:0 4px 18px rgba(109,40,217,.35);
   transition:box-shadow .2s,transform .2s;
 }
-.nav-cta:hover{box-shadow:0 0 38px rgba(124,58,237,.7);transform:translateY(-1px)}
+.nav-cta:hover{box-shadow:0 6px 28px rgba(109,40,217,.55);transform:translateY(-1px)}
 
-/* ── Hero ── */
+/* ── HERO ── */
 #hero{
   position:relative;z-index:1;
   min-height:100vh;
-  display:flex;align-items:center;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
   overflow:hidden;
 }
-
-/* Left text column */
+/* Left text column — constrained to left half */
 .hero-left{
+  grid-column:1;
   position:relative;z-index:2;
-  padding:0 0 0 80px;
-  max-width:580px;
+  padding:100px 24px 80px 80px;
   display:flex;flex-direction:column;align-items:flex-start;
 }
-
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
-  padding:7px 16px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.11);
+  padding:8px 18px;
+  background:rgba(109,40,217,.07);
+  border:1px solid rgba(109,40,217,.22);
   border-radius:100px;
-  font-size:10.5px;font-weight:600;letter-spacing:.16em;
-  text-transform:uppercase;color:rgba(255,255,255,.58);
-  margin-bottom:32px;opacity:0;
+  font-size:10.5px;font-weight:700;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(0,0,0,.6);
+  margin-bottom:32px;
+  box-shadow:0 2px 14px rgba(109,40,217,.1),inset 0 1px 0 rgba(255,255,255,.8);
 }
 .badge-dot{
   width:5px;height:5px;border-radius:50%;
-  background:var(--pl);box-shadow:0 0 6px var(--pl);
+  background:#7c3aed;box-shadow:0 0 8px rgba(124,58,237,.6);
   animation:pulse 2.2s infinite;
 }
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-
 h1.hero-title{
   font-family:'Playfair Display',serif;
-  font-size:clamp(58px,6.5vw,100px);
-  font-weight:800;line-height:1.04;
-  letter-spacing:-.025em;
-  color:#f4f4ff;
-  margin-bottom:26px;
-  opacity:0;
+  font-size:clamp(60px,6.8vw,104px);
+  font-weight:800;line-height:1.02;
+  letter-spacing:-.026em;
+  color:#111111;
+  margin-bottom:28px;
+  text-shadow:none;
 }
-h1.hero-title em{
-  color:var(--pl);
-  font-style:italic;font-weight:600;
-}
-
+h1.hero-title em{color:var(--p);font-style:italic;font-weight:600}
 .hero-sub{
-  font-size:clamp(15px,1.45vw,17px);
-  color:rgba(255,255,255,.56);
-  line-height:1.74;
-  max-width:400px;
-  margin-bottom:42px;
-  opacity:0;
+  font-size:clamp(15px,1.4vw,17px);
+  color:rgba(0,0,0,.58);
+  line-height:1.76;
+  max-width:420px;
+  margin-bottom:44px;
 }
-
 .hero-actions{
   display:flex;gap:14px;align-items:center;
-  opacity:0;
 }
 .btn-primary{
-  padding:15px 32px;
-  background:var(--p);border:none;border-radius:100px;
+  padding:15px 34px;
+  background:linear-gradient(135deg,var(--pd),var(--p));
+  border:none;border-radius:100px;
   color:#fff;font-size:15px;font-weight:600;
   font-family:'Space Grotesk',sans-serif;
   cursor:none;text-decoration:none;
-  box-shadow:0 0 32px rgba(124,58,237,.5),inset 0 1px 0 rgba(255,255,255,.15);
+  box-shadow:0 4px 22px rgba(109,40,217,.4),inset 0 1px 0 rgba(255,255,255,.2);
   transition:box-shadow .25s,transform .2s;
 }
-.btn-primary:hover{box-shadow:0 0 52px rgba(124,58,237,.72);transform:translateY(-1px)}
+.btn-primary:hover{box-shadow:0 6px 36px rgba(109,40,217,.6),0 2px 12px rgba(91,33,182,.4);transform:translateY(-1px)}
 .btn-ghost{
   padding:14px 28px;
   background:transparent;
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:100px;color:var(--w);
+  border:1px solid rgba(0,0,0,.15);
+  border-radius:100px;color:#333;
   font-size:15px;font-weight:500;
   font-family:'Space Grotesk',sans-serif;
   cursor:none;text-decoration:none;
   display:inline-flex;align-items:center;gap:8px;
   transition:border-color .2s,background .2s;
 }
-.btn-ghost:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
+.btn-ghost:hover{border-color:rgba(109,40,217,.4);background:rgba(109,40,217,.05);color:var(--p)}
 .btn-ghost svg{width:11px;height:11px}
-
-/* ── Floating stat cards (positioned in right half) ── */
 .stat-float{
   position:absolute;z-index:10;
   padding:16px 22px;
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(255,255,255,.1);
-  border-top:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(145deg,rgba(237,228,255,.94),rgba(167,139,250,.32));
+  border:1px solid rgba(124,58,237,.40);
+  border-top:1px solid rgba(255,255,255,.90);
   border-radius:18px;
-  backdrop-filter:blur(22px) saturate(160%);
-  -webkit-backdrop-filter:blur(22px) saturate(160%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 32px rgba(0,0,0,.45);
-  opacity:0;
+  backdrop-filter:blur(22px) saturate(220%);
+  -webkit-backdrop-filter:blur(22px) saturate(220%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 10px 36px rgba(109,40,217,.24),0 2px 8px rgba(91,33,182,.14);
 }
-/* Mirror positions from the screenshot */
-.stat-readings{left:55%;top:54%;transform:translateY(-50%)}
-.stat-rating  {right:5%; top:37%;transform:translateY(-50%)}
-
+.stat-readings{left:53%;top:55%;transform:translateY(-50%)}
+.stat-rating  {right:4%; top:40%;transform:translateY(-50%)}
 .stat-num{
   font-family:'Playfair Display',serif;
   font-size:27px;font-weight:700;
-  color:#fff;line-height:1;margin-bottom:6px;
+  color:#111;line-height:1;margin-bottom:6px;
 }
-.stat-num .star{color:var(--pl);font-size:20px}
+.stat-num .star{color:var(--p);font-size:20px}
 .stat-lbl{
   font-size:10px;font-weight:600;
   letter-spacing:.13em;text-transform:uppercase;
-  color:rgba(255,255,255,.52);
+  color:rgba(0,0,0,.45);
 }
-
-/* Power button */
-.orb-power{
-  position:absolute;
-  bottom:26%;left:68%;transform:translateX(-50%);
-  z-index:10;
-  padding:12px 36px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:100px;cursor:none;
-  opacity:0;
-  transition:background .2s,border-color .2s;
+/* ── Sphere interactive aura (CSS orbital rings) ── */
+#sphere-aura{
+  position:fixed;
+  left:70%;top:50%;
+  transform:translate(-50%,-50%);
+  width:620px;height:620px;
+  pointer-events:none;
+  z-index:2;
+  will-change:transform;
+  transition:opacity .6s ease;
 }
-.orb-power:hover{background:rgba(124,58,237,.1);border-color:rgba(139,92,246,.35)}
-
-/* Scroll hint */
+.aura-ring{
+  position:absolute;border-radius:50%;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  border-style:solid;
+}
+/* Ring 1 — inner, solid, has a bright glowing dot */
+.aura-ring-1{
+  width:308px;height:308px;
+  border-width:1px;
+  border-color:rgba(124,58,237,.38);
+  animation:aura-cw 20s linear infinite;
+}
+.aura-ring-1::before{
+  content:'';position:absolute;
+  width:9px;height:9px;border-radius:50%;
+  background:#7c3aed;
+  box-shadow:0 0 14px 5px rgba(124,58,237,.80);
+  top:0;left:50%;transform:translate(-50%,-50%);
+}
+.aura-ring-1::after{
+  content:'';position:absolute;
+  width:5px;height:5px;border-radius:50%;
+  background:#c4b5fd;
+  box-shadow:0 0 8px 3px rgba(196,181,253,.70);
+  bottom:8%;right:8%;
+}
+/* Ring 2 — mid, counter-rotating, two dots */
+.aura-ring-2{
+  width:440px;height:440px;
+  border-width:1px;
+  border-color:rgba(109,40,217,.22);
+  animation:aura-ccw 32s linear infinite;
+}
+.aura-ring-2::before{
+  content:'';position:absolute;
+  width:6px;height:6px;border-radius:50%;
+  background:#8b5cf6;
+  box-shadow:0 0 10px 4px rgba(139,92,246,.70);
+  top:15%;right:0;transform:translate(50%,-50%);
+}
+.aura-ring-2::after{
+  content:'';position:absolute;
+  width:4px;height:4px;border-radius:50%;
+  background:#a78bfa;
+  box-shadow:0 0 7px 3px rgba(167,139,250,.60);
+  bottom:10%;left:5%;
+}
+/* Ring 3 — outer, dashed, slow */
+.aura-ring-3{
+  width:590px;height:590px;
+  border-width:1px;
+  border-color:rgba(91,33,182,.12);
+  border-style:dashed;
+  animation:aura-cw 58s linear infinite;
+}
+.aura-ring-3::before{
+  content:'';position:absolute;
+  width:4px;height:4px;border-radius:50%;
+  background:#7c3aed;
+  box-shadow:0 0 8px 3px rgba(124,58,237,.55);
+  top:50%;right:0;transform:translate(50%,-50%);
+}
+/* Floating sparkle dots */
+.aura-dot{
+  position:absolute;border-radius:50%;
+  background:rgba(124,58,237,.75);
+  animation:aura-pulse 3s ease-in-out infinite;
+}
+.aura-dot:nth-child(1){width:5px;height:5px;top:14%;left:58%;
+  box-shadow:0 0 10px 3px rgba(124,58,237,.6);animation-delay:0s}
+.aura-dot:nth-child(2){width:3px;height:3px;top:72%;left:62%;
+  box-shadow:0 0 6px 2px rgba(139,92,246,.5);animation-delay:.7s}
+.aura-dot:nth-child(3){width:4px;height:4px;top:42%;left:88%;
+  box-shadow:0 0 8px 3px rgba(167,139,250,.55);animation-delay:1.3s;background:#a78bfa}
+.aura-dot:nth-child(4){width:3px;height:3px;top:82%;left:35%;
+  box-shadow:0 0 6px 2px rgba(109,40,217,.5);animation-delay:.4s}
+.aura-dot:nth-child(5){width:5px;height:5px;top:22%;left:78%;
+  box-shadow:0 0 10px 4px rgba(124,58,237,.6);animation-delay:1.9s}
+.aura-dot:nth-child(6){width:3px;height:3px;top:60%;left:14%;
+  box-shadow:0 0 6px 2px rgba(91,33,182,.5);animation-delay:2.4s}
+@keyframes aura-cw {to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes aura-ccw{to{transform:translate(-50%,-50%) rotate(-360deg)}}
+@keyframes aura-pulse{
+  0%,100%{opacity:.6;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.5)}
+}
 .hero-scroll{
   position:absolute;bottom:36px;left:80px;
   display:flex;flex-direction:column;align-items:center;gap:6px;
@@ -234,7 +323,7 @@ h1.hero-title em{
 }
 .scroll-line{
   width:1px;height:48px;
-  background:linear-gradient(to bottom,transparent,rgba(167,139,250,.5));
+  background:linear-gradient(to bottom,transparent,rgba(109,40,217,.5));
   animation:scrl 1.9s ease-in-out infinite;
 }
 @keyframes scrl{
@@ -244,24 +333,390 @@ h1.hero-title em{
 }
 @keyframes fadein{to{opacity:1}}
 
-/* ── Placeholder sections ── */
-.ph{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  border-top:1px solid rgba(255,255,255,.06);
+/* ── Section shared ── */
+section{position:relative;z-index:1}
+.section-label{
+  font-size:10.5px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--p);
+  margin-bottom:16px;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,4.5vw,64px);
+  font-weight:800;line-height:1.08;
+  letter-spacing:-.022em;
+  color:#111111;
+  margin-bottom:18px;
+}
+.section-sub{
+  font-size:clamp(14px,1.3vw,16px);
+  color:rgba(0,0,0,.52);
+  line-height:1.76;
+  max-width:520px;
+}
+
+/* ── Liquid Glass — pronounced purple, light bg ── */
+.glass{
+  background:linear-gradient(145deg,
+    rgba(237,228,255,.92) 0%,
+    rgba(167,139,250,.38) 60%,
+    rgba(124,58,237,.22) 100%);
+  border:1px solid rgba(124,58,237,.45);
+  border-top:1px solid rgba(255,255,255,.90);
+  backdrop-filter:blur(24px) saturate(220%) brightness(1.01);
+  -webkit-backdrop-filter:blur(24px) saturate(220%) brightness(1.01);
+  border-radius:24px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    inset 0 -1px 0 rgba(109,40,217,.20),
+    0 16px 48px rgba(109,40,217,.22),
+    0 4px 14px rgba(91,33,182,.16),
+    0 0 0 1px rgba(124,58,237,.18);
+  position:relative;overflow:hidden;
+}
+.glass::before{
+  content:'';position:absolute;inset:0;
+  border-radius:inherit;
+  background:linear-gradient(138deg,
+    rgba(255,255,255,.55) 0%,
+    rgba(196,181,253,.25) 45%,
+    rgba(124,58,237,.14) 100%);
+  pointer-events:none;
+}
+.glass-shimmer{
+  position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(105deg,
+    transparent 32%,
+    rgba(255,255,255,.70) 44%,
+    rgba(216,180,254,.40) 52%,
+    transparent 64%);
+  background-size:200% 100%;
+  animation:shimmer 4s linear infinite;
+  pointer-events:none;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── ADVISORS SECTION ── */
+#advisors{
+  padding:120px 80px;
+}
+.advisors-head{
+  display:grid;grid-template-columns:1fr auto;align-items:end;
+  margin-bottom:64px;
+}
+.advisors-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+.advisor-card{
+  padding:28px 24px;
+  border-radius:24px;
+  transition:transform .35s cubic-bezier(.22,.97,.54,1.05),box-shadow .35s;
+}
+.advisor-card:hover{transform:translateY(-6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 16px 48px rgba(0,0,0,.14)}
+.advisor-avatar{
+  width:72px;height:72px;border-radius:50%;
+  overflow:hidden;margin-bottom:18px;
+  border:2px solid rgba(109,40,217,.25);
+  box-shadow:0 4px 16px rgba(109,40,217,.15);
+  flex-shrink:0;
+}
+.advisor-avatar img{width:100%;height:100%;object-fit:cover}
+.advisor-avatar-grad{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:700;color:#fff;
+}
+.advisor-name{
+  font-family:'Playfair Display',serif;
+  font-size:19px;font-weight:700;
+  color:#111;margin-bottom:4px;
+}
+.advisor-spec{
+  font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--p);
+  margin-bottom:12px;
+}
+.advisor-bio{
+  font-size:13px;color:rgba(0,0,0,.52);
+  line-height:1.68;margin-bottom:18px;
+}
+.advisor-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;
+}
+.advisor-rating{
+  display:flex;align-items:center;gap:5px;
+  font-size:13px;font-weight:600;color:rgba(0,0,0,.65);
+}
+.advisor-stars{color:var(--p);letter-spacing:1px;font-size:11px}
+.advisor-status{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:100px;
+  font-size:10px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.status-online{background:rgba(22,163,74,.08);color:#15803d;border:1px solid rgba(22,163,74,.22)}
+.status-busy{background:rgba(217,119,6,.08);color:#b45309;border:1px solid rgba(217,119,6,.2)}
+.advisor-btn{
+  display:block;width:100%;
+  padding:11px 0;margin-top:20px;
+  background:rgba(109,40,217,.08);
+  border:1px solid rgba(109,40,217,.25);
+  border-radius:100px;color:var(--p);
+  font-size:13px;font-weight:600;letter-spacing:.04em;
+  font-family:'Space Grotesk',sans-serif;
+  text-align:center;cursor:none;text-decoration:none;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.advisor-btn:hover{background:var(--p);border-color:var(--p);color:#fff}
+
+/* ── HOW IT WORKS ── */
+#how{
+  padding:120px 80px;
+}
+.how-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;
+}
+.how-steps{
+  display:flex;flex-direction:column;gap:6px;
+}
+.how-step{
+  display:flex;gap:24px;align-items:flex-start;
+  padding:28px 28px;
+  border-radius:20px;
+  cursor:none;
+  transition:background .3s,border-color .3s;
+}
+.how-step.active{
+  background:rgba(109,40,217,.07);
+  border-color:rgba(109,40,217,.22) !important;
+}
+.step-num{
+  min-width:42px;height:42px;
+  border-radius:12px;
+  background:rgba(109,40,217,.1);
+  border:1px solid rgba(109,40,217,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;color:var(--p);
+  flex-shrink:0;
+  transition:background .3s,box-shadow .3s;
+}
+.how-step.active .step-num{
+  background:rgba(109,40,217,.2);
+  box-shadow:0 4px 18px rgba(109,40,217,.25);
+}
+.step-text h3{
+  font-family:'Playfair Display',serif;
+  font-size:19px;font-weight:700;
+  color:#111;margin-bottom:8px;
+}
+.step-text p{
+  font-size:14px;color:rgba(0,0,0,.52);line-height:1.7;
+}
+.how-visual{
+  padding:36px;
+  border-radius:28px;
+  min-height:420px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.how-visual-inner{
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+  width:100%;
+}
+.how-orb{
+  width:140px;height:140px;border-radius:50%;
+  background:radial-gradient(circle at 36% 30%,
+    rgba(216,180,254,.9) 0%,
+    rgba(167,139,250,.75) 35%,
+    rgba(124,58,237,.5) 65%,
+    rgba(91,33,182,.25) 100%);
+  box-shadow:
+    0 0 40px rgba(124,58,237,.25),
+    0 0 80px rgba(139,92,246,.12),
+    inset 0 2px 8px rgba(255,255,255,.5);
+  animation:orbFloat 3.8s ease-in-out infinite;
+}
+@keyframes orbFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-14px) scale(1.04)}
+}
+.how-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:280px}
+.how-tag{
+  padding:8px 16px;border-radius:100px;
+  background:rgba(109,40,217,.07);
+  border:1px solid rgba(109,40,217,.18);
+  font-size:12px;font-weight:600;color:rgba(0,0,0,.6);
+  letter-spacing:.04em;
+}
+.how-match-line{
+  width:2px;height:40px;
+  background:linear-gradient(to bottom,var(--p),transparent);
+  opacity:.5;
+}
+
+/* ── SPECIALTIES / TESTIMONIALS ── */
+#specialties{
+  padding:120px 80px;
+}
+.spec-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:24px;margin-top:64px;
+}
+.spec-card{
+  padding:36px 32px;
+  border-radius:24px;
+}
+.spec-icon{
+  width:52px;height:52px;border-radius:16px;
+  background:rgba(109,40,217,.1);
+  border:1px solid rgba(109,40,217,.2);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:22px;
+  font-size:22px;
+}
+.spec-card h3{
+  font-family:'Playfair Display',serif;
+  font-size:21px;font-weight:700;
+  color:#111;margin-bottom:10px;
+}
+.spec-card p{
+  font-size:14px;color:rgba(0,0,0,.52);
+  line-height:1.74;margin-bottom:20px;
+}
+.spec-tag{
+  display:inline-block;
+  padding:5px 12px;border-radius:100px;
+  background:rgba(109,40,217,.08);
+  border:1px solid rgba(109,40,217,.2);
+  font-size:10.5px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--p);
+}
+
+/* Testimonials row */
+.testi-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:20px;margin-top:72px;
+}
+.testi-card{
+  padding:28px 28px;border-radius:22px;
+}
+.testi-stars{color:var(--p);font-size:13px;letter-spacing:2px;margin-bottom:14px}
+.testi-quote{
+  font-family:'Playfair Display',serif;
+  font-size:16px;font-style:italic;font-weight:400;
+  color:rgba(0,0,0,.72);line-height:1.72;
+  margin-bottom:20px;
+}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(109,40,217,.25);
+  overflow:hidden;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;
+  color:#fff;flex-shrink:0;
+}
+.testi-name{font-size:13px;font-weight:600;color:rgba(0,0,0,.72)}
+.testi-loc{font-size:11px;color:rgba(0,0,0,.38);margin-top:2px}
+
+/* ── CTA SECTION ── */
+#cta-section{
+  padding:140px 80px;
+  text-align:center;
+}
+.cta-inner{
+  max-width:660px;margin:0 auto;
+}
+.cta-inner .section-title{
+  font-size:clamp(40px,5vw,72px);
+  margin-bottom:22px;
+}
+.cta-inner .section-title em{color:var(--pl);font-style:italic}
+.cta-sub{
+  font-size:16px;color:rgba(0,0,0,.52);
+  line-height:1.7;margin-bottom:48px;max-width:480px;margin-left:auto;margin-right:auto;
+}
+.cta-form{
+  display:flex;gap:12px;justify-content:center;
+  flex-wrap:wrap;
+}
+.cta-input{
+  padding:16px 24px;
+  background:rgba(0,0,0,.04);
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:100px;
+  color:#111;font-size:15px;font-weight:400;
+  font-family:'Space Grotesk',sans-serif;
+  outline:none;width:280px;
+  transition:border-color .2s,background .2s;
+}
+.cta-input::placeholder{color:rgba(0,0,0,.35)}
+.cta-input:focus{border-color:rgba(109,40,217,.4);background:rgba(109,40,217,.05)}
+.cta-input:focus::placeholder{color:rgba(0,0,0,.25)}
+.cta-note{
+  margin-top:16px;font-size:11.5px;
+  color:rgba(0,0,0,.38);letter-spacing:.04em;
+}
+.cta-trust{
+  display:flex;align-items:center;justify-content:center;gap:32px;
+  margin-top:64px;padding-top:48px;
+  border-top:1px solid rgba(0,0,0,.08);
+}
+.cta-trust-item{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.cta-trust-num{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:#111;
+}
+.cta-trust-lbl{
+  font-size:10.5px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(0,0,0,.42);
+}
+.cta-trust-div{width:1px;height:44px;background:rgba(0,0,0,.1)}
+
+/* ── Footer ── */
+footer{
+  padding:40px 80px;
+  border-top:1px solid rgba(0,0,0,.08);
+  display:flex;align-items:center;justify-content:space-between;
   position:relative;z-index:1;
 }
-.ph p{color:rgba(255,255,255,.25);font-size:16px;letter-spacing:.1em;text-transform:uppercase}
+.footer-logo{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;
+  color:rgba(0,0,0,.4);text-decoration:none;
+}
+.footer-logo em{color:var(--p);font-style:italic}
+.footer-copy{font-size:12px;color:rgba(0,0,0,.35)}
 
 /* ── Responsive ── */
+@media(max-width:1100px){
+  .advisors-grid{grid-template-columns:repeat(2,1fr)}
+  .how-grid{grid-template-columns:1fr;gap:48px}
+  .how-visual{display:none}
+}
 @media(max-width:900px){
-  .hero-left{padding:100px 24px 40px;max-width:100%}
+  #hero{grid-template-columns:1fr}
+  .hero-left{padding:100px 24px 40px;grid-column:1}
   nav{padding:18px 24px}
   nav.scrolled{padding:13px 24px}
   .nav-links{display:none}
   .stat-readings{left:auto;right:8%;top:68%}
   .stat-rating{right:8%;top:28%}
-  .orb-power{left:50%;bottom:18%}
+  #sphere-aura{display:none}
   h1.hero-title{font-size:clamp(46px,10vw,72px)}
+  #advisors,#how,#specialties,#cta-section{padding:80px 24px}
+  .advisors-grid{grid-template-columns:1fr}
+  .spec-grid,.testi-row{grid-template-columns:1fr}
+  .cta-trust{gap:16px}
+  .cta-trust-div{display:none}
+  footer{padding:28px 24px;flex-direction:column;gap:10px;text-align:center}
 }
 </style>
 </head>
@@ -270,8 +725,21 @@ h1.hero-title em{
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
 
-<!-- Full-screen Three.js canvas — sphere IS the background -->
+<!-- Full-screen Three.js canvas -->
 <canvas id="bg"></canvas>
+
+<!-- Sphere interactive aura rings -->
+<div id="sphere-aura" aria-hidden="true">
+  <div class="aura-ring aura-ring-1"></div>
+  <div class="aura-ring aura-ring-2"></div>
+  <div class="aura-ring aura-ring-3"></div>
+  <span class="aura-dot"></span>
+  <span class="aura-dot"></span>
+  <span class="aura-dot"></span>
+  <span class="aura-dot"></span>
+  <span class="aura-dot"></span>
+  <span class="aura-dot"></span>
+</div>
 
 <!-- NAV -->
 <nav id="nav">
@@ -281,13 +749,11 @@ h1.hero-title em{
     <a href="#how">How it works</a>
     <a href="#specialties">Specialties</a>
   </div>
-  <a href="#" class="nav-cta">Start Free →</a>
+  <a href="#cta-section" class="nav-cta">Start Free →</a>
 </nav>
 
-<!-- HERO -->
+<!-- ── HERO ── -->
 <section id="hero">
-
-  <!-- Left: text -->
   <div class="hero-left">
     <div class="hero-badge" id="heroBadge">
       <div class="badge-dot"></div>
@@ -303,7 +769,7 @@ h1.hero-title em{
       mediumship. AI-matched to your unique energy in seconds.
     </p>
     <div class="hero-actions" id="heroActions">
-      <a href="#" class="btn-primary">Start Free Session</a>
+      <a href="#cta-section" class="btn-primary">Start Free Session</a>
       <a href="#how" class="btn-ghost">
         <svg viewBox="0 0 12 12" fill="currentColor"><polygon points="2,1 11,6 2,11"/></svg>
         How it works
@@ -311,7 +777,6 @@ h1.hero-title em{
     </div>
   </div>
 
-  <!-- Floating stat cards -->
   <div class="stat-float stat-readings" id="statReadings">
     <div class="stat-num">12K+</div>
     <div class="stat-lbl">Readings Done</div>
@@ -320,28 +785,277 @@ h1.hero-title em{
     <div class="stat-num">4.9<span class="star">★</span></div>
     <div class="stat-lbl">Avg Rating</div>
   </div>
-
-  <!-- Power button (below sphere) -->
-  <div class="orb-power" id="orbPower">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-         stroke="rgba(255,255,255,.4)" stroke-width="1.8" stroke-linecap="round">
-      <path d="M18.364 5.636a9 9 0 1 1-12.728 0"/>
-      <line x1="12" y1="2" x2="12" y2="12"/>
-    </svg>
-  </div>
-
   <div class="hero-scroll">
     <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── ADVISORS ── -->
+<section id="advisors">
+  <div class="advisors-head">
+    <div>
+      <div class="section-label">Our Gifted Advisors</div>
+      <h2 class="section-title">Meet your <em style="color:var(--pl);font-style:italic">guide</em></h2>
+      <p class="section-sub">Each advisor is verified, rated, and AI-matched to your specific question and energy signature.</p>
+    </div>
+    <a href="#" class="btn-ghost" style="white-space:nowrap">View All →</a>
+  </div>
+
+  <div class="advisors-grid">
+
+    <!-- Advisor 1 -->
+    <div class="advisor-card glass" id="adv1">
+      <div class="glass-shimmer"></div>
+      <div class="advisor-avatar">
+        <img src="Media/51XD69TCESL._AC_UF894,1000_QL80_.jpg" alt="Luna Rosé" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#7c3aed,#a78bfa)&quot;>L</div>'">
+      </div>
+      <div class="advisor-name">Luna Rosé</div>
+      <div class="advisor-spec">Tarot · Clairvoyance</div>
+      <div class="advisor-bio">Specializes in love, relationships, and life transitions. 12 years of practice with 4,200+ verified readings.</div>
+      <div class="advisor-footer">
+        <div class="advisor-rating">
+          <span class="advisor-stars">★★★★★</span> 4.97
+        </div>
+        <span class="advisor-status status-online">● Online</span>
+      </div>
+      <a href="#" class="advisor-btn">Connect Now</a>
+    </div>
+
+    <!-- Advisor 2 -->
+    <div class="advisor-card glass" id="adv2">
+      <div class="glass-shimmer"></div>
+      <div class="advisor-avatar">
+        <img src="Media/71QKgvoSR8L._AC_UF894,1000_QL80_.jpg" alt="Orion Vale" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#5b21b6,#7c3aed)&quot;>O</div>'">
+      </div>
+      <div class="advisor-name">Orion Vale</div>
+      <div class="advisor-spec">Astrology · Numerology</div>
+      <div class="advisor-bio">Vedic and Western astrology master. Birth chart readings, timing forecasts, and karmic path analysis.</div>
+      <div class="advisor-footer">
+        <div class="advisor-rating">
+          <span class="advisor-stars">★★★★★</span> 4.95
+        </div>
+        <span class="advisor-status status-online">● Online</span>
+      </div>
+      <a href="#" class="advisor-btn">Connect Now</a>
+    </div>
+
+    <!-- Advisor 3 -->
+    <div class="advisor-card glass" id="adv3">
+      <div class="glass-shimmer"></div>
+      <div class="advisor-avatar">
+        <div class="advisor-avatar-grad" style="background:linear-gradient(135deg,#312e81,#7c3aed)">S</div>
+      </div>
+      <div class="advisor-name">Seraphine</div>
+      <div class="advisor-spec">Mediumship · Energy Healing</div>
+      <div class="advisor-bio">Connects with passed loved ones and spiritual guides. Certified Reiki master and energy clearing specialist.</div>
+      <div class="advisor-footer">
+        <div class="advisor-rating">
+          <span class="advisor-stars">★★★★★</span> 4.93
+        </div>
+        <span class="advisor-status status-busy">◑ In Session</span>
+      </div>
+      <a href="#" class="advisor-btn">Join Waitlist</a>
+    </div>
+
+    <!-- Advisor 4 -->
+    <div class="advisor-card glass" id="adv4">
+      <div class="glass-shimmer"></div>
+      <div class="advisor-avatar">
+        <div class="advisor-avatar-grad" style="background:linear-gradient(135deg,#4c1d95,#a78bfa)">C</div>
+      </div>
+      <div class="advisor-name">Celeste Moon</div>
+      <div class="advisor-spec">Dream Analysis · Past Life</div>
+      <div class="advisor-bio">Dream interpreter and past-life regression guide. Helps clients uncover subconscious blocks and soul-level patterns.</div>
+      <div class="advisor-footer">
+        <div class="advisor-rating">
+          <span class="advisor-stars">★★★★★</span> 4.91
+        </div>
+        <span class="advisor-status status-online">● Online</span>
+      </div>
+      <a href="#" class="advisor-btn">Connect Now</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="how">
+  <div class="how-grid">
+    <div>
+      <div class="section-label">The Process</div>
+      <h2 class="section-title">Three steps to <em style="color:var(--pl);font-style:italic">clarity</em></h2>
+      <p class="section-sub" style="color:rgba(0,0,0,.52);margin-bottom:48px">No cold calls, no guesswork. Our AI reads your energy signature and finds your perfect match.</p>
+
+      <div class="how-steps">
+        <div class="how-step glass active" id="step1">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <h3>Share what you seek</h3>
+            <p>Tell us your question — love, career, loss, life direction. The more you share, the more precise the match.</p>
+          </div>
+        </div>
+        <div class="how-step glass" id="step2">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <h3>AI matches your energy</h3>
+            <p>Our system analyzes 40+ compatibility signals — birth chart resonance, specialty depth, reading style — and surfaces your top 3 advisors.</p>
+          </div>
+        </div>
+        <div class="how-step glass" id="step3">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <h3>Begin your reading</h3>
+            <p>Connect via text, voice, or video. First 5 minutes free. Sessions are recorded and saved for you to revisit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-visual glass">
+      <div class="glass-shimmer"></div>
+      <div class="how-visual-inner">
+        <div class="how-orb" id="howOrb"></div>
+        <div class="how-tags">
+          <span class="how-tag">Tarot</span>
+          <span class="how-tag">Love</span>
+          <span class="how-tag">Career</span>
+          <span class="how-tag">Astrology</span>
+          <span class="how-tag">Past Life</span>
+          <span class="how-tag">Dreams</span>
+        </div>
+        <div class="how-match-line"></div>
+        <div style="padding:14px 20px;border-radius:12px;background:rgba(109,40,217,.1);border:1px solid rgba(109,40,217,.3);font-size:12px;color:var(--p);letter-spacing:.08em;text-transform:uppercase;font-weight:700">
+          98% Match Found
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SPECIALTIES + TESTIMONIALS ── -->
+<section id="specialties">
+
+  <div style="text-align:center;max-width:580px;margin:0 auto">
+    <div class="section-label">What We Offer</div>
+    <h2 class="section-title">Every path to <em style="color:var(--pl);font-style:italic">wisdom</em></h2>
+    <p class="section-sub" style="color:rgba(0,0,0,.52);margin:0 auto">From ancient tarot traditions to AI-powered numerology, every form of spiritual guidance in one place.</p>
+  </div>
+
+  <div class="spec-grid">
+    <div class="spec-card glass" id="spec1">
+      <div class="glass-shimmer"></div>
+      <div class="spec-icon">🔮</div>
+      <h3>Tarot & Oracle</h3>
+      <p>78-card traditional readings, oracle decks, and lenormand spreads. Past-present-future, relationship, and Celtic cross layouts.</p>
+      <span class="spec-tag">240+ Advisors</span>
+    </div>
+    <div class="spec-card glass" id="spec2">
+      <div class="glass-shimmer"></div>
+      <div class="spec-icon">✨</div>
+      <h3>Astrology</h3>
+      <p>Natal charts, solar return, synastry, progressed charts. Western, Vedic, and Chinese astrology traditions represented.</p>
+      <span class="spec-tag">180+ Advisors</span>
+    </div>
+    <div class="spec-card glass" id="spec3">
+      <div class="glass-shimmer"></div>
+      <div class="spec-icon">🌙</div>
+      <h3>Mediumship</h3>
+      <p>Connect with loved ones who have passed. Evidence-based spirit communication from verified platform mediums.</p>
+      <span class="spec-tag">90+ Advisors</span>
+    </div>
+  </div>
+
+  <!-- Testimonials -->
+  <div style="margin-top:100px;text-align:center">
+    <div class="section-label">Stories</div>
+    <h2 class="section-title" style="max-width:480px;margin:0 auto 16px">What seekers <em style="color:var(--pl);font-style:italic">say</em></h2>
+  </div>
+
+  <div class="testi-row">
+    <div class="testi-card glass" id="tst1">
+      <div class="glass-shimmer"></div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Luna knew things about my relationship no one could have guessed. Her tarot reading was so specific it gave me chills. I finally have clarity."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">A</div>
+        <div>
+          <div class="testi-name">Adriana M.</div>
+          <div class="testi-loc">New York, USA</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card glass" id="tst2">
+      <div class="glass-shimmer"></div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"The AI matching actually works. I was skeptical, but Orion's birth chart reading described my career block perfectly. Changed how I see the next 3 years."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#5b21b6,#7c3aed)">J</div>
+        <div>
+          <div class="testi-name">James K.</div>
+          <div class="testi-loc">London, UK</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card glass" id="tst3">
+      <div class="glass-shimmer"></div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Seraphine connected me with my grandmother. She knew her name, her laugh, the garden. I wept. This platform is beyond anything I expected."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#312e81,#7c3aed)">M</div>
+        <div>
+          <div class="testi-name">Maria L.</div>
+          <div class="testi-loc">Toronto, CA</div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </section>
 
-<section class="ph" id="advisors"><p>Advisors</p></section>
-<section class="ph" id="how"><p>How It Works</p></section>
-<section class="ph" id="specialties"><p>Specialties</p></section>
+<!-- ── CTA ── -->
+<section id="cta-section">
+  <div class="cta-inner">
+    <div class="section-label" style="text-align:center">Begin Your Journey</div>
+    <h2 class="section-title">Ready to see<br>beyond the <em>veil?</em></h2>
+    <p class="cta-sub">Join 12,000+ seekers who found clarity, closure, and direction. First 5 minutes are always free.</p>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="Your email address">
+      <a href="#" class="btn-primary">Start Free →</a>
+    </div>
+    <p class="cta-note">No credit card required · Cancel anytime · 100% private</p>
+
+    <div class="cta-trust">
+      <div class="cta-trust-item">
+        <span class="cta-trust-num">12K+</span>
+        <span class="cta-trust-lbl">Readings done</span>
+      </div>
+      <div class="cta-trust-div"></div>
+      <div class="cta-trust-item">
+        <span class="cta-trust-num">98%</span>
+        <span class="cta-trust-lbl">Satisfaction rate</span>
+      </div>
+      <div class="cta-trust-div"></div>
+      <div class="cta-trust-item">
+        <span class="cta-trust-num">500+</span>
+        <span class="cta-trust-lbl">Verified advisors</span>
+      </div>
+      <div class="cta-trust-div"></div>
+      <div class="cta-trust-item">
+        <span class="cta-trust-num">4.9★</span>
+        <span class="cta-trust-lbl">Avg rating</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <a href="#" class="footer-logo">Lumin<em>ary</em></a>
+  <span class="footer-copy">© 2026 Luminary · All readings for entertainment purposes</span>
+</footer>
 
 
-<!-- ── THREE.JS: Crystal galaxy sphere as full-screen background ── -->
+<!-- ── THREE.JS BACKGROUND ── -->
 <script type="module">
 import * as THREE from 'three';
 import { EffectComposer }  from 'three/addons/postprocessing/EffectComposer.js';
@@ -351,28 +1065,25 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 const IS_MOB = window.innerWidth <= 768 || navigator.maxTouchPoints > 0;
 const canvas = document.getElementById('bg');
 
-// ─── Renderer — background matches page exactly so sphere bleeds in ──────────
 const renderer = new THREE.WebGLRenderer({
   canvas, antialias: !IS_MOB, alpha: false,
   powerPreference: 'high-performance',
 });
 renderer.setPixelRatio(Math.min(devicePixelRatio, IS_MOB ? 1 : 2));
-renderer.setClearColor(0x0c0b14, 1);   // same as --bg
+renderer.setClearColor(0xffffff, 1);
 renderer.toneMapping    = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
+renderer.toneMappingExposure = 1.1;
 
-const scene  = new THREE.Scene();
-scene.background = new THREE.Color(0x0c0b14);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xffffff);
 
-// Camera looks slightly rightward so sphere fills right half nicely
-const camera = new THREE.PerspectiveCamera(52, innerWidth / innerHeight, 0.1, 200);
-camera.position.set(0, 0, 9.5);
-camera.lookAt(1.8, 0, 0);
+const camera = new THREE.PerspectiveCamera(58, innerWidth / innerHeight, 0.1, 200);
+camera.position.set(0, 0, 9);
+camera.lookAt(1.2, 0, 0);
 
-// ─── Sphere X offset — places full sphere in right half of scene ─────────────
-const SX = 2.8;
+const SX = 4.2;
 
-// ─── Canvas textures ─────────────────────────────────────────────────────────
+// ── Canvas textures ─────────────────────────────────────────────────────────
 function circleTex(sz) {
   const c = document.createElement('canvas'); c.width = c.height = sz;
   const ctx = c.getContext('2d'), h = sz/2;
@@ -406,20 +1117,18 @@ function crossTex(sz) {
 const cTex = circleTex(32);
 const xTex = crossTex(64);
 
-// ─── 1. Dark interior (sphere interior same color as bg → seamless blend) ────
+// ── Interior ────────────────────────────────────────────────────────────────
 const interior = new THREE.Mesh(
-  new THREE.SphereGeometry(3.88, 32, 32),
+  new THREE.SphereGeometry(2.55, 40, 40),
   new THREE.MeshBasicMaterial({
-    color: 0x0c0b14,        // EXACT match to scene.background → invisible seam
-    side: THREE.BackSide,
+    color: 0x0c0b14, side: THREE.BackSide,
     transparent: true, opacity: 0.96,
   })
 );
-interior.position.x = SX;
-interior.renderOrder = 0;
+interior.position.x = SX; interior.renderOrder = 0;
 scene.add(interior);
 
-// ─── 2. Galaxy particle system ────────────────────────────────────────────────
+// ── Galaxy ───────────────────────────────────────────────────────────────────
 const galaxyGroup = new THREE.Group();
 galaxyGroup.position.x = SX;
 galaxyGroup.rotation.x = 0.22;
@@ -433,8 +1142,6 @@ function buildGalaxy() {
         cB2=new THREE.Color(0x6688ee), cP=new THREE.Color(0x8844dd),
         cD=new THREE.Color(0x334499);
   let i=0;
-
-  // Core — tight spherical
   for(let k=0;k<CORE;k++){
     const r=Math.pow(Math.random(),1.8)*.85;
     const th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
@@ -444,8 +1151,6 @@ function buildGalaxy() {
     const c=new THREE.Color().lerpColors(cW,cB,r/.85);
     col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b; i++;
   }
-
-  // Spiral arms (3 arms, tight Gaussian scatter)
   for(let k=0;k<SPIRAL;k++){
     const arm=k%3, aBase=(arm/3)*Math.PI*2;
     const r=.5+Math.random()*2.6, angle=aBase+r*1.65, sp=.34*r;
@@ -462,8 +1167,6 @@ function buildGalaxy() {
     if(Math.random()<.22) c.lerp(cB,Math.random()*.45);
     col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b; i++;
   }
-
-  // Scattered background dust
   for(let k=0;k<DUST;k++){
     const r=Math.random()*3.1, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
     pos[i*3]=Math.sin(ph)*Math.cos(th)*r;
@@ -472,7 +1175,6 @@ function buildGalaxy() {
     const c=new THREE.Color().lerpColors(cD,cB2,Math.random()*.55);
     col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b; i++;
   }
-
   const geo=new THREE.BufferGeometry();
   geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
   geo.setAttribute('color',   new THREE.BufferAttribute(col,3));
@@ -482,8 +1184,6 @@ function buildGalaxy() {
     blending:THREE.AdditiveBlending, depthWrite:false, map:cTex,
   }));
 }
-
-// Cross-star diffraction spikes
 function buildCrossStars() {
   const g=new THREE.Group();
   [[-1.55,1.05,.72,.23],[2.0,-.55,.28,.25],[-0.7,-1.85,.82,.20],
@@ -500,8 +1200,6 @@ function buildCrossStars() {
   });
   return g;
 }
-
-// Core glow
 function buildCore() {
   const g=new THREE.Group();
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({
@@ -524,9 +1222,9 @@ function buildCore() {
 galaxyGroup.add(buildGalaxy(), buildCrossStars(), buildCore());
 scene.add(galaxyGroup);
 
-// ─── 3. Glass outer sphere — Fresnel + specular ───────────────────────────────
+// ── Glass sphere — Fresnel ────────────────────────────────────────────────────
 const glass = new THREE.Mesh(
-  new THREE.SphereGeometry(3.95, 72, 72),
+  new THREE.SphereGeometry(2.65, 80, 80),
   new THREE.ShaderMaterial({
     transparent:true, depthWrite:false, side:THREE.FrontSide, uniforms:{},
     vertexShader:`
@@ -542,30 +1240,34 @@ const glass = new THREE.Mesh(
       varying vec3 vN,vV,vWN;
       void main(){
         float ndv=max(dot(normalize(vN),normalize(vV)),0.);
-        float f=pow(1.-ndv,2.6);
+        float f=pow(1.-ndv,1.55);
         float up=clamp((vWN.y+1.)*.5,0.,1.);
-        // Blue-top to purple-side matching the crystal ball photo
-        vec3 top  =vec3(0.18,0.22,0.92);
-        vec3 side =vec3(0.46,0.10,0.78);
-        vec3 rim  =mix(side,top,pow(up,1.5));
-        // Specular highlight upper-left
+        // Vivid purple rim — deep violet sides, bright lavender top
+        vec3 top  =vec3(0.74,0.42,1.00);
+        vec3 side =vec3(0.42,0.03,0.92);
+        vec3 rim  =mix(side,top,pow(up,1.2));
+        // Specular — purple-white hot spot
         vec3 L=normalize(vec3(-.38,.76,.46));
-        float sp=pow(max(dot(reflect(-L,vWN),normalize(vV)),0.),100.);
-        vec3 sc=vec3(.82,.88,1.)*sp*2.2;
-        gl_FragColor=vec4(rim*f*.82+sc, clamp(f*.84+sp*.96,0.,1.));
+        float sp=pow(max(dot(reflect(-L,vWN),normalize(vV)),0.),64.);
+        vec3 sc=vec3(0.86,0.68,1.0)*sp*4.5;
+        // Second subtle specular on the other side
+        vec3 L2=normalize(vec3(.5,-.3,-.7));
+        float sp2=pow(max(dot(reflect(-L2,vWN),normalize(vV)),0.),120.);
+        vec3 sc2=vec3(0.60,0.20,1.0)*sp2*1.8;
+        gl_FragColor=vec4(rim*f*1.20+sc+sc2, clamp(f*1.20+sp*.99+sp2*.5,0.,1.));
       }`,
   })
 );
-glass.position.x = SX;
-glass.renderOrder = 3;
+glass.position.x = SX; glass.renderOrder = 3;
 scene.add(glass);
 
-// ─── 4. 3D concentric rings (tilt-varied, centered on sphere) ─────────────────
+// ── Rings ─────────────────────────────────────────────────────────────────────
+const rings = [];
 [
-  {r:4.4, w:.012, col:0x7744cc, op:.22, rx:.18, rz:.04, spd: .008},
-  {r:5.6, w:.01,  col:0x5533aa, op:.13, rx:.12, rz:.08, spd:-.006},
-  {r:7.0, w:.008, col:0x442299, op:.07, rx:.22, rz:-.05, spd:.004},
-  {r:8.5, w:.006, col:0x331177, op:.035,rx:.08, rz:.1,   spd:-.003},
+  {r:3.2, w:.018, col:0x2255cc, op:.32, rx:.18, rz:.04, spd: .008},
+  {r:4.5, w:.013, col:0x1144aa, op:.20, rx:.12, rz:.08, spd:-.006},
+  {r:6.0, w:.009, col:0x0d3388, op:.11, rx:.22, rz:-.05, spd:.004},
+  {r:8.0, w:.007, col:0x0a2266, op:.055,rx:.08, rz:.1,   spd:-.003},
 ].forEach(({r,w,col,op,rx,rz,spd})=>{
   const m=new THREE.Mesh(
     new THREE.RingGeometry(r,r+w,128),
@@ -576,22 +1278,48 @@ scene.add(glass);
   );
   m.position.x=SX; m.rotation.x=rx; m.rotation.z=rz;
   m.userData.spd=spd;
+  rings.push(m);
   scene.add(m);
 });
 
-scene.add(new THREE.AmbientLight(0x112244,.3));
+// ── Ambient particle field (visible on scroll through sections) ───────────────
+const ambientGeo = new THREE.BufferGeometry();
+const ambPts = 1800;
+const ambPos = new Float32Array(ambPts * 3);
+for(let i=0; i<ambPts; i++){
+  ambPos[i*3]   = (Math.random()-0.5)*40;
+  ambPos[i*3+1] = (Math.random()-0.5)*30;
+  ambPos[i*3+2] = (Math.random()-0.5)*20;
+}
+ambientGeo.setAttribute('position', new THREE.BufferAttribute(ambPos, 3));
+const ambientParticles = new THREE.Points(ambientGeo, new THREE.PointsMaterial({
+  color: 0x6d28d9, size: 0.05, transparent: true, opacity: 0,
+  sizeAttenuation: true, blending: THREE.NormalBlending, depthWrite: false,
+}));
+scene.add(ambientParticles);
 
-// ─── Post-processing ──────────────────────────────────────────────────────────
-const composer=new EffectComposer(renderer);
+scene.add(new THREE.AmbientLight(0xddccff,.4));
+
+// ── Post-processing ───────────────────────────────────────────────────────────
+const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene,camera));
-const bloom=new UnrealBloomPass(
+const bloom = new UnrealBloomPass(
   new THREE.Vector2(innerWidth,innerHeight),
-  IS_MOB?.6:.92,   // crisp bloom — sphere stays sharp, core glows
-  0.52, 0.50
+  IS_MOB ? .8 : 1.15, 0.65, 0.38
 );
 composer.addPass(bloom);
 
-// ─── Resize ───────────────────────────────────────────────────────────────────
+// ── Scroll-reactive state (updated by GSAP ScrollTrigger) ────────────────────
+const state = {
+  sphereScale:   1,
+  sphereX:       SX,
+  sphereOpacity: 1,
+  bloomStrength: IS_MOB ? .7 : 1.1,
+  ambientOpacity:0,
+  bgBrightness:  1,
+};
+
+// ── Resize ────────────────────────────────────────────────────────────────────
 function resize(){
   renderer.setSize(innerWidth,innerHeight);
   composer.setSize(innerWidth,innerHeight);
@@ -602,14 +1330,14 @@ function resize(){
 window.addEventListener('resize',resize,{passive:true});
 resize();
 
-// ─── Mouse parallax ───────────────────────────────────────────────────────────
-let tx=0,ty=0,cx=0,cy=0;
+// ── Mouse parallax ────────────────────────────────────────────────────────────
+let tx=0,ty=0,camX=0,camY=0;
 window.addEventListener('mousemove',e=>{
   tx=(e.clientX/innerWidth-.5)*1.1;
   ty=-(e.clientY/innerHeight-.5)*.7;
 },{passive:true});
 
-// ─── Animation ────────────────────────────────────────────────────────────────
+// ── RAF loop ──────────────────────────────────────────────────────────────────
 let alive=true;
 document.addEventListener('visibilitychange',()=>{alive=!document.hidden});
 const clock=new THREE.Clock();
@@ -619,31 +1347,48 @@ const clock=new THREE.Clock();
   if(!alive) return;
   const t=clock.getElapsedTime();
 
-  cx+=(tx-cx)*.042; cy+=(ty-cy)*.042;
+  camX+=(tx-camX)*.042; camY+=(ty-camY)*.042;
 
-  galaxyGroup.rotation.y = t*.05+cx*.5;
-  galaxyGroup.rotation.x = .22+Math.sin(t*.09)*.055+cy*.3;
+  // Sphere group transforms
+  const sGroup = [interior, galaxyGroup, glass, ...rings];
+  sGroup.forEach(o=>{ if(o.position) o.position.x = state.sphereX; });
+
+  const s = state.sphereScale;
+  const GS = 0.36; // galaxy base scale — keeps particles inside sphere
+  interior.scale.setScalar(s);
+  galaxyGroup.scale.setScalar(s * GS);
+  glass.scale.setScalar(s);
+  rings.forEach(r=>r.scale.setScalar(s));
+
+  glass.material.opacity = state.sphereOpacity;
+  ambientParticles.material.opacity = state.ambientOpacity;
+  bloom.strength = state.bloomStrength;
+
+  galaxyGroup.rotation.y = t*.05+camX*.5;
+  galaxyGroup.rotation.x = .22+Math.sin(t*.09)*.055+camY*.3;
   glass.rotation.y       = t*.016;
   interior.rotation.y    = t*.009;
 
-  // Ring slow spin
-  scene.children.forEach(o=>{
-    if(o.userData.spd) o.rotation.z += o.userData.spd;
-  });
+  rings.forEach(o=>{ o.rotation.z += o.userData.spd; });
 
-  // Subtle camera drift following mouse
-  camera.position.x+=(cx*.18-camera.position.x)*.04;
-  camera.position.y+=(cy*.12-camera.position.y)*.04;
-  camera.lookAt(1.8,0,0);
+  camera.position.x+=(camX*.18-camera.position.x)*.04;
+  camera.position.y+=(camY*.12-camera.position.y)*.04;
+  camera.lookAt(1.2,0,0);
+
+  // Slow ambient drift
+  ambientParticles.rotation.y = t * 0.012;
 
   composer.render();
 })();
+
+// Expose state for GSAP to animate
+window.__bgState = state;
 </script>
 
 
-<!-- ── MAIN SCRIPTS ─────────────────────────────────────────────────────────── -->
+<!-- ── MAIN SCRIPTS ──────────────────────────────────────────────────────────── -->
 <script>
-// ─── Cursor ───────────────────────────────────────────────────────────────────
+// ─── Cursor ──────────────────────────────────────────────────────────────────
 const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
 let rx=0,ry=0;
 document.addEventListener('mousemove',e=>{
@@ -655,33 +1400,157 @@ document.addEventListener('mousemove',e=>{
   rx+=(d.left-rx)*.11; ry+=(d.top-ry)*.11;
   ring.style.left=rx+'px'; ring.style.top=ry+'px';
 })();
-document.querySelectorAll('a,button,.orb-power').forEach(el=>{
+document.querySelectorAll('a,button,.orb-power,.advisor-card,.spec-card,.testi-card,.how-step').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
 });
 
-// ─── Nav scroll ───────────────────────────────────────────────────────────────
+// ─── Nav scroll ──────────────────────────────────────────────────────────────
 window.addEventListener('scroll',()=>
   document.getElementById('nav').classList.toggle('scrolled',scrollY>50),{passive:true});
 
+// ─── Register GSAP plugins ────────────────────────────────────────────────────
+gsap.registerPlugin(ScrollTrigger);
+
+// ─── Hero entrance — runs first, independent of Lenis ────────────────────────
+// gsap.from() animates FROM these values TO current state — if GSAP fails to
+// run, elements stay at their natural visible state (no CSS opacity:0 trap)
+gsap.from('#heroBadge',    {opacity:0,y:22,duration:.7, delay:.2,  ease:'power3.out',clearProps:'transform'});
+gsap.from('#heroTitle',    {opacity:0,y:32,duration:.9, delay:.35, ease:'power3.out',clearProps:'transform'});
+gsap.from('#heroSub',      {opacity:0,y:22,duration:.8, delay:.52, ease:'power3.out',clearProps:'transform'});
+gsap.from('#heroActions',  {opacity:0,y:18,duration:.8, delay:.65, ease:'power3.out',clearProps:'transform'});
+gsap.from('#statReadings', {opacity:0,y:14,duration:.7, delay:.82, ease:'power3.out',clearProps:'transform'});
+gsap.from('#statRating',   {opacity:0,y:14,duration:.7, delay:.94, ease:'power3.out',clearProps:'transform'});
+gsap.from('#orbPower',     {opacity:0,y:10,duration:.6, delay:1.05,ease:'power3.out',clearProps:'transform'});
+
 // ─── Lenis smooth scroll ──────────────────────────────────────────────────────
-const lenis=new Lenis({lerp:.1,smoothWheel:true});
-lenis.on('scroll',ScrollTrigger.update);
-gsap.ticker.add(t=>lenis.raf(t*1000));
-gsap.ticker.lagSmoothing(0);
+try {
+  const lenis=new Lenis({lerp:.1,smoothWheel:true});
+  lenis.on('scroll',ScrollTrigger.update);
+  gsap.ticker.add(t=>lenis.raf(t*1000));
+  gsap.ticker.lagSmoothing(0);
+} catch(e) {
+  console.warn('Lenis unavailable — native scroll active');
+}
 
-// ─── GSAP hero entrance ───────────────────────────────────────────────────────
-gsap.set(['#heroBadge','#heroTitle','#heroSub','#heroActions'],{y:28,opacity:0});
-gsap.set(['#statReadings','#statRating','#orbPower'],{opacity:0,y:10});
+// ─── Scroll-reactive Three.js background ─────────────────────────────────────
+// Wait a tick so the module sets up window.__bgState
+requestAnimationFrame(()=>{
+  const st = window.__bgState;
+  if(!st) return;
 
-gsap.timeline({delay:.25})
-  .to('#heroBadge',   {opacity:1,y:0,duration:.7,ease:'power3.out'},0)
-  .to('#heroTitle',   {opacity:1,y:0,duration:.9,ease:'power3.out'},.16)
-  .to('#heroSub',     {opacity:1,y:0,duration:.8,ease:'power3.out'},.32)
-  .to('#heroActions', {opacity:1,y:0,duration:.8,ease:'power3.out'},.46)
-  .to('#statReadings',{opacity:1,y:0,duration:.7,ease:'power3.out'},.62)
-  .to('#statRating',  {opacity:1,y:0,duration:.7,ease:'power3.out'},.75)
-  .to('#orbPower',    {opacity:1,y:0,duration:.6,ease:'power3.out'},.86);
+  // Hero → Advisors: sphere drifts up-right, scales down slightly
+  ScrollTrigger.create({
+    trigger:'#advisors', start:'top bottom', end:'top top', scrub:1.8,
+    onUpdate(self){
+      if(!window.__bgState) return;
+      const p = self.progress;
+      window.__bgState.sphereScale   = 1 - p * 0.18;
+      window.__bgState.sphereX       = 4.2 + p * 1.4;
+      window.__bgState.ambientOpacity= p * 0.22;
+      window.__bgState.bloomStrength = 1.1 + p * 0.3;
+    }
+  });
+
+  // Advisors section: sphere small top-right, ambient particles visible
+  ScrollTrigger.create({
+    trigger:'#how', start:'top bottom', end:'top top', scrub:1.8,
+    onUpdate(self){
+      if(!window.__bgState) return;
+      const p = self.progress;
+      window.__bgState.sphereScale    = 0.82 - p * 0.12;
+      window.__bgState.sphereOpacity  = 1 - p * 0.4;
+      window.__bgState.ambientOpacity = 0.22 + p * 0.18;
+      window.__bgState.bloomStrength  = 1.22 + p * 0.2;
+    }
+  });
+
+  // Deep scroll: sphere mostly gone, ambient cosmic field dominates
+  ScrollTrigger.create({
+    trigger:'#specialties', start:'top bottom', end:'top top', scrub:1.8,
+    onUpdate(self){
+      if(!window.__bgState) return;
+      const p = self.progress;
+      window.__bgState.sphereOpacity  = 0.6 - p * 0.4;
+      window.__bgState.ambientOpacity = 0.4 + p * 0.2;
+      window.__bgState.bloomStrength  = 1.42 + p * 0.18;
+    }
+  });
+
+  // CTA: minimal atmosphere, high bloom, sphere invisible
+  ScrollTrigger.create({
+    trigger:'#cta-section', start:'top bottom', end:'top top', scrub:2,
+    onUpdate(self){
+      if(!window.__bgState) return;
+      const p = self.progress;
+      window.__bgState.sphereOpacity  = Math.max(0, 0.2 - p * 0.2);
+      window.__bgState.ambientOpacity = 0.6 + p * 0.2;
+      window.__bgState.bloomStrength  = 1.6 + p * 0.4;
+    }
+  });
+});
+
+// ─── Section scroll reveals ───────────────────────────────────────────────────
+function revealCards(selector, stagger=0.1){
+  gsap.set(selector, {y:40,opacity:0});
+  ScrollTrigger.create({
+    trigger: selector, start:'top 85%',
+    onEnter:()=>gsap.to(selector,{y:0,opacity:1,duration:.8,stagger,ease:'power3.out'}),
+    once:true,
+  });
+}
+
+// Advisors
+gsap.set('.advisors-head', {y:30,opacity:0});
+ScrollTrigger.create({
+  trigger:'#advisors', start:'top 80%',
+  onEnter:()=>gsap.to('.advisors-head',{y:0,opacity:1,duration:.9,ease:'power3.out'}),
+  once:true,
+});
+revealCards('.advisor-card', 0.12);
+
+// How it works
+gsap.set('.how-grid > *', {y:36,opacity:0});
+ScrollTrigger.create({
+  trigger:'#how', start:'top 80%',
+  onEnter:()=>gsap.to('.how-grid > *',{y:0,opacity:1,duration:.85,stagger:.15,ease:'power3.out'}),
+  once:true,
+});
+
+// How steps interactive
+const steps=['step1','step2','step3'];
+steps.forEach((id,i)=>{
+  ScrollTrigger.create({
+    trigger:`#${id}`, start:'top 55%',
+    onEnter:()=>{
+      steps.forEach(s=>document.getElementById(s).classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    },
+    onLeaveBack:()=>{
+      if(i>0){
+        document.getElementById(id).classList.remove('active');
+        document.getElementById(steps[i-1]).classList.add('active');
+      }
+    },
+  });
+});
+
+// Specialties
+gsap.set('.spec-grid > *', {y:40,opacity:0});
+ScrollTrigger.create({
+  trigger:'#specialties', start:'top 80%',
+  onEnter:()=>gsap.to('.spec-grid > *',{y:0,opacity:1,duration:.8,stagger:.13,ease:'power3.out'}),
+  once:true,
+});
+revealCards('.testi-card', 0.13);
+
+// CTA
+gsap.set('.cta-inner > *', {y:30,opacity:0});
+ScrollTrigger.create({
+  trigger:'#cta-section', start:'top 80%',
+  onEnter:()=>gsap.to('.cta-inner > *',{y:0,opacity:1,duration:.8,stagger:.1,ease:'power3.out'}),
+  once:true,
+});
 </script>
 
 </body>
