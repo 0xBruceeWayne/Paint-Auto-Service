@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luminary — See Beyond</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&family=Orbitron:wght@900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
@@ -36,10 +36,6 @@ body{
   overflow-x:hidden;
   cursor:none;
 }
-/* Subtle fixed ambient glow — white with ghost purple radials */
-/* ── Canvas: solid white bg, sphere dissolves into white at edges via mask ── */
-/* alpha:false in Three.js so bloom/composer don't break transparency.        */
-/* Mask center calibrated: sphere projects to ~70% x, 50% y at SX=4.2       */
 #scroll-vid{
   position:fixed;inset:0;
   z-index:1;
@@ -54,7 +50,6 @@ body{
   pointer-events:none;
   display:block;
   width:100%;height:100%;
-  mix-blend-mode:multiply;
   will-change:opacity;
 }
 
@@ -91,21 +86,54 @@ nav.scrolled{
   border-bottom:1px solid rgba(0,0,0,.08);
   box-shadow:0 1px 24px rgba(0,0,0,.07);
 }
-.nav-logo{
-  font-family:'Rajdhani',sans-serif;
-  font-size:26px;font-weight:700;
-  color:#111;text-decoration:none;
-  letter-spacing:.18em;text-transform:uppercase;
+.nav-logo{text-decoration:none;display:flex;align-items:center}
+.nav-logo-img{
+  height:44px;
+  width:auto;
+  display:block;
+  transition:opacity .2s ease;
 }
-.nav-logo em{color:var(--p);font-style:normal;font-weight:700}
-nav.scrolled.dark-nav .nav-logo em{color:var(--pll)}
-.nav-links{display:flex;gap:40px;align-items:center}
+.nav-logo-img:hover{opacity:.82}
+nav.scrolled.dark-nav .nav-logo-img{
+  filter:invert(1) brightness(2);
+}
+.nav-links{display:flex;gap:56px;align-items:center}
 .nav-links a{
-  color:rgba(0,0,0,.5);font-size:14px;font-weight:500;
-  text-decoration:none;letter-spacing:.02em;
-  transition:color .2s;
+  color:#fff;font-size:13px;font-weight:600;
+  text-decoration:none;letter-spacing:.07em;text-transform:uppercase;
+  padding:9px 22px;
+  border-radius:100px;
+  border:1px solid rgba(167,139,250,.35);
+  background:linear-gradient(135deg,var(--p) 0%,var(--pd) 100%);
+  box-shadow:
+    0 3px 0 rgba(60,10,120,.45),
+    0 6px 18px rgba(109,40,217,.30),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  transition:
+    transform .08s cubic-bezier(.34,1.56,.64,1),
+    box-shadow .08s ease,
+    filter .15s ease;
+  position:relative;
+  top:0;
+  cursor:none;
+  user-select:none;
 }
-.nav-links a:hover{color:#111}
+.nav-links a:hover{
+  filter:brightness(1.14);
+  box-shadow:
+    0 5px 0 rgba(60,10,120,.45),
+    0 10px 28px rgba(109,40,217,.45),
+    inset 0 1px 0 rgba(255,255,255,.28);
+  transform:translateY(-2px);
+}
+.nav-links a:active{
+  transform:translateY(3px) scale(.96);
+  box-shadow:
+    0 0px 0 rgba(60,10,120,.45),
+    0 2px 8px rgba(109,40,217,.20),
+    inset 0 2px 5px rgba(0,0,0,.22);
+  filter:brightness(.92);
+}
 /* Nav on dark beams background */
 nav.scrolled.dark-nav{
   background:rgba(12,6,28,.80);
@@ -113,8 +141,13 @@ nav.scrolled.dark-nav{
   box-shadow:0 1px 32px rgba(0,0,0,.45);
 }
 nav.scrolled.dark-nav .nav-logo{ color:#fff }
-nav.scrolled.dark-nav .nav-links a{ color:rgba(255,255,255,.55) }
-nav.scrolled.dark-nav .nav-links a:hover{ color:#fff }
+nav.scrolled.dark-nav .nav-links a{
+  border-color:rgba(167,139,250,.45);
+  box-shadow:0 3px 0 rgba(20,0,60,.6),0 6px 18px rgba(109,40,217,.35),inset 0 1px 0 rgba(255,255,255,.18);
+}
+nav.scrolled.dark-nav .nav-links a:hover{
+  filter:brightness(1.18);
+}
 .nav-cta{
   padding:10px 22px;
   background:var(--p);border:none;border-radius:100px;
@@ -177,7 +210,18 @@ h1.hero-title{
   margin-bottom:28px;
   text-shadow:none;
 }
-h1.hero-title em{color:var(--p);font-style:italic;font-weight:600}
+h1.hero-title em{
+  color:var(--p);font-style:italic;font-weight:600;
+  transition:text-shadow .3s ease, color .3s ease;
+  cursor:none;
+}
+h1.hero-title em:hover{
+  color:#9333ea;
+  text-shadow:
+    0 0 18px rgba(124,58,237,.55),
+    0 0 40px rgba(124,58,237,.30),
+    0 0 80px rgba(139,92,246,.15);
+}
 .hero-sub{
   font-size:clamp(15px,1.4vw,17px);
   color:rgba(0,0,0,.58);
@@ -909,7 +953,7 @@ footer{
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo">LUMIN<em>ARY</em></a>
+  <a href="#" class="nav-logo"><img src="logo.png" alt="Luminary" class="nav-logo-img"></a>
   <div class="nav-links">
     <a href="#advisors">Advisors</a>
     <a href="#how">How it works</a>
@@ -1224,24 +1268,21 @@ footer{
 <!-- ── THREE.JS BACKGROUND ── -->
 <script type="module">
 import * as THREE from 'three';
-import { EffectComposer }  from 'three/addons/postprocessing/EffectComposer.js';
-import { RenderPass }      from 'three/addons/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
 const IS_MOB = window.innerWidth <= 768 || navigator.maxTouchPoints > 0;
 const canvas = document.getElementById('bg');
 
 const renderer = new THREE.WebGLRenderer({
-  canvas, antialias: !IS_MOB, alpha: false,
+  canvas, antialias: true, alpha: true,
   powerPreference: 'high-performance',
+  logarithmicDepthBuffer: true,
 });
-renderer.setPixelRatio(Math.min(devicePixelRatio, IS_MOB ? 1 : 2));
-renderer.setClearColor(0xffffff, 1);
-renderer.toneMapping    = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.1;
+renderer.setPixelRatio(Math.min(devicePixelRatio, IS_MOB ? 2 : 4));
+renderer.setClearColor(0x000000, 0);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.35;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff);
 
 const camera = new THREE.PerspectiveCamera(58, innerWidth / innerHeight, 0.1, 200);
 camera.position.set(0, 0, 9);
@@ -1285,10 +1326,10 @@ const xTex = crossTex(64);
 
 // ── Interior ────────────────────────────────────────────────────────────────
 const interior = new THREE.Mesh(
-  new THREE.SphereGeometry(2.55, 40, 40),
+  new THREE.SphereGeometry(2.55, 96, 96),
   new THREE.MeshBasicMaterial({
-    color: 0x0c0b14, side: THREE.BackSide,
-    transparent: true, opacity: 0.96,
+    color: 0x050310, side: THREE.BackSide,
+    transparent: true, opacity: 0.92,
   })
 );
 interior.position.x = SX; interior.renderOrder = 0;
@@ -1297,70 +1338,75 @@ scene.add(interior);
 // ── Galaxy ───────────────────────────────────────────────────────────────────
 const galaxyGroup = new THREE.Group();
 galaxyGroup.position.x = SX;
-galaxyGroup.rotation.x = 0.22;
+galaxyGroup.rotation.x = 0.32;
 galaxyGroup.renderOrder = 1;
 
 function buildGalaxy() {
-  const CORE=2800, SPIRAL=IS_MOB?5000:10500, DUST=1500;
+  const CORE=5000, SPIRAL=IS_MOB?10000:26000, DUST=3500;
   const N = CORE+SPIRAL+DUST;
   const pos=new Float32Array(N*3), col=new Float32Array(N*3);
-  const cW=new THREE.Color(0xffffff), cB=new THREE.Color(0xaabbff),
-        cB2=new THREE.Color(0x6688ee), cP=new THREE.Color(0x8844dd),
-        cD=new THREE.Color(0x334499);
+  const cW =new THREE.Color(2.2,2.1,2.8);      // overbright white-violet core
+  const cC =new THREE.Color(0.5,1.2,2.4);      // vivid cyan-blue
+  const cB =new THREE.Color(0.35,0.55,2.0);    // bright blue
+  const cP =new THREE.Color(0.7,0.22,1.8);     // vivid purple
+  const cPd=new THREE.Color(0.28,0.08,1.0);    // deep purple outer
   let i=0;
+  // Core — dense bright bulge
   for(let k=0;k<CORE;k++){
-    const r=Math.pow(Math.random(),1.8)*.85;
+    const r=Math.pow(Math.random(),1.4)*.85;
     const th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
     pos[i*3]=Math.sin(ph)*Math.cos(th)*r;
-    pos[i*3+1]=Math.cos(ph)*r*.32;
+    pos[i*3+1]=Math.cos(ph)*r*.22;  // flat disk
     pos[i*3+2]=Math.sin(ph)*Math.sin(th)*r;
-    const c=new THREE.Color().lerpColors(cW,cB,r/.85);
+    const c=new THREE.Color().lerpColors(cW,cC,r/.85);
     col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b; i++;
   }
+  // Spiral arms — two tight arms like reference
   for(let k=0;k<SPIRAL;k++){
-    const arm=k%3, aBase=(arm/3)*Math.PI*2;
-    const r=.5+Math.random()*2.6, angle=aBase+r*1.65, sp=.34*r;
+    const arm=k%2, aBase=(arm/2)*Math.PI*2;
+    const r=.35+Math.random()*2.7, angle=aBase+r*1.6, sp=.22*r;
     const u1=Math.max(1e-6,Math.random()),u2=Math.random();
     const g=Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
     pos[i*3]=Math.cos(angle)*r+g*sp;
-    pos[i*3+1]=(Math.random()-.5)*sp*.2;
-    pos[i*3+2]=Math.sin(angle)*r+g*sp*.9;
-    const t=(r-.5)/2.6;
+    pos[i*3+1]=(Math.random()-.5)*sp*.12;  // very thin disk
+    pos[i*3+2]=Math.sin(angle)*r+g*sp*.8;
+    const t=(r-.35)/2.7;
     let c;
-    if(t<.3)       c=new THREE.Color().lerpColors(cB,cB2,t/.3);
-    else if(t<.65) c=new THREE.Color().lerpColors(cB2,cP,(t-.3)/.35);
-    else           c=new THREE.Color().lerpColors(cP,cD,(t-.65)/.35);
-    if(Math.random()<.22) c.lerp(cB,Math.random()*.45);
+    if(t<.2)       c=new THREE.Color().lerpColors(cC,cB,t/.2);
+    else if(t<.55) c=new THREE.Color().lerpColors(cB,cP,(t-.2)/.35);
+    else           c=new THREE.Color().lerpColors(cP,cPd,(t-.55)/.45);
+    if(Math.random()<.35) c.lerp(cC,Math.random()*.6);
     col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b; i++;
   }
+  // Dust halo — sparse outer glow
   for(let k=0;k<DUST;k++){
-    const r=Math.random()*3.1, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
+    const r=.5+Math.random()*2.6, th=Math.random()*Math.PI*2, ph=Math.acos(2*Math.random()-1);
     pos[i*3]=Math.sin(ph)*Math.cos(th)*r;
-    pos[i*3+1]=Math.cos(ph)*r*.45;
+    pos[i*3+1]=Math.cos(ph)*r*.25;
     pos[i*3+2]=Math.sin(ph)*Math.sin(th)*r;
-    const c=new THREE.Color().lerpColors(cD,cB2,Math.random()*.55);
+    const c=new THREE.Color().lerpColors(cPd,cB,Math.random()*.5);
     col[i*3]=c.r; col[i*3+1]=c.g; col[i*3+2]=c.b; i++;
   }
   const geo=new THREE.BufferGeometry();
   geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
   geo.setAttribute('color',   new THREE.BufferAttribute(col,3));
+  // Two point layers — fine dust + bright stars
   return new THREE.Points(geo, new THREE.PointsMaterial({
-    size: IS_MOB?.12:.082, sizeAttenuation:true, vertexColors:true,
-    transparent:true, opacity:.97,
+    size: IS_MOB?.10:.065, sizeAttenuation:true, vertexColors:true,
+    transparent:true, opacity:1.0,
     blending:THREE.AdditiveBlending, depthWrite:false, map:cTex,
   }));
 }
 function buildCrossStars() {
   const g=new THREE.Group();
-  [[-1.55,1.05,.72,.23],[2.0,-.55,.28,.25],[-0.7,-1.85,.82,.20],
-   [2.38,1.25,-.28,.21],[-2.1,.28,-.38,.18],[.48,2.28,.18,.20],
-   [1.28,-2.0,-.42,.17],[-1.72,-.72,-1.1,.18],[2.82,-.88,.12,.15]
+  [[-1.4,.95,.65,.32],[1.8,-.5,.25,.34],[-0.6,-1.7,.75,.28],
+   [2.2,1.1,-.25,.30],[-1.9,.25,-.35,.26],[.42,2.1,.16,.28],
+   [1.15,-1.85,-.38,.24],[-1.6,-.65,-1.0,.26],[2.6,-.80,.10,.22]
   ].forEach(([x,y,z,s])=>{
-    if(x*x+y*y+z*z>3.5*3.5) return;
     const sp=new THREE.Sprite(new THREE.SpriteMaterial({
       map:xTex, transparent:true, blending:THREE.AdditiveBlending,
-      color:new THREE.Color(Math.random()<.6?0x99bbff:0xffffff),
-      opacity:.65+Math.random()*.3, depthWrite:false,
+      color:new THREE.Color(Math.random()<.5?0x88ddff:0xffffff),
+      opacity:.85+Math.random()*.15, depthWrite:false,
     }));
     sp.position.set(x,y,z); sp.scale.setScalar(s); g.add(sp);
   });
@@ -1368,13 +1414,20 @@ function buildCrossStars() {
 }
 function buildCore() {
   const g=new THREE.Group();
+  // Big bright central glow
   const sp=new THREE.Sprite(new THREE.SpriteMaterial({
-    map:cTex, color:new THREE.Color(0xffffff),
+    map:cTex, color:new THREE.Color(2,1.8,2.5),
     blending:THREE.AdditiveBlending, transparent:true, depthWrite:false,
   }));
-  sp.scale.setScalar(.5); g.add(sp);
-  [{r:.1,hex:0xffffff,op:.9},{r:.27,hex:0xeef,op:.54},
-   {r:.6,hex:0xaabbff,op:.28},{r:1.1,hex:0x6655ee,op:.13},{r:1.75,hex:0x4433bb,op:.05}
+  sp.scale.setScalar(1.6); g.add(sp);
+  // Second glow layer
+  const sp2=new THREE.Sprite(new THREE.SpriteMaterial({
+    map:cTex, color:new THREE.Color(0.5,0.3,1.5),
+    blending:THREE.AdditiveBlending, transparent:true, depthWrite:false, opacity:0.7,
+  }));
+  sp2.scale.setScalar(2.8); g.add(sp2);
+  [{r:.08,hex:0xffffff,op:1.0},{r:.22,hex:0xddeeff,op:.8},
+   {r:.55,hex:0x88ccff,op:.5},{r:1.0,hex:0x5566ff,op:.28},{r:1.6,hex:0x3322bb,op:.12}
   ].forEach(({r,hex,op})=>g.add(new THREE.Mesh(
     new THREE.SphereGeometry(r,10,10),
     new THREE.MeshBasicMaterial({
@@ -1390,7 +1443,7 @@ scene.add(galaxyGroup);
 
 // ── Glass sphere — Fresnel ────────────────────────────────────────────────────
 const glass = new THREE.Mesh(
-  new THREE.SphereGeometry(2.65, 80, 80),
+  new THREE.SphereGeometry(2.65, 128, 128),
   new THREE.ShaderMaterial({
     transparent:true, depthWrite:false, side:THREE.FrontSide,
     uniforms:{ uSTime:{ value:0 } },
@@ -1408,37 +1461,37 @@ const glass = new THREE.Mesh(
       varying vec3 vN,vV,vWN;
       void main(){
         float ndv=max(dot(normalize(vN),normalize(vV)),0.);
-        // Tight Fresnel — high exponent keeps rim thin, surface reads as hard glass
-        float f=pow(1.-ndv,3.2);
+        // Steep Fresnel: near-zero interior, full at rim
+        float f=pow(1.-ndv,2.8);
+        float fRim=pow(1.-ndv,1.4); // wider band for thick glass darkening
         float up=clamp((vWN.y+1.)*.5,0.,1.);
-        vec3 top =vec3(0.74,0.42,1.00);
-        vec3 side=vec3(0.42,0.03,0.92);
-        vec3 rim =mix(side,top,pow(up,1.2));
-        // Primary specular — sharp highlight
-        vec3 L=normalize(vec3(-.38,.76,.46));
-        float sp=pow(max(dot(reflect(-L,vWN),normalize(vV)),0.),96.);
-        vec3 sc=vec3(0.95,0.85,1.0)*sp*5.5;
+        vec3 top =vec3(0.55,0.18,1.00);
+        vec3 side=vec3(0.15,0.04,0.85);
+        vec3 rim =mix(side,top,pow(up,1.0));
+        // Dark glass tint at rim edges (the dark frame in the reference)
+        vec3 darkGlass=vec3(0.02,0.01,0.06)*fRim*fRim;
+        // Primary specular — glassy highlight top-left
+        vec3 L=normalize(vec3(-.5,.82,.30));
+        float sp=pow(max(dot(reflect(-L,vWN),normalize(vV)),0.),64.);
+        vec3 sc=vec3(1.0,0.95,1.0)*sp*6.0;
         // Secondary specular
-        vec3 L2=normalize(vec3(.5,-.3,-.7));
-        float sp2=pow(max(dot(reflect(-L2,vWN),normalize(vV)),0.),180.);
-        vec3 sc2=vec3(0.70,0.30,1.0)*sp2*2.2;
+        vec3 L2=normalize(vec3(.4,-.4,-.7));
+        float sp2=pow(max(dot(reflect(-L2,vWN),normalize(vV)),0.),200.);
+        vec3 sc2=vec3(0.65,0.25,1.0)*sp2*2.0;
         // Animated caustic
-        vec3 L3=normalize(vec3(
-          sin(uSTime*.31)*.88,
-          cos(uSTime*.19)*.65,
-          cos(uSTime*.27)*.5+0.38
-        ));
-        float sp3=pow(max(dot(reflect(-L3,vWN),normalize(vV)),0.),200.);
-        vec3 sc3=vec3(0.70,0.28,1.00)*sp3*4.0;
-        // Iridescent caustic
+        vec3 L3=normalize(vec3(sin(uSTime*.31)*.88,cos(uSTime*.19)*.65,cos(uSTime*.27)*.5+0.38));
+        float sp3=pow(max(dot(reflect(-L3,vWN),normalize(vV)),0.),180.);
+        vec3 sc3=vec3(0.60,0.18,1.00)*sp3*3.5;
         float hue=sin(uSTime*.44)*.5+.5;
-        vec3 causticCol=mix(vec3(0.55,0.25,1.0),vec3(0.28,0.68,1.0),hue);
+        vec3 causticCol=mix(vec3(0.40,0.10,1.0),vec3(0.15,0.55,1.0),hue);
         vec3 L3b=normalize(vec3(-L3.x*0.9,-L3.y*.7,L3.z));
-        float sp4=pow(max(dot(reflect(-L3b,vWN),normalize(vV)),0.),320.);
-        vec3 sc4=causticCol*sp4*2.5;
-        // Alpha: rim only at edge, specular drives interior presence
-        float alpha=clamp(f*1.10+sp*1.1+sp2*.6+sp3*.9+sp4*.5,0.,1.);
-        gl_FragColor=vec4(rim*f*1.10+sc+sc2+sc3+sc4, alpha);
+        float sp4=pow(max(dot(reflect(-L3b,vWN),normalize(vV)),0.),300.);
+        vec3 sc4=causticCol*sp4*2.2;
+        float specLum=sp*1.0+sp2*.5+sp3*.8+sp4*.4;
+        // alpha: 0 at center (galaxy fully visible), opaque only at rim + specular
+        float alpha=clamp(f*5.0+specLum,0.0,1.0);
+        vec3 finalColor=darkGlass+rim*f*1.4+sc+sc2+sc3+sc4;
+        gl_FragColor=vec4(finalColor,alpha);
       }`,
   })
 );
@@ -1484,21 +1537,53 @@ scene.add(ambientParticles);
 
 scene.add(new THREE.AmbientLight(0xddccff,.4));
 
-// ── Post-processing ───────────────────────────────────────────────────────────
-const composer = new EffectComposer(renderer);
-composer.addPass(new RenderPass(scene,camera));
-const bloom = new UnrealBloomPass(
-  new THREE.Vector2(innerWidth,innerHeight),
-  IS_MOB ? .35 : 0.45, 0.04, 0.75
+// ── Water reflection ──────────────────────────────────────────────────────────
+const waterMesh = new THREE.Mesh(
+  (() => { const g = new THREE.CircleGeometry(4.2, 96); g.rotateX(-Math.PI/2); return g; })(),
+  new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, side: THREE.DoubleSide,
+    uniforms: { uTime: { value: 0 } },
+    vertexShader: `
+      uniform float uTime;
+      varying vec2 vUv;
+      void main(){
+        vUv = uv;
+        vec3 pos = position;
+        float d = length(pos.xz);
+        float w = sin(d*4.8 - uTime*1.7)*0.032
+                + sin(d*8.5 - uTime*2.4)*0.016
+                + sin(pos.x*2.2 + uTime*1.1)*0.011
+                + sin(pos.z*2.7 - uTime*0.95)*0.009;
+        pos.y += w * smoothstep(4.2, 0.3, d);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+      }`,
+    fragmentShader: `
+      uniform float uTime;
+      varying vec2 vUv;
+      void main(){
+        vec2 c = vUv - 0.5;
+        // Slightly oval footprint — sphere projects as ellipse at this camera angle
+        float dist = length(vec2(c.x * 1.0, c.y * 1.15));
+
+        // Solid shadow — smooth radial falloff, darkest at centre, fades to nothing at edge
+        float shadow = pow(1.0 - smoothstep(0.0, 0.50, dist), 1.4);
+
+        vec3 shadowCol = vec3(0.010, 0.004, 0.030);
+        float alpha = clamp(shadow * 0.82, 0.0, 0.85);
+
+        gl_FragColor = vec4(shadowCol, alpha);
+      }`,
+  })
 );
-composer.addPass(bloom);
+waterMesh.position.set(SX, -3.10, 0);
+waterMesh.renderOrder = 2;
+scene.add(waterMesh);
 
 // ── Scroll-reactive state (updated by GSAP ScrollTrigger) ────────────────────
 const state = {
   sphereScale:   1,
   sphereX:       SX,
   sphereOpacity: 1,
-  bloomStrength: IS_MOB ? .4 : 0.55,
   ambientOpacity:0,
   bgBrightness:  1,
 };
@@ -1506,10 +1591,8 @@ const state = {
 // ── Resize ────────────────────────────────────────────────────────────────────
 function resize(){
   renderer.setSize(innerWidth,innerHeight);
-  composer.setSize(innerWidth,innerHeight);
   camera.aspect=innerWidth/innerHeight;
   camera.updateProjectionMatrix();
-  bloom.resolution.set(innerWidth,innerHeight);
 }
 window.addEventListener('resize',resize,{passive:true});
 resize();
@@ -1538,7 +1621,7 @@ const clock=new THREE.Clock();
   sGroup.forEach(o=>{ if(o.position) o.position.x = state.sphereX; });
 
   const s = state.sphereScale;
-  const GS = 0.36; // galaxy base scale — keeps particles inside sphere
+  const GS = 0.56; // galaxy fits inside sphere with clear dark rim
   interior.scale.setScalar(s);
   galaxyGroup.scale.setScalar(s * GS);
   glass.scale.setScalar(s);
@@ -1547,10 +1630,9 @@ const clock=new THREE.Clock();
   glass.material.opacity = state.sphereOpacity;
   glass.material.uniforms.uSTime.value = t;
   ambientParticles.material.opacity = state.ambientOpacity;
-  bloom.strength = state.bloomStrength;
 
   galaxyGroup.rotation.y = t*.18+camX*.12;
-  galaxyGroup.rotation.x = .22+Math.sin(t*.07)*.04+camY*.08;
+  galaxyGroup.rotation.x = .32+Math.sin(t*.07)*.04+camY*.08;
   glass.rotation.y       = t*.016;
   interior.rotation.y    = t*.009;
 
@@ -1563,7 +1645,13 @@ const clock=new THREE.Clock();
   // Slow ambient drift
   ambientParticles.rotation.y = t * 0.012;
 
-  composer.render();
+  // Water reflection — follows sphere position and scale
+  waterMesh.position.x = state.sphereX;
+  waterMesh.position.y = -3.10 * state.sphereScale;
+  waterMesh.scale.setScalar(state.sphereScale);
+  waterMesh.material.uniforms.uTime.value = t;
+
+  renderer.render(scene, camera);
 })();
 
 // Expose state for GSAP to animate
@@ -1588,6 +1676,18 @@ document.addEventListener('mousemove',e=>{
 document.querySelectorAll('a,button,.advisor-card,.spec-card,.testi-card,.how-step').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+
+// ── Nav buttons — physical press interaction ──────────────────────────────────
+document.querySelectorAll('.nav-links a').forEach(btn=>{
+  btn.addEventListener('mousedown', ()=>{
+    btn.style.transform='translateY(2px) scale(.96)';
+    btn.style.boxShadow='0 0px 0 rgba(60,10,120,.45),0 2px 8px rgba(109,40,217,.20),inset 0 2px 5px rgba(0,0,0,.22)';
+  });
+  ['mouseup','mouseleave'].forEach(ev=>btn.addEventListener(ev,()=>{
+    btn.style.transform='';
+    btn.style.boxShadow='';
+  }));
 });
 
 // ── Glass cursor spotlight — tracks mouse inside each card ────────────────────
@@ -1671,7 +1771,6 @@ requestAnimationFrame(()=>{
       window.__bgState.sphereScale   = 1 - p * 0.18;
       window.__bgState.sphereX       = 4.2 + p * 1.4;
       window.__bgState.ambientOpacity= p * 0.22;
-      window.__bgState.bloomStrength = 0.55 + p * 0.15;
     }
   });
 
@@ -1684,7 +1783,6 @@ requestAnimationFrame(()=>{
       window.__bgState.sphereScale    = 0.82 - p * 0.12;
       window.__bgState.sphereOpacity  = 1 - p * 0.4;
       window.__bgState.ambientOpacity = 0.22 + p * 0.18;
-      window.__bgState.bloomStrength  = 0.62 + p * 0.12;
     }
   });
 
@@ -1696,7 +1794,6 @@ requestAnimationFrame(()=>{
       const p = self.progress;
       window.__bgState.sphereOpacity  = 0.6 - p * 0.4;
       window.__bgState.ambientOpacity = 0.4 + p * 0.2;
-      window.__bgState.bloomStrength  = 0.72 + p * 0.10;
     }
   });
 
@@ -1708,7 +1805,6 @@ requestAnimationFrame(()=>{
       const p = self.progress;
       window.__bgState.sphereOpacity  = Math.max(0, 0.2 - p * 0.2);
       window.__bgState.ambientOpacity = 0.6 + p * 0.2;
-      window.__bgState.bloomStrength  = 0.80 + p * 0.15;
     }
   });
 });
