@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luminary — See Beyond</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&family=Rajdhani:wght@700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
@@ -40,20 +40,22 @@ body{
 /* ── Canvas: solid white bg, sphere dissolves into white at edges via mask ── */
 /* alpha:false in Three.js so bloom/composer don't break transparency.        */
 /* Mask center calibrated: sphere projects to ~70% x, 50% y at SX=4.2       */
-#vol-bg{
+#scroll-vid{
   position:fixed;inset:0;
   z-index:1;
   pointer-events:none;
-  display:block;
   width:100%;height:100%;
+  object-fit:cover;
+  opacity:0;
 }
 #bg{
   position:fixed;inset:0;
-  z-index:4;
+  z-index:15;
   pointer-events:none;
   display:block;
   width:100%;height:100%;
   mix-blend-mode:multiply;
+  will-change:opacity;
 }
 
 /* ── Cursor ── */
@@ -90,11 +92,13 @@ nav.scrolled{
   box-shadow:0 1px 24px rgba(0,0,0,.07);
 }
 .nav-logo{
-  font-family:'Playfair Display',serif;
-  font-size:22px;font-weight:700;
-  color:#111;text-decoration:none;letter-spacing:.01em;
+  font-family:'Rajdhani',sans-serif;
+  font-size:26px;font-weight:700;
+  color:#111;text-decoration:none;
+  letter-spacing:.18em;text-transform:uppercase;
 }
-.nav-logo em{color:var(--p);font-style:italic;font-weight:400}
+.nav-logo em{color:var(--p);font-style:normal;font-weight:700}
+nav.scrolled.dark-nav .nav-logo em{color:var(--pll)}
 .nav-links{display:flex;gap:40px;align-items:center}
 .nav-links a{
   color:rgba(0,0,0,.5);font-size:14px;font-weight:500;
@@ -126,7 +130,7 @@ nav.scrolled.dark-nav .nav-links a:hover{ color:#fff }
 #hero::after{
   content:'';
   position:absolute;bottom:0;left:0;right:0;
-  height:30vh;
+  height:28vh;
   background:linear-gradient(to bottom, transparent 0%, #ffffff 100%);
   pointer-events:none;
   z-index:6;
@@ -149,13 +153,14 @@ nav.scrolled.dark-nav .nav-links a:hover{ color:#fff }
 .hero-badge{
   display:inline-flex;align-items:center;gap:8px;
   padding:8px 18px;
-  background:rgba(109,40,217,.07);
-  border:1px solid rgba(109,40,217,.22);
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(255,255,255,.85);
   border-radius:100px;
   font-size:10.5px;font-weight:700;letter-spacing:.16em;
   text-transform:uppercase;color:rgba(0,0,0,.6);
   margin-bottom:32px;
-  box-shadow:0 2px 14px rgba(109,40,217,.1),inset 0 1px 0 rgba(255,255,255,.8);
+  backdrop-filter:blur(16px);
+  box-shadow:0 2px 14px rgba(0,0,0,.07),inset 0 1px 0 rgba(255,255,255,.98);
 }
 .badge-dot{
   width:5px;height:5px;border-radius:50%;
@@ -210,13 +215,11 @@ h1.hero-title em{color:var(--p);font-style:italic;font-weight:600}
 .stat-float{
   position:absolute;z-index:10;
   padding:16px 22px;
-  background:linear-gradient(145deg,rgba(237,228,255,.94),rgba(167,139,250,.32));
-  border:1px solid rgba(124,58,237,.40);
-  border-top:1px solid rgba(255,255,255,.90);
+  background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(255,255,255,.72));
+  border:1px solid rgba(255,255,255,.82);
+  border-top:1px solid rgba(255,255,255,.98);
   border-radius:18px;
-  backdrop-filter:blur(22px) saturate(220%);
-  -webkit-backdrop-filter:blur(22px) saturate(220%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 10px 36px rgba(109,40,217,.24),0 2px 8px rgba(91,33,182,.14);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 10px 36px rgba(0,0,0,.09),0 2px 8px rgba(0,0,0,.06);
 }
 .stat-readings{left:53%;top:55%;transform:translateY(-50%)}
 .stat-rating  {right:4%; top:40%;transform:translateY(-50%)}
@@ -495,77 +498,52 @@ section{position:relative;z-index:5}
 /* Inline dark em color on section-title inside dark sections */
 #specialties .section-title em[style]{ color:var(--pll) !important }
 
-/* Testimonials labels inside #specialties */
-.testi-name{ color:rgba(255,255,255,.88) !important }
-.testi-loc{  color:rgba(255,255,255,.45) !important }
 
-/* Dark glass variant for non-hero sections: beams glow through frosted surface */
-#advisors .glass,
-#how .glass,
-#specialties .glass,
-#cta-section .glass{
-  background:linear-gradient(145deg,
-    rgba(30,15,60,.72) 0%,
-    rgba(76,29,149,.35) 60%,
-    rgba(109,40,217,.20) 100%);
-  border:1px solid rgba(167,139,250,.35);
-  border-top:1px solid rgba(255,255,255,.22);
-  backdrop-filter:blur(28px) saturate(180%) brightness(1.1);
-  -webkit-backdrop-filter:blur(28px) saturate(180%) brightness(1.1);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.18),
-    inset 0 -1px 0 rgba(109,40,217,.30),
-    0 16px 56px rgba(0,0,0,.55),
-    0 4px 16px rgba(109,40,217,.30),
-    0 0 0 1px rgba(124,58,237,.22);
-  color:#fff;
-}
-#advisors .glass *,
-#how .glass *,
-#specialties .glass *{ color:rgba(255,255,255,.88) }
-#advisors .glass .advisor-type{ color:rgba(167,139,250,.90) !important }
-.spec-card p{ color:rgba(255,255,255,.68) !important }
-#cta-section .section-title em{ color:var(--pll) !important }
-
-/* ── Liquid Glass — pronounced purple, light bg ── */
+/* ── Liquid Glass — pure frozen white ice ── */
 .glass{
   background:linear-gradient(145deg,
-    rgba(237,228,255,.92) 0%,
-    rgba(167,139,250,.38) 60%,
-    rgba(124,58,237,.22) 100%);
-  border:1px solid rgba(124,58,237,.45);
-  border-top:1px solid rgba(255,255,255,.90);
-  backdrop-filter:blur(24px) saturate(220%) brightness(1.01);
-  -webkit-backdrop-filter:blur(24px) saturate(220%) brightness(1.01);
+    rgba(255,255,255,.90) 0%,
+    rgba(255,255,255,.68) 55%,
+    rgba(255,255,255,.50) 100%);
+  border:1px solid rgba(255,255,255,.80);
+  border-top:1px solid rgba(255,255,255,.98);
+  backdrop-filter:blur(32px) saturate(140%) brightness(1.14);
+  -webkit-backdrop-filter:blur(32px) saturate(140%) brightness(1.14);
   border-radius:24px;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.85),
-    inset 0 -1px 0 rgba(109,40,217,.20),
-    0 16px 48px rgba(109,40,217,.22),
-    0 4px 14px rgba(91,33,182,.16),
-    0 0 0 1px rgba(124,58,237,.18);
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 -1px 0 rgba(230,235,245,.25),
+    0 16px 48px rgba(0,0,0,.09),
+    0 4px 14px rgba(0,0,0,.06),
+    0 0 0 1px rgba(255,255,255,.55);
   position:relative;overflow:hidden;
 }
 .glass::before{
   content:'';position:absolute;inset:0;
   border-radius:inherit;
   background:linear-gradient(138deg,
+    rgba(255,255,255,.90) 0%,
+    rgba(255,255,255,.28) 48%,
+    rgba(255,255,255,.06) 100%);
+  pointer-events:none;
+}
+/* Cursor-tracking spotlight — hidden until JS sets --mx/--my on hover */
+.glass::after{
+  content:'';position:absolute;inset:0;
+  border-radius:inherit;
+  background:radial-gradient(
+    220px circle at var(--mx,50%) var(--my,50%),
     rgba(255,255,255,.55) 0%,
-    rgba(196,181,253,.25) 45%,
-    rgba(124,58,237,.14) 100%);
+    rgba(255,255,255,.18) 40%,
+    transparent 70%
+  );
+  opacity:0;
   pointer-events:none;
+  transition:opacity .25s ease;
+  z-index:1;
 }
-.glass-shimmer{
-  position:absolute;inset:0;border-radius:inherit;
-  background:linear-gradient(105deg,
-    transparent 32%,
-    rgba(255,255,255,.70) 44%,
-    rgba(216,180,254,.40) 52%,
-    transparent 64%);
-  background-size:200% 100%;
-  animation:shimmer 4s linear infinite;
-  pointer-events:none;
-}
+.glass:hover::after{ opacity:1 }
+.glass-shimmer{ display:none }
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* ── ADVISORS SECTION ── */
@@ -586,12 +564,12 @@ section{position:relative;z-index:5}
   border-radius:24px;
   transition:transform .35s cubic-bezier(.22,.97,.54,1.05),box-shadow .35s;
 }
-.advisor-card:hover{transform:translateY(-6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 16px 48px rgba(0,0,0,.14)}
+.advisor-card:hover{transform:translateY(-6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 20px 56px rgba(0,0,0,.14),0 0 0 1px rgba(255,255,255,.70)}
 .advisor-avatar{
   width:72px;height:72px;border-radius:50%;
   overflow:hidden;margin-bottom:18px;
-  border:2px solid rgba(109,40,217,.25);
-  box-shadow:0 4px 16px rgba(109,40,217,.15);
+  border:2px solid rgba(255,255,255,.70);
+  box-shadow:0 4px 16px rgba(0,0,0,.10);
   flex-shrink:0;
 }
 .advisor-avatar img{width:100%;height:100%;object-fit:cover}
@@ -635,8 +613,8 @@ section{position:relative;z-index:5}
 .advisor-btn{
   display:block;width:100%;
   padding:11px 0;margin-top:20px;
-  background:rgba(109,40,217,.08);
-  border:1px solid rgba(109,40,217,.25);
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.80);
   border-radius:100px;color:var(--p);
   font-size:13px;font-weight:600;letter-spacing:.04em;
   font-family:'Space Grotesk',sans-serif;
@@ -664,14 +642,14 @@ section{position:relative;z-index:5}
   transition:background .3s,border-color .3s;
 }
 .how-step.active{
-  background:rgba(109,40,217,.07);
-  border-color:rgba(109,40,217,.22) !important;
+  background:rgba(255,255,255,.18);
+  border-color:rgba(255,255,255,.55) !important;
 }
 .step-num{
   min-width:42px;height:42px;
   border-radius:12px;
-  background:rgba(109,40,217,.1);
-  border:1px solid rgba(109,40,217,.25);
+  background:rgba(255,255,255,.22);
+  border:1px solid rgba(255,255,255,.55);
   display:flex;align-items:center;justify-content:center;
   font-family:'Playfair Display',serif;
   font-size:18px;font-weight:700;color:var(--p);
@@ -679,8 +657,8 @@ section{position:relative;z-index:5}
   transition:background .3s,box-shadow .3s;
 }
 .how-step.active .step-num{
-  background:rgba(109,40,217,.2);
-  box-shadow:0 4px 18px rgba(109,40,217,.25);
+  background:rgba(255,255,255,.38);
+  box-shadow:0 4px 18px rgba(0,0,0,.12);
 }
 .step-text h3{
   font-family:'Playfair Display',serif;
@@ -721,8 +699,9 @@ section{position:relative;z-index:5}
 .how-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:280px}
 .how-tag{
   padding:8px 16px;border-radius:100px;
-  background:rgba(109,40,217,.07);
-  border:1px solid rgba(109,40,217,.18);
+  background:rgba(255,255,255,.60);
+  border:1px solid rgba(255,255,255,.82);
+  backdrop-filter:blur(12px);
   font-size:12px;font-weight:600;color:rgba(0,0,0,.6);
   letter-spacing:.04em;
 }
@@ -746,8 +725,8 @@ section{position:relative;z-index:5}
 }
 .spec-icon{
   width:52px;height:52px;border-radius:16px;
-  background:rgba(109,40,217,.1);
-  border:1px solid rgba(109,40,217,.2);
+  background:rgba(255,255,255,.70);
+  border:1px solid rgba(255,255,255,.88);
   display:flex;align-items:center;justify-content:center;
   margin-bottom:22px;
   font-size:22px;
@@ -764,8 +743,9 @@ section{position:relative;z-index:5}
 .spec-tag{
   display:inline-block;
   padding:5px 12px;border-radius:100px;
-  background:rgba(109,40,217,.08);
-  border:1px solid rgba(109,40,217,.2);
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.75);
+  backdrop-filter:blur(12px);
   font-size:10.5px;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;color:var(--p);
 }
@@ -788,7 +768,7 @@ section{position:relative;z-index:5}
 .testi-author{display:flex;align-items:center;gap:12px}
 .testi-avatar{
   width:38px;height:38px;border-radius:50%;
-  border:1px solid rgba(109,40,217,.25);
+  border:1px solid rgba(255,255,255,.65);
   overflow:hidden;display:flex;align-items:center;justify-content:center;
   font-size:15px;font-weight:700;
   color:#fff;flex-shrink:0;
@@ -828,7 +808,7 @@ section{position:relative;z-index:5}
   transition:border-color .2s,background .2s;
 }
 .cta-input::placeholder{color:rgba(0,0,0,.35)}
-.cta-input:focus{border-color:rgba(109,40,217,.4);background:rgba(109,40,217,.05)}
+.cta-input:focus{border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.55);box-shadow:0 0 0 3px rgba(255,255,255,.20)}
 .cta-input:focus::placeholder{color:rgba(0,0,0,.25)}
 .cta-note{
   margin-top:16px;font-size:11.5px;
@@ -897,8 +877,8 @@ footer{
 <div id="cur-dot"></div>
 <div id="cur-ring"></div>
 
-<!-- Full-screen Three.js canvas -->
-<canvas id="vol-bg"></canvas>
+<!-- Scroll-driven video background -->
+<video id="scroll-vid" src="0517-scrub.mp4" preload="auto" muted playsinline disablepictureinpicture></video>
 <canvas id="bg"></canvas>
 
 <!-- Sphere interactive aura rings -->
@@ -929,7 +909,7 @@ footer{
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo">Lumin<em>ary</em></a>
+  <a href="#" class="nav-logo">LUMIN<em>ARY</em></a>
   <div class="nav-links">
     <a href="#advisors">Advisors</a>
     <a href="#how">How it works</a>
@@ -1110,7 +1090,7 @@ footer{
           <span class="how-tag">Dreams</span>
         </div>
         <div class="how-match-line"></div>
-        <div style="padding:14px 20px;border-radius:12px;background:rgba(109,40,217,.1);border:1px solid rgba(109,40,217,.3);font-size:12px;color:var(--p);letter-spacing:.08em;text-transform:uppercase;font-weight:700">
+        <div style="padding:14px 20px;border-radius:12px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.88);backdrop-filter:blur(16px);font-size:12px;color:var(--p);letter-spacing:.08em;text-transform:uppercase;font-weight:700">
           98% Match Found
         </div>
       </div>
@@ -1428,36 +1408,37 @@ const glass = new THREE.Mesh(
       varying vec3 vN,vV,vWN;
       void main(){
         float ndv=max(dot(normalize(vN),normalize(vV)),0.);
-        float f=pow(1.-ndv,1.55);
+        // Tight Fresnel — high exponent keeps rim thin, surface reads as hard glass
+        float f=pow(1.-ndv,3.2);
         float up=clamp((vWN.y+1.)*.5,0.,1.);
-        // Vivid purple rim
         vec3 top =vec3(0.74,0.42,1.00);
         vec3 side=vec3(0.42,0.03,0.92);
         vec3 rim =mix(side,top,pow(up,1.2));
-        // Primary specular
+        // Primary specular — sharp highlight
         vec3 L=normalize(vec3(-.38,.76,.46));
-        float sp=pow(max(dot(reflect(-L,vWN),normalize(vV)),0.),64.);
-        vec3 sc=vec3(0.86,0.68,1.0)*sp*4.5;
+        float sp=pow(max(dot(reflect(-L,vWN),normalize(vV)),0.),96.);
+        vec3 sc=vec3(0.95,0.85,1.0)*sp*5.5;
         // Secondary specular
         vec3 L2=normalize(vec3(.5,-.3,-.7));
-        float sp2=pow(max(dot(reflect(-L2,vWN),normalize(vV)),0.),120.);
-        vec3 sc2=vec3(0.60,0.20,1.0)*sp2*1.8;
-        // Animated caustic — drifts in figure-8, makes sphere look like real crystal
+        float sp2=pow(max(dot(reflect(-L2,vWN),normalize(vV)),0.),180.);
+        vec3 sc2=vec3(0.70,0.30,1.0)*sp2*2.2;
+        // Animated caustic
         vec3 L3=normalize(vec3(
           sin(uSTime*.31)*.88,
           cos(uSTime*.19)*.65,
           cos(uSTime*.27)*.5+0.38
         ));
-        float sp3=pow(max(dot(reflect(-L3,vWN),normalize(vV)),0.),160.);
-        vec3 sc3=vec3(0.70,0.28,1.00)*sp3*3.2;
-        // Rainbow iridescent caustic on opposite arc (hue shifts over time)
+        float sp3=pow(max(dot(reflect(-L3,vWN),normalize(vV)),0.),200.);
+        vec3 sc3=vec3(0.70,0.28,1.00)*sp3*4.0;
+        // Iridescent caustic
         float hue=sin(uSTime*.44)*.5+.5;
         vec3 causticCol=mix(vec3(0.55,0.25,1.0),vec3(0.28,0.68,1.0),hue);
-        vec3 L3b=normalize(vec3(-L3.x*0.9,-L3.y*.7, L3.z));
-        float sp4=pow(max(dot(reflect(-L3b,vWN),normalize(vV)),0.),260.);
-        vec3 sc4=causticCol*sp4*1.9;
-        float alpha=clamp(f*1.20+sp*.99+sp2*.5+sp3*.75+sp4*.4,0.,1.);
-        gl_FragColor=vec4(rim*f*1.20+sc+sc2+sc3+sc4, alpha);
+        vec3 L3b=normalize(vec3(-L3.x*0.9,-L3.y*.7,L3.z));
+        float sp4=pow(max(dot(reflect(-L3b,vWN),normalize(vV)),0.),320.);
+        vec3 sc4=causticCol*sp4*2.5;
+        // Alpha: rim only at edge, specular drives interior presence
+        float alpha=clamp(f*1.10+sp*1.1+sp2*.6+sp3*.9+sp4*.5,0.,1.);
+        gl_FragColor=vec4(rim*f*1.10+sc+sc2+sc3+sc4, alpha);
       }`,
   })
 );
@@ -1508,7 +1489,7 @@ const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene,camera));
 const bloom = new UnrealBloomPass(
   new THREE.Vector2(innerWidth,innerHeight),
-  IS_MOB ? .7 : 1.05, 0.22, 0.42
+  IS_MOB ? .35 : 0.45, 0.04, 0.75
 );
 composer.addPass(bloom);
 
@@ -1517,7 +1498,7 @@ const state = {
   sphereScale:   1,
   sphereX:       SX,
   sphereOpacity: 1,
-  bloomStrength: IS_MOB ? .7 : 1.1,
+  bloomStrength: IS_MOB ? .4 : 0.55,
   ambientOpacity:0,
   bgBrightness:  1,
 };
@@ -1609,6 +1590,15 @@ document.querySelectorAll('a,button,.advisor-card,.spec-card,.testi-card,.how-st
   el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
 });
 
+// ── Glass cursor spotlight — tracks mouse inside each card ────────────────────
+document.querySelectorAll('.glass').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+    card.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
+  });
+});
+
 // ─── Aura parallax + scroll fade ─────────────────────────────────────────────
 (function(){
   const aura = document.getElementById('sphere-aura');
@@ -1624,10 +1614,13 @@ document.querySelectorAll('a,button,.advisor-card,.spec-card,.testi-card,.how-st
     requestAnimationFrame(tick);
     aura.style.transform = `translate(calc(-50% + ${ax.toFixed(2)}px), calc(-50% + ${ay.toFixed(2)}px))`;
   })();
+  const bgCanvas = document.getElementById('bg');
   const heroH = window.innerHeight;
   window.addEventListener('scroll', ()=>{
-    const p = Math.min(scrollY / (heroH * 0.65), 1);
-    aura.style.opacity = 1 - p;
+    const p = Math.min(scrollY / (heroH * 0.70), 1);
+    const fadeOut = 1 - p;
+    aura.style.opacity = fadeOut;
+    if(bgCanvas) bgCanvas.style.opacity = fadeOut;
   }, {passive:true});
 })();
 
@@ -1678,7 +1671,7 @@ requestAnimationFrame(()=>{
       window.__bgState.sphereScale   = 1 - p * 0.18;
       window.__bgState.sphereX       = 4.2 + p * 1.4;
       window.__bgState.ambientOpacity= p * 0.22;
-      window.__bgState.bloomStrength = 1.1 + p * 0.3;
+      window.__bgState.bloomStrength = 0.55 + p * 0.15;
     }
   });
 
@@ -1691,7 +1684,7 @@ requestAnimationFrame(()=>{
       window.__bgState.sphereScale    = 0.82 - p * 0.12;
       window.__bgState.sphereOpacity  = 1 - p * 0.4;
       window.__bgState.ambientOpacity = 0.22 + p * 0.18;
-      window.__bgState.bloomStrength  = 1.22 + p * 0.2;
+      window.__bgState.bloomStrength  = 0.62 + p * 0.12;
     }
   });
 
@@ -1703,7 +1696,7 @@ requestAnimationFrame(()=>{
       const p = self.progress;
       window.__bgState.sphereOpacity  = 0.6 - p * 0.4;
       window.__bgState.ambientOpacity = 0.4 + p * 0.2;
-      window.__bgState.bloomStrength  = 1.42 + p * 0.18;
+      window.__bgState.bloomStrength  = 0.72 + p * 0.10;
     }
   });
 
@@ -1715,7 +1708,7 @@ requestAnimationFrame(()=>{
       const p = self.progress;
       window.__bgState.sphereOpacity  = Math.max(0, 0.2 - p * 0.2);
       window.__bgState.ambientOpacity = 0.6 + p * 0.2;
-      window.__bgState.bloomStrength  = 1.6 + p * 0.4;
+      window.__bgState.bloomStrength  = 0.80 + p * 0.15;
     }
   });
 });
@@ -1783,230 +1776,46 @@ ScrollTrigger.create({
 });
 </script>
 
-<!-- ── Volumetric Crepuscular Beams — scroll-reactive, matches reference image ── -->
-<script type="module">
-import * as THREE from 'three';
+<!-- ── Scroll-driven video background ── -->
+<script>
+(function(){
+  const vid = document.getElementById('scroll-vid');
+  const VIDEO_DUR = 11.667;
 
-const volCanvas = document.getElementById('vol-bg');
+  let ready = false;
+  vid.addEventListener('loadedmetadata', () => { ready = true; });
+  vid.addEventListener('canplay', () => { ready = true; });
+  vid.load();
 
-// ── Renderer ─────────────────────────────────────────────────────────────────
-const vr = new THREE.WebGLRenderer({ canvas: volCanvas, antialias: false });
-vr.setPixelRatio(Math.min(devicePixelRatio, 1.5));
-vr.setSize(innerWidth, innerHeight);
+  let targetOpacity = 0, currentOpacity = 0;
+  let targetVidTime = 0, currentVidTime = 0;
 
-const vScene  = new THREE.Scene();
-const vCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  window.addEventListener('scroll', () => {
+    const hh = document.getElementById('hero')?.offsetHeight || innerHeight;
+    const maxScroll = Math.max(document.body.scrollHeight - innerHeight, 1);
 
-// ── Vertex shader ─────────────────────────────────────────────────────────────
-const volVert = `
-varying vec2 vUv;
-void main(){
-  vUv = uv;
-  gl_Position = vec4(position.xy, 0.0, 1.0);
-}`;
+    // Fade: starts at 25% of hero, DONE at exactly heroH (the second page boundary)
+    targetOpacity = Math.min(Math.max((scrollY - hh * 0.25) / (hh * 0.75), 0), 1);
 
-// ── Fragment shader: crepuscular vertical light shafts ────────────────────────
-// 40% white · 35% purple · 25% dark — matching the reference image
-// Multi-lobe Gaussian beams, perspective convergence, organic vertical texture,
-// large left-side ambient bloom, smooth hero→dark transition via uScrollProgress
-const volFrag = `
-precision highp float;
-varying vec2 vUv;
+    // Scrub: start after 50% of hero, map remaining scroll to full video duration
+    const after = Math.max(scrollY - hh * 0.5, 0);
+    const range = Math.max(maxScroll - hh * 0.5, 1);
+    targetVidTime = Math.min((after / range) * VIDEO_DUR, VIDEO_DUR - 0.001);
+  }, { passive: true });
 
-uniform float uTime;
-uniform vec2  uResolution;
-uniform vec2  uMouse;
-uniform float uScrollProgress;
-uniform float uScrollOffset;
+  (function tick() {
+    requestAnimationFrame(tick);
 
-float hash(vec2 p){
-  p = fract(p * vec2(127.1,311.7));
-  p += dot(p, p+34.45);
-  return fract(p.x*p.y);
-}
+    // Smooth opacity fade — faster lerp so it completes exactly at page boundary
+    currentOpacity += (targetOpacity - currentOpacity) * 0.10;
+    vid.style.opacity = currentOpacity.toFixed(4);
 
-float snoise(vec2 p){
-  vec2 i = floor(p), f = fract(p);
-  f = f*f*(3.0-2.0*f);
-  return mix(
-    mix(hash(i),          hash(i+vec2(1,0)), f.x),
-    mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)), f.x), f.y);
-}
-
-// One crepuscular beam at normalised screen position cx
-// coreR  = half-width of white core
-// haloR  = half-width of purple halo
-// id     = used to de-correlate noise per beam
-vec3 beam(vec2 uv, float cx, float coreR, float haloR, float id){
-  float t = uTime;
-
-  // Perspective: beams converge slightly toward a high vanishing point
-  // uv.y in [-1,1]; top of screen → beams are narrower (look further away)
-  float persp = 0.72 + 0.28 * clamp((-uv.y + 1.0) * 0.45, 0.0, 1.0);
-  float bx    = cx * persp;
-
-  // Per-beam slow horizontal shimmer
-  float shimX = 0.011 * sin(t * 0.22 + id * 2.3)
-               + 0.006 * sin(t * 0.37 + id * 5.1);
-  float dx    = uv.x - (bx + shimX);
-
-  // Organic vertical texture — two octaves of noise along the beam
-  float ny  = snoise(vec2(id * 3.7 + 0.5, uv.y * 2.8 + t * 0.11)) * 0.5 + 0.5;
-  float ny2 = snoise(vec2(id * 1.9 + 2.1, uv.y * 6.5 + t * 0.17)) * 0.5 + 0.5;
-  float tex  = 0.60 + 0.40 * mix(ny, ny2, 0.45);
-
-  // Three Gaussian lobes: ultra-bright core / purple halo / wide ambient glow
-  float core = exp(-dx*dx / (coreR*coreR));
-  float halo = exp(-dx*dx / (haloR*haloR));
-  float glow = exp(-dx*dx / (haloR*haloR * 5.5));
-
-  // Vertical envelope: full brightness in mid-screen, fade near top/bottom
-  float yEnv = smoothstep(-1.05, -0.25, uv.y)
-             * (0.55 + 0.45 * smoothstep(1.15, 0.10, uv.y));
-
-  // Color palette — 40% white, 35% purple, 25% dark
-  vec3 cWhite = vec3(0.97, 0.93, 1.00);   // overexposed white-violet core
-  vec3 cPurp  = vec3(0.52, 0.12, 0.88);   // vivid purple halo
-  vec3 cDim   = vec3(0.22, 0.05, 0.40);   // deep dim-purple ambient
-
-  // Blend colors: dim purple baseline → vivid purple halo → white core
-  vec3 col = cDim;
-  col      = mix(col, cPurp,  clamp(halo * 2.8, 0.0, 1.0));
-  col      = mix(col, cWhite, clamp(core * 1.6, 0.0, 1.0));
-
-  // Final intensity with texture and vertical envelope
-  float intensity = (core * 1.55 + halo * 0.60 + glow * 0.18) * tex * yEnv;
-  return col * intensity;
-}
-
-void main(){
-  // Early-exit: if fully at hero, render white (cheap — just clear color)
-  if(uScrollProgress < 0.005){
-    gl_FragColor = vec4(1.0);
-    return;
-  }
-
-  vec2 res = uResolution;
-  vec2 uv  = (gl_FragCoord.xy * 2.0 - res) / res.y;
-
-  // Subtle mouse parallax — tilts the beam field slightly
-  float mx = (uMouse.x * 2.0 - 1.0) * 0.055;
-  float my = (uMouse.y * 2.0 - 1.0) * 0.028;
-  uv.x -= mx;  uv.y -= my;
-
-  // Scroll-driven vertical parallax: field drifts upward as user scrolls
-  uv.y += uScrollOffset * 0.12;
-
-  // Horizontal drift from scroll (slow, organic)
-  float sd = uScrollOffset * 0.9;
-
-  // ── Five beams: 3 heavy left cluster + 2 right (matches reference image) ──
-  vec3 col = vec3(0.0);
-  col += beam(uv, -0.82 + sd*0.055, 0.052, 0.255, 0.0) * 1.30;
-  col += beam(uv, -0.50 + sd*0.040, 0.068, 0.310, 1.0) * 1.45;
-  col += beam(uv, -0.16 + sd*0.048, 0.044, 0.195, 2.0) * 1.15;
-  col += beam(uv,  0.30 + sd*0.062, 0.036, 0.165, 3.0) * 1.05;
-  col += beam(uv,  0.74 + sd*0.035, 0.030, 0.138, 4.0) * 0.92;
-
-  // ── Large diffuse ambient bloom — the big hazy glow on the left ──────────
-  float lhx  = uv.x + 0.55 + sd * 0.03;
-  float lhaze = exp(-(lhx*lhx) / (1.05*1.05));
-  float yh   = smoothstep(-0.85, 0.45, uv.y) * smoothstep(1.25, 0.20, uv.y);
-  col += vec3(0.28, 0.07, 0.52) * lhaze * yh * 0.55;
-
-  // ── Dark background with slight purple base ───────────────────────────────
-  vec3 bg = vec3(0.028, 0.012, 0.052);
-  col     = bg + col;
-
-  // ── Vignette (stronger corners, gentler center) ───────────────────────────
-  float vig = 1.0 - 0.42 * dot(uv * vec2(0.65, 0.50), uv * vec2(0.65, 0.50));
-  col *= clamp(vig, 0.0, 1.0);
-
-  // ── Film grain for organic texture ────────────────────────────────────────
-  col += (hash(gl_FragCoord.xy + fract(uTime * 57.3)) - 0.5) * 0.030;
-
-  // ── Reinhard tone map + gamma ─────────────────────────────────────────────
-  col  = col / (1.0 + col * 0.78);
-  col  = pow(max(col, vec3(0.0)), vec3(1.0 / 2.08));
-
-  // ── Smooth hero→beams transition ─────────────────────────────────────────
-  // smoothstep gives an S-curve: no hard start/end to the reveal
-  float reveal = smoothstep(0.0, 1.0, uScrollProgress);
-  col = mix(vec3(1.0), col, reveal);
-
-  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
-}`;
-
-// ── Uniforms ──────────────────────────────────────────────────────────────────
-const vUniforms = {
-  uTime:           { value: 0 },
-  uResolution:     { value: new THREE.Vector2(
-    innerWidth  * vr.getPixelRatio(),
-    innerHeight * vr.getPixelRatio()
-  )},
-  uMouse:          { value: new THREE.Vector2(0.5, 0.5) },
-  uScrollProgress: { value: 0.0 },   // 0=hero(white) → 1=sections(dark beams)
-  uScrollOffset:   { value: 0.0 },   // accumulates with scroll for drift
-};
-
-const vMesh = new THREE.Mesh(
-  new THREE.PlaneGeometry(2, 2),
-  new THREE.ShaderMaterial({
-    vertexShader:  volVert,
-    fragmentShader: volFrag,
-    uniforms:      vUniforms,
-    depthTest:  false,
-    depthWrite: false,
-    side: THREE.DoubleSide,
-  })
-);
-vScene.add(vMesh);
-
-// ── Resize ────────────────────────────────────────────────────────────────────
-window.addEventListener('resize', () => {
-  vr.setSize(innerWidth, innerHeight);
-  const dpr = vr.getPixelRatio();
-  vUniforms.uResolution.value.set(innerWidth * dpr, innerHeight * dpr);
-}, { passive: true });
-
-// ── Mouse ─────────────────────────────────────────────────────────────────────
-let vmx = 0.5, vmy = 0.5, smx = 0.5, smy = 0.5;
-window.addEventListener('mousemove', e => {
-  vmx = e.clientX / innerWidth;
-  vmy = 1 - e.clientY / innerHeight;
-}, { passive: true });
-
-// ── Scroll state ──────────────────────────────────────────────────────────────
-let targetProgress = 0.0, currentProgress = 0.0;
-let targetOffset   = 0.0;
-
-const getHeroH = () => document.getElementById('hero')?.offsetHeight || innerHeight;
-
-window.addEventListener('scroll', () => {
-  const hh = getHeroH();
-  // Transition: starts at 35% of hero, fully dark by 115% (just past hero fold)
-  // Transition: starts at 60% of hero height, fully dark at 155% (55vh past hero fold)
-  // Long window (0.95×heroH) ensures the reveal never feels sudden
-  targetProgress = Math.min(Math.max((scrollY - hh * 0.60) / (hh * 0.95), 0), 1);
-  // Slow cumulative drift for horizontal + vertical beam movement
-  targetOffset   = scrollY * 0.00022;
-}, { passive: true });
-
-// ── Render loop ───────────────────────────────────────────────────────────────
-const vClock = new THREE.Clock();
-(function volTick() {
-  requestAnimationFrame(volTick);
-
-  // Smooth interpolation toward scroll target (feels responsive but not jumpy)
-  currentProgress += (targetProgress - currentProgress) * 0.032;
-  smx += (vmx - smx) * 0.06;
-  smy += (vmy - smy) * 0.06;
-  vUniforms.uScrollOffset.value   += (targetOffset - vUniforms.uScrollOffset.value) * 0.055;
-  vUniforms.uScrollProgress.value  = currentProgress;
-  vUniforms.uMouse.value.set(smx, smy);
-  vUniforms.uTime.value = vClock.getElapsedTime();
-
-  vr.render(vScene, vCamera);
+    // Fast lerp on video time — tracks scroll closely without jitter
+    currentVidTime += (targetVidTime - currentVidTime) * 0.12;
+    if (ready && Math.abs(vid.currentTime - currentVidTime) > 0.008) {
+      try { vid.currentTime = currentVidTime; } catch(e) {}
+    }
+  })();
 })();
 </script>
 
