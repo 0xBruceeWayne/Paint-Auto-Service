@@ -138,13 +138,19 @@ nav.scrolled{
   padding:9px 22px;
   border-radius:100px;
   border:1px solid rgba(167,139,250,.35);
-  background:linear-gradient(135deg,var(--p) 0%,var(--pd) 100%);
+  background:linear-gradient(160deg,#a855f7 0%,var(--pd) 55%,#5b21b6 100%);
   box-shadow:
-    0 3px 0 rgba(60,10,120,.45),
-    0 6px 18px rgba(109,40,217,.30),
-    inset 0 1px 0 rgba(255,255,255,.22);
+    0 3px 0 rgba(50,5,100,.52),
+    0 6px 18px rgba(109,40,217,.35),
+    inset 0 1px 0 rgba(255,255,255,.36),
+    inset 0 -1px 0 rgba(0,0,0,.16);
   transition:transform .08s cubic-bezier(.34,1.56,.64,1),box-shadow .08s ease,filter .15s ease;
   position:relative;top:0;cursor:none;user-select:none;
+}
+.nav-cta::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,transparent 55%);
+  pointer-events:none;
 }
 .nav-cta:hover{
   filter:brightness(1.14);
@@ -234,27 +240,63 @@ h1.hero-title em:hover{
 }
 .btn-primary{
   padding:15px 34px;
-  background:linear-gradient(135deg,var(--pd),var(--p));
+  background:linear-gradient(160deg,#a855f7 0%,var(--pd) 55%,#5b21b6 100%);
   border:none;border-radius:100px;
   color:#fff;font-size:15px;font-weight:600;
   font-family:'Space Grotesk',sans-serif;
   cursor:none;text-decoration:none;
-  box-shadow:0 4px 22px rgba(109,40,217,.4),inset 0 1px 0 rgba(255,255,255,.2);
-  transition:box-shadow .25s,transform .2s;
+  position:relative;
+  box-shadow:
+    0 4px 0 rgba(50,5,100,.55),
+    0 8px 28px rgba(109,40,217,.45),
+    inset 0 1px 0 rgba(255,255,255,.38),
+    inset 0 -1px 0 rgba(0,0,0,.18);
+  transition:box-shadow .12s,transform .1s cubic-bezier(.34,1.56,.64,1),filter .15s;
 }
-.btn-primary:hover{box-shadow:0 6px 36px rgba(109,40,217,.6),0 2px 12px rgba(91,33,182,.4);transform:translateY(-1px)}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,transparent 55%);
+  pointer-events:none;
+}
+.btn-primary:hover{
+  filter:brightness(1.12);
+  box-shadow:0 6px 0 rgba(50,5,100,.55),0 12px 36px rgba(109,40,217,.55),inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,0,0,.18);
+  transform:translateY(-2px);
+}
+.btn-primary:active{
+  transform:translateY(3px) scale(.97);
+  box-shadow:0 1px 0 rgba(50,5,100,.55),0 3px 10px rgba(109,40,217,.3),inset 0 2px 6px rgba(0,0,0,.22);
+}
 .btn-ghost{
   padding:14px 28px;
-  background:transparent;
-  border:1px solid rgba(0,0,0,.15);
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(18px) saturate(180%);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);
+  border:1px solid rgba(255,255,255,.9);
   border-radius:100px;color:#333;
-  font-size:15px;font-weight:500;
+  font-size:15px;font-weight:600;
   font-family:'Space Grotesk',sans-serif;
   cursor:none;text-decoration:none;
   display:inline-flex;align-items:center;gap:8px;
-  transition:border-color .2s,background .2s;
+  position:relative;
+  box-shadow:
+    0 3px 0 rgba(0,0,0,.10),
+    0 6px 20px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(0,0,0,.06);
+  transition:box-shadow .12s,transform .1s cubic-bezier(.34,1.56,.64,1),background .2s;
 }
-.btn-ghost:hover{border-color:rgba(109,40,217,.4);background:rgba(109,40,217,.05);color:var(--p)}
+.btn-ghost::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.5) 0%,transparent 50%);
+  pointer-events:none;
+}
+.btn-ghost:hover{
+  background:rgba(255,255,255,.9);color:var(--p);
+  box-shadow:0 5px 0 rgba(0,0,0,.10),0 10px 28px rgba(0,0,0,.15),inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.06);
+  transform:translateY(-2px);
+}
+.btn-ghost:active{transform:translateY(2px) scale(.97);box-shadow:0 1px 0 rgba(0,0,0,.10),0 2px 8px rgba(0,0,0,.08)}
 .btn-ghost svg{width:11px;height:11px}
 .stat-float{
   position:absolute;z-index:10;
@@ -547,14 +589,15 @@ section{position:relative;z-index:5}
 /* ── Non-hero sections: dark beams background → light text ─────────────────── */
 #advisors .section-title,
 #how .section-title,
-#tarot .section-title,
 #specialties .section-title,
+#testimonials .section-title,
 #cta-section .section-title{ color:#ffffff }
 
 #advisors .section-sub,
 #how .section-sub,
 #tarot .section-sub,
-#specialties .section-sub{ color:#ffffff }
+#specialties .section-sub,
+#testimonials .section-sub{ color:#ffffff }
 
 #cta-section .cta-sub{ color:rgba(255,255,255,.65) }
 
@@ -563,7 +606,9 @@ section{position:relative;z-index:5}
 #specialties p.section-sub[style]{ color:rgba(255,255,255,.68) !important }
 
 /* Inline dark em color on section-title inside dark sections */
-#specialties .section-title em[style]{ color:var(--pll) !important }
+#specialties .section-title em{ color:#000000 !important;font-style:italic }
+#testimonials .section-label{ color:rgba(255,255,255,.6) }
+#testimonials .section-title em[style]{ color:#000000 !important }
 
 
 /* ── Liquid Glass — pure frozen white ice ── */
@@ -625,8 +670,57 @@ section{position:relative;z-index:5}
 }
 .advisors-head{
   display:grid;grid-template-columns:1fr auto;align-items:end;
-  margin-bottom:24px;flex-shrink:0;
+  margin-bottom:14px;flex-shrink:0;
 }
+.advisor-filters{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;
+  margin-bottom:16px;flex-shrink:0;
+}
+.advisor-filters-title{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:800;
+  color:#000;
+  margin-right:10px;white-space:nowrap;
+  letter-spacing:-.01em;
+}
+.advisor-filter-btn{
+  padding:12px 26px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(20px) saturate(200%);
+  -webkit-backdrop-filter:blur(20px) saturate(200%);
+  border:1px solid rgba(255,255,255,.92);
+  border-radius:100px;
+  color:#7c3aed;
+  font-size:14px;font-weight:600;
+  font-family:'Space Grotesk',sans-serif;
+  cursor:none;text-decoration:none;
+  white-space:nowrap;
+  position:relative;
+  box-shadow:
+    0 3px 0 rgba(0,0,0,.10),
+    0 6px 18px rgba(0,0,0,.10),
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 -1px 0 rgba(0,0,0,.05);
+  transition:all .14s cubic-bezier(.34,1.56,.64,1);
+}
+.advisor-filter-btn::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,transparent 55%);
+  pointer-events:none;
+}
+.advisor-filter-btn:hover{
+  background:rgba(255,255,255,.95);
+  box-shadow:0 5px 0 rgba(0,0,0,.10),0 10px 26px rgba(0,0,0,.14),inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.05);
+  transform:translateY(-2px);
+}
+.advisor-filter-btn.active{
+  background:linear-gradient(160deg,#a855f7 0%,var(--pd) 55%,#5b21b6 100%);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 4px 0 rgba(50,5,100,.50),0 8px 24px rgba(109,40,217,.42),inset 0 1px 0 rgba(255,255,255,.35),inset 0 -1px 0 rgba(0,0,0,.16);
+  transform:translateY(-1px);
+}
+.advisor-filter-btn:active{transform:translateY(2px) scale(.97)}
 #advisors .section-label{ margin-bottom:6px;font-size:11.5px }
 #advisors .section-title{ font-size:clamp(24px,2.6vw,38px);margin-bottom:7px;line-height:1.05 }
 #advisors .section-sub{ font-size:13.5px;line-height:1.5;max-width:420px }
@@ -639,7 +733,7 @@ section{position:relative;z-index:5}
 }
 .advisor-card{
   padding:0;
-  border-radius:20px;
+  border-radius:26px;
   display:flex;flex-direction:column;
   height:100%;min-height:0;
   transition:transform .35s cubic-bezier(.22,.97,.54,1.05),box-shadow .35s;
@@ -648,7 +742,7 @@ section{position:relative;z-index:5}
 /* 50% photo area at top */
 .advisor-avatar{
   width:100%;flex:0 0 50%;
-  border-radius:18px 18px 0 0;
+  border-radius:24px 24px 0 0;
   overflow:hidden;margin-bottom:0;
   border:none;box-shadow:none;
 }
@@ -715,7 +809,7 @@ section{position:relative;z-index:5}
 
 /* ── HOW IT WORKS ── */
 #how{
-  padding:110px 80px 50px;
+  padding:80px 80px 80px;
   height:100vh;
   overflow:hidden;
   scroll-snap-align:start;
@@ -736,6 +830,7 @@ section{position:relative;z-index:5}
   padding:22px 24px 24px;
   border-radius:18px;
   cursor:none;
+  position:relative;overflow:hidden;
   transition:transform .35s cubic-bezier(.22,.97,.54,1.05), box-shadow .35s;
 }
 .how-step.active{ transform:translateY(-3px) }
@@ -760,6 +855,18 @@ section{position:relative;z-index:5}
   color:#000;margin-bottom:6px;
 }
 .step-text p{ font-size:13px;color:#222;line-height:1.6 }
+.step-icon{
+  position:absolute;bottom:18px;right:20px;
+  font-size:clamp(48px,5vw,72px);
+  line-height:1;
+  color:#9333ea;
+  opacity:0.18;
+  pointer-events:none;
+  user-select:none;
+  transition:opacity .35s;
+}
+.how-step.active .step-icon{ opacity:0.32; }
+.how-step:hover .step-icon{ opacity:0.38; }
 
 /* ── AI Matcher chat widget ── */
 .how-matcher{
@@ -771,10 +878,11 @@ section{position:relative;z-index:5}
   border-top:1px solid #fff;
   border-radius:20px;
   box-shadow:inset 0 1px 0 #fff, 0 16px 48px rgba(0,0,0,.11), 0 0 0 1px rgba(255,255,255,.8);
-  padding:20px 28px 22px;
-  display:flex;flex-direction:column;gap:14px;
+  padding:18px 28px 22px;
+  display:flex;flex-direction:column;gap:0;
+  align-items:center;justify-content:flex-start;
   position:relative;overflow:hidden;
-  min-height:138px;
+  min-height:160px;
 }
 .how-matcher::before{
   content:'';position:absolute;inset:0;border-radius:inherit;
@@ -782,31 +890,25 @@ section{position:relative;z-index:5}
   pointer-events:none;
 }
 .matcher-top{
-  display:flex;align-items:center;gap:14px;
+  display:flex;align-items:center;justify-content:center;gap:12px;width:100%;
 }
 .matcher-ai-dot{
-  width:34px;height:34px;border-radius:50%;flex-shrink:0;
-  background:radial-gradient(circle at 38% 35%,#c4b5fd,#7c3aed 60%,#4c1d95);
-  box-shadow:0 0 12px rgba(124,58,237,.45),0 0 24px rgba(124,58,237,.18);
-  position:relative;
-}
-.matcher-ai-dot::after{
-  content:'';position:absolute;inset:3px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.6),transparent 65%);
+  font-size:28px;line-height:1;flex-shrink:0;
+  animation:matcher-pulse 2.4s ease-in-out infinite;
+  filter:drop-shadow(0 0 6px rgba(147,51,234,.3));
 }
 @keyframes matcher-pulse{
-  0%,100%{box-shadow:0 0 12px rgba(124,58,237,.45),0 0 24px rgba(124,58,237,.18)}
-  50%{box-shadow:0 0 18px rgba(124,58,237,.7),0 0 36px rgba(124,58,237,.32)}
+  0%,100%{filter:drop-shadow(0 0 6px rgba(147,51,234,.3))}
+  50%{filter:drop-shadow(0 0 14px rgba(147,51,234,.55))}
 }
-.matcher-ai-dot{ animation:matcher-pulse 2.4s ease-in-out infinite }
 .matcher-question{
   font-family:'Playfair Display',serif;
   font-size:17px;font-weight:700;color:#111;
-  flex:1;line-height:1.3;
+  line-height:1.3;text-align:center;
   transition:opacity .3s,transform .3s;
 }
 .matcher-progress{
-  display:flex;gap:5px;align-items:center;margin-left:auto;padding-left:16px;
+  display:flex;gap:5px;align-items:center;padding-left:8px;
 }
 .matcher-dot{
   width:6px;height:6px;border-radius:50%;
@@ -816,24 +918,38 @@ section{position:relative;z-index:5}
 .matcher-dot.active{ background:var(--p);transform:scale(1.3) }
 .matcher-dot.done{ background:rgba(147,51,234,.55) }
 .matcher-options{
-  display:flex;flex-wrap:wrap;gap:8px;
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;width:100%;
+  margin-top:27px;
   transition:opacity .25s,transform .25s;
 }
 .matcher-chip{
-  padding:7px 16px;border-radius:100px;
-  background:rgba(147,51,234,.07);
-  border:1.5px solid rgba(147,51,234,.22);
-  color:#7c3aed;font-size:12.5px;font-weight:600;
+  padding:12px 26px;
+  background:linear-gradient(160deg,#a855f7 0%,var(--pd) 55%,#5b21b6 100%);
+  border:none;border-radius:100px;
+  color:#fff;font-size:13px;font-weight:600;
   font-family:'Space Grotesk',sans-serif;
-  cursor:none;
-  transition:background .18s,border-color .18s,transform .18s,color .18s;
+  cursor:none;position:relative;
+  box-shadow:
+    0 4px 0 rgba(50,5,100,.52),
+    0 8px 24px rgba(109,40,217,.42),
+    inset 0 1px 0 rgba(255,255,255,.36),
+    inset 0 -1px 0 rgba(0,0,0,.16);
+  transition:all .12s cubic-bezier(.34,1.56,.64,1);
+}
+.matcher-chip::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,transparent 55%);
+  pointer-events:none;
 }
 .matcher-chip:hover{
-  background:rgba(147,51,234,.14);border-color:rgba(147,51,234,.55);
-  transform:translateY(-1px);
+  filter:brightness(1.12);
+  box-shadow:0 6px 0 rgba(50,5,100,.52),0 12px 32px rgba(109,40,217,.52),inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,0,0,.18);
+  transform:translateY(-2px);
 }
 .matcher-chip.selected{
-  background:var(--p);border-color:var(--p);color:#fff;transform:scale(.97);
+  filter:brightness(.9);
+  box-shadow:0 1px 0 rgba(50,5,100,.52),0 3px 10px rgba(109,40,217,.3),inset 0 2px 6px rgba(0,0,0,.2);
+  transform:scale(.97) translateY(2px);
 }
 /* result state */
 .matcher-result{
@@ -915,17 +1031,25 @@ section{position:relative;z-index:5}
 
 /* ── SPECIALTIES / TESTIMONIALS ── */
 #specialties{
-  padding:60px 80px;
+  padding:0 80px;
   height:100vh;
   overflow:hidden;
   scroll-snap-align:start;
+  display:flex;flex-direction:column;justify-content:center;gap:0;
+}
+#testimonials{
+  padding:0 80px;
+  height:100vh;
+  overflow:hidden;
+  scroll-snap-align:start;
+  display:flex;flex-direction:column;justify-content:center;gap:0;
 }
 .spec-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:18px;margin-top:28px;
+  gap:16px;margin-top:22px;
 }
 .spec-card{
-  padding:36px 32px;
+  padding:28px 26px;
   border-radius:24px;
 }
 .spec-icon{
@@ -957,29 +1081,32 @@ section{position:relative;z-index:5}
 
 /* Testimonials row */
 .testi-row{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:16px;margin-top:28px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(2,1fr);
+  gap:22px;margin-top:0;
+  max-width:960px;width:100%;margin-left:auto;margin-right:auto;
 }
 .testi-card{
-  padding:28px 28px;border-radius:22px;
+  padding:18px 20px;border-radius:18px;
 }
-.testi-stars{color:var(--p);font-size:13px;letter-spacing:2px;margin-bottom:14px}
+.testi-stars{color:var(--p);font-size:11px;letter-spacing:2px;margin-bottom:8px}
 .testi-quote{
   font-family:'Playfair Display',serif;
-  font-size:16px;font-style:italic;font-weight:400;
-  color:rgba(0,0,0,.72);line-height:1.72;
-  margin-bottom:20px;
+  font-size:12.5px;font-style:italic;font-weight:400;
+  color:rgba(0,0,0,.72);line-height:1.62;
+  margin-bottom:12px;
 }
-.testi-author{display:flex;align-items:center;gap:12px}
+.testi-author{display:flex;align-items:center;gap:9px}
 .testi-avatar{
-  width:38px;height:38px;border-radius:50%;
+  width:30px;height:30px;border-radius:50%;
   border:1px solid rgba(255,255,255,.65);
   overflow:hidden;display:flex;align-items:center;justify-content:center;
-  font-size:15px;font-weight:700;
+  font-size:12px;font-weight:700;
   color:#fff;flex-shrink:0;
 }
-.testi-name{font-size:13px;font-weight:600;color:rgba(0,0,0,.72)}
-.testi-loc{font-size:11px;color:rgba(0,0,0,.38);margin-top:2px}
+.testi-name{font-size:12px;font-weight:600;color:rgba(0,0,0,.72)}
+.testi-loc{font-size:10px;color:rgba(0,0,0,.38);margin-top:1px}
 
 /* ── TAROT DAILY ── */
 #tarot{
@@ -992,15 +1119,16 @@ section{position:relative;z-index:5}
 .tarot-header{
   text-align:center;margin-bottom:36px;flex-shrink:0;
 }
-#tarot .section-label{ font-size:11px;letter-spacing:.18em }
+#tarot .section-label{ font-size:11px;letter-spacing:.18em;color:#000000 }
 #tarot .section-title{
   font-size:clamp(26px,3vw,42px);
   margin-bottom:8px;line-height:1.05;
   color:#ffffff;
 }
+#tarot .section-title em{ color:#000000 !important;font-style:italic; }
 #tarot .section-sub{
   font-size:14px;line-height:1.55;
-  color:rgba(255,255,255,.62);
+  color:#ffffff;
   max-width:480px;margin:0 auto;
 }
 
@@ -1020,6 +1148,21 @@ section{position:relative;z-index:5}
   height:min(calc(100vh - 340px), 400px);
   min-height:260px;
   cursor:pointer;
+  border-radius:24px;
+  transition:box-shadow .3s ease, opacity .4s ease, filter .4s ease;
+}
+.tarot-card-wrapper:hover:not(.tarot-locked){
+  box-shadow:
+    0 0 0 2px rgba(167,139,250,.5),
+    0 0 30px rgba(147,51,234,.45),
+    0 0 60px rgba(147,51,234,.22),
+    0 0 100px rgba(147,51,234,.10);
+}
+.tarot-card-wrapper.tarot-locked{
+  opacity:0.35;
+  filter:grayscale(40%);
+  cursor:not-allowed;
+  pointer-events:none;
 }
 
 /* Inner card — both faces live here */
@@ -1336,7 +1479,7 @@ section{position:relative;z-index:5}
   font-size:clamp(40px,5vw,72px);
   margin-bottom:22px;
 }
-.cta-inner .section-title em{color:var(--pl);font-style:italic}
+.cta-inner .section-title em{color:#000000 !important;font-style:italic}
 .cta-sub{
   font-size:16px;color:rgba(0,0,0,.52);
   line-height:1.7;margin-bottom:48px;max-width:480px;margin-left:auto;margin-right:auto;
@@ -1347,17 +1490,17 @@ section{position:relative;z-index:5}
 }
 .cta-input{
   padding:16px 24px;
-  background:rgba(0,0,0,.04);
-  border:1px solid rgba(0,0,0,.12);
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.35);
   border-radius:100px;
-  color:#111;font-size:15px;font-weight:400;
+  color:#ffffff;font-size:15px;font-weight:400;
   font-family:'Space Grotesk',sans-serif;
   outline:none;width:280px;
   transition:border-color .2s,background .2s;
 }
-.cta-input::placeholder{color:rgba(0,0,0,.35)}
-.cta-input:focus{border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.55);box-shadow:0 0 0 3px rgba(255,255,255,.20)}
-.cta-input:focus::placeholder{color:rgba(0,0,0,.25)}
+.cta-input::placeholder{color:rgba(255,255,255,.55)}
+.cta-input:focus{border-color:rgba(255,255,255,.75);background:rgba(255,255,255,.20);box-shadow:0 0 0 3px rgba(255,255,255,.15)}
+.cta-input:focus::placeholder{color:rgba(255,255,255,.35)}
 .cta-note{
   margin-top:16px;font-size:11.5px;
   color:rgba(0,0,0,.38);letter-spacing:.04em;
@@ -1372,13 +1515,13 @@ section{position:relative;z-index:5}
 }
 .cta-trust-num{
   font-family:'Playfair Display',serif;
-  font-size:28px;font-weight:700;color:#111;
+  font-size:28px;font-weight:700;color:#ffffff;
 }
 .cta-trust-lbl{
   font-size:10.5px;font-weight:600;letter-spacing:.14em;
-  text-transform:uppercase;color:rgba(0,0,0,.42);
+  text-transform:uppercase;color:rgba(255,255,255,.62);
 }
-.cta-trust-div{width:1px;height:44px;background:rgba(0,0,0,.1)}
+.cta-trust-div{width:1px;height:44px;background:rgba(255,255,255,.2)}
 
 /* ── Footer ── */
 footer{
@@ -1514,9 +1657,20 @@ footer{
     <div>
       <div class="section-label" style="color:#000000">Our Gifted Advisors</div>
       <h2 class="section-title">Meet your <em style="color:#000000;font-style:italic">guide</em></h2>
-      <p class="section-sub" style="color:#ffffff">Hand-picked, community-reviewed psychics and readers — trusted to show up with genuine care.</p>
     </div>
     <a href="#" class="btn-ghost" style="white-space:nowrap;background:#ffffff;border-color:#ffffff;color:#111111;">View All →</a>
+  </div>
+
+  <div class="advisor-filters">
+    <a class="advisor-filter-btn active" href="#">Love readings</a>
+    <a class="advisor-filter-btn" href="#">Psychic readings</a>
+    <a class="advisor-filter-btn" href="#">Tarot readings</a>
+    <a class="advisor-filter-btn" href="#">Astrology & Horoscopes</a>
+    <a class="advisor-filter-btn" href="#">Angel insights</a>
+    <a class="advisor-filter-btn" href="#">Oracle guidance</a>
+    <a class="advisor-filter-btn" href="#">Dream analysis</a>
+    <a class="advisor-filter-btn" href="#">Spiritual medium</a>
+    <a class="advisor-filter-btn" href="#">Theta Healing</a>
   </div>
 
   <div class="advisors-grid">
@@ -1525,11 +1679,11 @@ footer{
     <div class="advisor-card glass" id="adv1">
       <div class="glass-shimmer"></div>
       <div class="advisor-avatar">
-        <img src="Media/51XD69TCESL._AC_UF894,1000_QL80_.jpg" alt="Luna Rosé" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#7c3aed,#a78bfa)&quot;>L</div>'">
+        <img src="Media/daniela-rich.jpg" alt="Daniela Rich" style="object-position:center 18%" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#7c3aed,#a78bfa)&quot;>D</div>'">
       </div>
       <div class="advisor-card-body">
         <div class="advisor-card-body-top">
-          <div class="advisor-name">Luna Rosé</div>
+          <div class="advisor-name">Daniela Rich</div>
           <div class="advisor-spec">Tarot · Clairvoyance</div>
           <div class="advisor-bio">Specializes in love, relationships, and life transitions. 12 years of practice with 4,200+ verified readings.</div>
         </div>
@@ -1547,17 +1701,17 @@ footer{
     <div class="advisor-card glass" id="adv2">
       <div class="glass-shimmer"></div>
       <div class="advisor-avatar">
-        <img src="Media/71QKgvoSR8L._AC_UF894,1000_QL80_.jpg" alt="Orion Vale" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#5b21b6,#7c3aed)&quot;>O</div>'">
+        <img src="Media/advisor-2.jpg" alt="Elena Voss" style="object-position:center 12%" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#5b21b6,#7c3aed)&quot;>E</div>'">
       </div>
       <div class="advisor-card-body">
         <div class="advisor-card-body-top">
-          <div class="advisor-name">Orion Vale</div>
-          <div class="advisor-spec">Astrology · Numerology</div>
-          <div class="advisor-bio">Vedic and Western astrology master. Birth chart readings, timing forecasts, and karmic path analysis.</div>
+          <div class="advisor-name">Elena Voss</div>
+          <div class="advisor-spec">Clairvoyance · Love</div>
+          <div class="advisor-bio">Intuitive reader with a gift for love and soul-path clarity. 9 years of practice with 3,800+ readings.</div>
         </div>
         <div>
           <div class="advisor-footer">
-            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.95</div>
+            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.96</div>
             <span class="advisor-status status-online">● Online</span>
           </div>
           <a href="#" class="advisor-btn">Connect Now</a>
@@ -1569,17 +1723,17 @@ footer{
     <div class="advisor-card glass" id="adv3">
       <div class="glass-shimmer"></div>
       <div class="advisor-avatar">
-        <div class="advisor-avatar-grad" style="background:linear-gradient(135deg,#312e81,#7c3aed)">S</div>
+        <img src="Media/advisor-3.webp" alt="Sophia Nair" style="object-position:center 8%" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#312e81,#7c3aed)&quot;>S</div>'">
       </div>
       <div class="advisor-card-body">
         <div class="advisor-card-body-top">
-          <div class="advisor-name">Seraphine</div>
-          <div class="advisor-spec">Mediumship · Energy Healing</div>
-          <div class="advisor-bio">Connects with passed loved ones and spiritual guides. Certified Reiki master and energy clearing specialist.</div>
+          <div class="advisor-name">Sophia Nair</div>
+          <div class="advisor-spec">Mediumship · Tarot</div>
+          <div class="advisor-bio">Bridges the seen and unseen with grace. Specialises in grief readings and connecting with spirit guides.</div>
         </div>
         <div>
           <div class="advisor-footer">
-            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.93</div>
+            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.94</div>
             <span class="advisor-status status-busy">◑ In Session</span>
           </div>
           <a href="#" class="advisor-btn">Join Waitlist</a>
@@ -1591,17 +1745,17 @@ footer{
     <div class="advisor-card glass" id="adv4">
       <div class="glass-shimmer"></div>
       <div class="advisor-avatar">
-        <div class="advisor-avatar-grad" style="background:linear-gradient(135deg,#4c1d95,#a78bfa)">C</div>
+        <img src="Media/advisor-4.jpg" alt="Isabelle Crane" style="object-position:center 10%" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#4c1d95,#a78bfa)&quot;>I</div>'">
       </div>
       <div class="advisor-card-body">
         <div class="advisor-card-body-top">
-          <div class="advisor-name">Celeste Moon</div>
-          <div class="advisor-spec">Dream Analysis · Past Life</div>
-          <div class="advisor-bio">Dream interpreter and past-life regression guide. Helps clients uncover subconscious blocks and soul-level patterns.</div>
+          <div class="advisor-name">Isabelle Crane</div>
+          <div class="advisor-spec">Astrology · Past Life</div>
+          <div class="advisor-bio">Birth chart specialist and past-life guide. Helps clients align with their soul's timeline and karmic lessons.</div>
         </div>
         <div>
           <div class="advisor-footer">
-            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.91</div>
+            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.92</div>
             <span class="advisor-status status-online">● Online</span>
           </div>
           <a href="#" class="advisor-btn">Connect Now</a>
@@ -1626,6 +1780,7 @@ footer{
         <h3>Share what you seek</h3>
         <p>Tell us your question — love, career, loss, life direction. The more you share, the more precise the match.</p>
       </div>
+      <div class="step-icon" aria-hidden="true">🔮</div>
     </div>
     <div class="how-step glass" id="step2">
       <div class="step-num">2</div>
@@ -1633,6 +1788,7 @@ footer{
         <h3>Find your reader</h3>
         <p>Browse gifted psychics by specialty, style, and availability. Every reader is reviewed and trusted by our community.</p>
       </div>
+      <div class="step-icon" aria-hidden="true">✦</div>
     </div>
     <div class="how-step glass" id="step3">
       <div class="step-num">3</div>
@@ -1640,6 +1796,7 @@ footer{
         <h3>Begin your reading</h3>
         <p>Connect via text, voice, or video. First 5 minutes free. Sessions are recorded and saved for you to revisit.</p>
       </div>
+      <div class="step-icon" aria-hidden="true">🌙</div>
     </div>
   </div>
 
@@ -1648,7 +1805,7 @@ footer{
     <!-- Q&A state -->
     <div id="matcherQA">
       <div class="matcher-top">
-        <div class="matcher-ai-dot"></div>
+        <div class="matcher-ai-dot">🤔</div>
         <div class="matcher-question" id="matcherQ">What's weighing on your mind right now?</div>
         <div class="matcher-progress" id="matcherProgress">
           <div class="matcher-dot active" data-i="0"></div>
@@ -1676,14 +1833,14 @@ footer{
 
   <div class="tarot-header">
     <div class="section-label">Daily Reading</div>
-    <h2 class="section-title">Your message from<br>the <em style="color:#a855f7;font-style:italic">universe</em> today</h2>
+    <h2 class="section-title">Your message from<br>the <em style="color:#000000;font-style:italic">universe</em> today</h2>
     <p class="section-sub">Choose a card. Trust your instinct — the one that calls to you holds your message.</p>
   </div>
 
   <div class="tarot-grid">
 
     <!-- Card 1: The Star -->
-    <div class="tarot-card-wrapper" onclick="this.querySelector('.tarot-card').classList.toggle('flipped')">
+    <div class="tarot-card-wrapper" data-card="1">
       <div class="tarot-card" id="tcard1">
 
         <div class="tarot-face tarot-front">
@@ -1711,7 +1868,7 @@ footer{
     </div>
 
     <!-- Card 2: The Sun -->
-    <div class="tarot-card-wrapper" onclick="this.querySelector('.tarot-card').classList.toggle('flipped')">
+    <div class="tarot-card-wrapper" data-card="2">
       <div class="tarot-card" id="tcard2">
 
         <div class="tarot-face tarot-front">
@@ -1739,7 +1896,7 @@ footer{
     </div>
 
     <!-- Card 3: Strength -->
-    <div class="tarot-card-wrapper" onclick="this.querySelector('.tarot-card').classList.toggle('flipped')">
+    <div class="tarot-card-wrapper" data-card="3">
       <div class="tarot-card" id="tcard3">
 
         <div class="tarot-face tarot-front">
@@ -1774,9 +1931,8 @@ footer{
 <section id="specialties">
 
   <div style="text-align:center;max-width:580px;margin:0 auto">
-    <div class="section-label">What We Offer</div>
-    <h2 class="section-title">Every path to <em style="color:var(--pl);font-style:italic">wisdom</em></h2>
-    <p class="section-sub" style="color:rgba(0,0,0,.52);margin:0 auto">From ancient tarot traditions to AI-powered numerology, every form of spiritual guidance in one place.</p>
+    <div class="section-label" style="color:#000000">What We Offer</div>
+    <h2 class="section-title">Every path to <em style="color:#000000;font-style:italic">wisdom</em></h2>
   </div>
 
   <div class="spec-grid">
@@ -1803,47 +1959,69 @@ footer{
     </div>
   </div>
 
-  <!-- Testimonials -->
-  <div style="margin-top:100px;text-align:center">
+</section>
+
+<!-- ── Testimonials ── -->
+<section id="testimonials">
+
+  <div style="text-align:center;max-width:580px;margin:0 auto 28px">
     <div class="section-label">Stories</div>
-    <h2 class="section-title" style="max-width:480px;margin:0 auto 16px">What seekers <em style="color:var(--pl);font-style:italic">say</em></h2>
+    <h2 class="section-title" style="margin-bottom:0">What seekers <em style="color:#000000;font-style:italic">say</em></h2>
   </div>
 
   <div class="testi-row">
     <div class="testi-card glass" id="tst1">
       <div class="glass-shimmer"></div>
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"Luna knew things about my relationship no one could have guessed. Her tarot reading was so specific it gave me chills. I finally have clarity."</p>
+      <p class="testi-quote">"She knew things about my relationship no one could have guessed. So specific it gave me chills. I finally have clarity."</p>
       <div class="testi-author">
         <div class="testi-avatar" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">A</div>
-        <div>
-          <div class="testi-name">Adriana M.</div>
-          <div class="testi-loc">New York, USA</div>
-        </div>
+        <div><div class="testi-name">Adriana M.</div><div class="testi-loc">New York, USA</div></div>
       </div>
     </div>
     <div class="testi-card glass" id="tst2">
       <div class="glass-shimmer"></div>
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"The AI matching actually works. I was skeptical, but Orion's birth chart reading described my career block perfectly. Changed how I see the next 3 years."</p>
+      <p class="testi-quote">"The AI matching actually works. The birth chart reading described my career block perfectly. Changed how I see the next 3 years."</p>
       <div class="testi-author">
         <div class="testi-avatar" style="background:linear-gradient(135deg,#5b21b6,#7c3aed)">J</div>
-        <div>
-          <div class="testi-name">James K.</div>
-          <div class="testi-loc">London, UK</div>
-        </div>
+        <div><div class="testi-name">James K.</div><div class="testi-loc">London, UK</div></div>
       </div>
     </div>
     <div class="testi-card glass" id="tst3">
       <div class="glass-shimmer"></div>
       <div class="testi-stars">★★★★★</div>
-      <p class="testi-quote">"Seraphine connected me with my grandmother. She knew her name, her laugh, the garden. I wept. This platform is beyond anything I expected."</p>
+      <p class="testi-quote">"She connected me with my grandmother. Knew her name, her laugh, the garden. I wept. This platform is beyond anything I expected."</p>
       <div class="testi-author">
         <div class="testi-avatar" style="background:linear-gradient(135deg,#312e81,#7c3aed)">M</div>
-        <div>
-          <div class="testi-name">Maria L.</div>
-          <div class="testi-loc">Toronto, CA</div>
-        </div>
+        <div><div class="testi-name">Maria L.</div><div class="testi-loc">Toronto, CA</div></div>
+      </div>
+    </div>
+    <div class="testi-card glass" id="tst4">
+      <div class="glass-shimmer"></div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"I came with one question and left with answers I didn't know I needed. The reading felt like a conversation with someone who truly sees me."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#6d28d9,#c4b5fd)">S</div>
+        <div><div class="testi-name">Sofia R.</div><div class="testi-loc">Madrid, Spain</div></div>
+      </div>
+    </div>
+    <div class="testi-card glass" id="tst5">
+      <div class="glass-shimmer"></div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"After my divorce I felt completely lost. The astrology session gave me a roadmap I actually trust. Three months later my life has completely shifted."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#4c1d95,#8b5cf6)">R</div>
+        <div><div class="testi-name">Rachel T.</div><div class="testi-loc">Sydney, AU</div></div>
+      </div>
+    </div>
+    <div class="testi-card glass" id="tst6">
+      <div class="glass-shimmer"></div>
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"I was a complete skeptic. My friend booked it as a gift. I don't know how she knew, but every detail was accurate. I've since booked four more sessions."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">D</div>
+        <div><div class="testi-name">David H.</div><div class="testi-loc">Chicago, USA</div></div>
       </div>
     </div>
   </div>
@@ -1853,9 +2031,8 @@ footer{
 <!-- ── CTA ── -->
 <section id="cta-section">
   <div class="cta-inner">
-    <div class="section-label" style="text-align:center">Begin Your Journey</div>
-    <h2 class="section-title">Ready to see<br>beyond the <em>veil?</em></h2>
-    <p class="cta-sub">Join 12,000+ seekers who found clarity, closure, and direction. First 5 minutes are always free.</p>
+    <div class="section-label" style="text-align:center;color:#000000">Begin Your Journey</div>
+    <h2 class="section-title">Ready to see<br>beyond the <em style="color:#000000;font-style:italic">veil?</em></h2>
     <div class="cta-form">
       <input type="email" class="cta-input" placeholder="Your email address">
       <a href="#" class="btn-primary">Start Free →</a>
@@ -2382,12 +2559,22 @@ const clock=new THREE.Clock();
   glass.scale.setScalar(s);
   rings.forEach(r=>r.scale.setScalar(s));
 
-  // __sphereExited flag: keep sphere invisible on all post-hero sections
-  const effectiveOpacity = window.__sphereExited ? 0 : state.sphereOpacity;
+  // Hide sphere if: flag set by exit/scroll trigger, OR scroll has gone past 80% of hero height.
+  // The scroll check is deterministic — no dependency on event ordering.
+  const pastHero = !window.__heroExiting && window.scrollY > window.innerHeight * 0.8;
+  const effectiveOpacity = (window.__sphereExited || pastHero) ? 0 : state.sphereOpacity;
+  const sphereVisible = effectiveOpacity > 0.01;
   glass.material.uniforms.uOpacity.value = effectiveOpacity;
   glass.material.uniforms.uSTime.value = t;
+  // Toggle visibility so black interior + galaxy don't flash through at opacity=0
+  glass.visible     = sphereVisible;
+  interior.visible  = sphereVisible;
+  galaxyGroup.visible = sphereVisible;
+  rings.forEach((r,i)=>{
+    r.visible = sphereVisible;
+    r.material.opacity = effectiveOpacity * [.42,.28,.16,.09][i];
+  });
   interior.material.opacity = effectiveOpacity;
-  rings.forEach((r,i)=>{ r.material.opacity = effectiveOpacity * [.42,.28,.16,.09][i]; });
   ambientParticles.material.opacity = state.ambientOpacity;
 
   galaxyGroup.rotation.y = t*.18+camX*.12;
@@ -2419,6 +2606,7 @@ const clock=new THREE.Clock();
   sparkMesh.position.x = state.sphereX;  sparkMesh.position.y = state.sphereY;
   dustMesh.scale.setScalar(state.sphereScale);
   sparkMesh.scale.setScalar(state.sphereScale);
+  waterMesh.visible = effectiveOpacity > 0.01;
 
   renderer.render(scene, camera);
 })();
@@ -2678,9 +2866,8 @@ try {
 
   // Camera FOV 58°, z=9 → visible Y range ≈ ±5.
   // Sphere radius 2.65. Needs Y > 7.65 to fully exit viewport top.
-  // Y=10 gives comfortable clearance under the nav bar.
-  const SPHERE_Y_EXIT = 10;
-  const SPHERE_DUR    = 0.82; // tighter master clock — snappy cinematic feel
+  const SPHERE_Y_EXIT = 9;
+  const SPHERE_DUR    = 1.05;
 
   let animating = false;
   let hasExited = false;
@@ -2727,20 +2914,20 @@ try {
     // ── Scroll indicator ─────────────────────────────────────────
     tl.to(scInd, { opacity: 0, y: 14, duration: 0.16, ease: 'power2.in' }, 0);
 
-    // ── Sphere: power2.in gives immediate visible movement that
-    //    builds to a confident launch — visible within first 0.2s
     if (st) {
+      // Linear rise: constant speed = always visibly moving, no sluggish start
       tl.to(st, {
         sphereY: SPHERE_Y_EXIT,
         duration: SPHERE_DUR,
-        ease: 'power2.in',
+        ease: 'power1.inOut',
       }, 0);
-      // Opacity fades once sphere crosses viewport top (~Y≥5, ~50% journey)
+      // Fade starts immediately and runs the full duration — sphere is
+      // already 80% transparent by the time it reaches the nav bar
       tl.to(st, {
         sphereOpacity: 0,
-        duration: SPHERE_DUR * 0.55,
-        ease: 'power1.in',
-      }, SPHERE_DUR * 0.45);
+        duration: SPHERE_DUR,
+        ease: 'power2.in',
+      }, 0);
     }
 
     // ── Aura expands + dissolves — exits slightly before sphere ──
@@ -2798,6 +2985,19 @@ try {
   ScrollTrigger.create({
     trigger: '#hero', start: 'top 5%',
     onEnterBack: resetHero
+  });
+
+  // ── Position-based exit: catches ALL navigation methods (keyboard, links, programmatic) ──
+  // Fires whenever #hero bottom crosses viewport top = hero fully off screen.
+  // No onLeaveBack here — onEnterBack:resetHero above handles going back to hero.
+  // onLeaveBack caused a flash: scroll-snap correction briefly re-triggered it after commitScroll.
+  ScrollTrigger.create({
+    trigger: '#hero', start: 'bottom top',
+    onEnter() {
+      window.__sphereExited = true;
+      const st = window.__bgState;
+      if (st) { st.sphereOpacity = 0; }
+    }
   });
 })();
 
@@ -2907,7 +3107,13 @@ ScrollTrigger.create({
   onEnter:()=>gsap.to('.spec-grid > *',{y:0,opacity:1,duration:.8,stagger:.13,ease:'power3.out'}),
   once:true,
 });
-revealCards('.testi-card', 0.13);
+// Testimonials
+gsap.set('.testi-row > *', {y:40,opacity:0});
+ScrollTrigger.create({
+  trigger:'#testimonials', start:'top 80%',
+  onEnter:()=>gsap.to('.testi-row > *',{y:0,opacity:1,duration:.8,stagger:.13,ease:'power3.out'}),
+  once:true,
+});
 
 // CTA
 gsap.set('.cta-inner > *', {y:30,opacity:0});
