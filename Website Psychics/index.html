@@ -16,10 +16,10 @@
 
 :root{
   --bg:   #ffffff;
-  --p:    #7c3aed;
-  --pl:   #6d28d9;
-  --pll:  #8b5cf6;
-  --pd:   #5b21b6;
+  --p:    #9333ea;
+  --pl:   #7c3aed;
+  --pll:  #a855f7;
+  --pd:   #7c3aed;
   --w:    #111111;
   --wm:   rgba(0,0,0,0.55);
   --bd:   rgba(0,0,0,0.09);
@@ -28,7 +28,10 @@
   --glass-top: rgba(255,255,255,0.95);
 }
 
-html{scroll-behavior:auto}
+html{
+  scroll-behavior:auto;
+  scroll-snap-type:y mandatory;
+}
 body{
   background:#ffffff;
   color:var(--w);
@@ -80,23 +83,19 @@ nav{
   transition:background .4s,padding .3s;
 }
 nav.scrolled{
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(22px);
+  background:#ffffff;
   padding:17px 56px;
   border-bottom:1px solid rgba(0,0,0,.08);
   box-shadow:0 1px 24px rgba(0,0,0,.07);
 }
 .nav-logo{text-decoration:none;display:flex;align-items:center}
 .nav-logo-img{
-  height:44px;
+  height:68px;
   width:auto;
   display:block;
   transition:opacity .2s ease;
 }
 .nav-logo-img:hover{opacity:.82}
-nav.scrolled.dark-nav .nav-logo-img{
-  filter:invert(1) brightness(2);
-}
 .nav-links{display:flex;gap:56px;align-items:center}
 .nav-links a{
   color:#fff;font-size:13px;font-weight:600;
@@ -134,30 +133,30 @@ nav.scrolled.dark-nav .nav-logo-img{
     inset 0 2px 5px rgba(0,0,0,.22);
   filter:brightness(.92);
 }
-/* Nav on dark beams background */
-nav.scrolled.dark-nav{
-  background:rgba(12,6,28,.80);
-  border-bottom:1px solid rgba(167,139,250,.18);
-  box-shadow:0 1px 32px rgba(0,0,0,.45);
-}
-nav.scrolled.dark-nav .nav-logo{ color:#fff }
-nav.scrolled.dark-nav .nav-links a{
-  border-color:rgba(167,139,250,.45);
-  box-shadow:0 3px 0 rgba(20,0,60,.6),0 6px 18px rgba(109,40,217,.35),inset 0 1px 0 rgba(255,255,255,.18);
-}
-nav.scrolled.dark-nav .nav-links a:hover{
-  filter:brightness(1.18);
-}
 .nav-cta{
-  padding:10px 22px;
-  background:var(--p);border:none;border-radius:100px;
   color:#fff;font-size:13px;font-weight:600;
-  font-family:'Space Grotesk',sans-serif;
-  cursor:none;text-decoration:none;
-  box-shadow:0 4px 18px rgba(109,40,217,.35);
-  transition:box-shadow .2s,transform .2s;
+  text-decoration:none;letter-spacing:.07em;text-transform:uppercase;
+  padding:9px 22px;
+  border-radius:100px;
+  border:1px solid rgba(167,139,250,.35);
+  background:linear-gradient(135deg,var(--p) 0%,var(--pd) 100%);
+  box-shadow:
+    0 3px 0 rgba(60,10,120,.45),
+    0 6px 18px rgba(109,40,217,.30),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .08s cubic-bezier(.34,1.56,.64,1),box-shadow .08s ease,filter .15s ease;
+  position:relative;top:0;cursor:none;user-select:none;
 }
-.nav-cta:hover{box-shadow:0 6px 28px rgba(109,40,217,.55);transform:translateY(-1px)}
+.nav-cta:hover{
+  filter:brightness(1.14);
+  box-shadow:0 5px 0 rgba(60,10,120,.45),0 10px 28px rgba(109,40,217,.45),inset 0 1px 0 rgba(255,255,255,.28);
+  transform:translateY(-2px);
+}
+.nav-cta:active{
+  transform:translateY(3px) scale(.96);
+  box-shadow:0 0px 0 rgba(60,10,120,.45),0 2px 8px rgba(109,40,217,.20),inset 0 2px 5px rgba(0,0,0,.22);
+  filter:brightness(.92);
+}
 
 /* ── HERO ── */
 #hero::after{
@@ -170,17 +169,19 @@ nav.scrolled.dark-nav .nav-links a:hover{
 }
 #hero{
   position:relative;z-index:5;
-  min-height:100vh;
+  height:100vh;
+  max-height:100vh;
   display:grid;
   grid-template-columns:1fr 1fr;
   align-items:center;
   overflow:hidden;
+  scroll-snap-align:start;
 }
 /* Left text column — constrained to left half */
 .hero-left{
   grid-column:1;
   position:relative;z-index:10;
-  padding:100px 24px 80px 80px;
+  padding:80px 24px 60px 80px;
   display:flex;flex-direction:column;align-items:flex-start;
 }
 .hero-badge{
@@ -203,11 +204,11 @@ nav.scrolled.dark-nav .nav-links a:hover{
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 h1.hero-title{
   font-family:'Playfair Display',serif;
-  font-size:clamp(60px,6.8vw,104px);
+  font-size:clamp(44px,5.4vw,82px);
   font-weight:800;line-height:1.02;
   letter-spacing:-.026em;
   color:#111111;
-  margin-bottom:28px;
+  margin-bottom:20px;
   text-shadow:none;
 }
 h1.hero-title em{
@@ -223,11 +224,11 @@ h1.hero-title em:hover{
     0 0 80px rgba(139,92,246,.15);
 }
 .hero-sub{
-  font-size:clamp(15px,1.4vw,17px);
+  font-size:clamp(14px,1.2vw,16px);
   color:rgba(0,0,0,.58);
-  line-height:1.76;
+  line-height:1.65;
   max-width:420px;
-  margin-bottom:44px;
+  margin-bottom:30px;
 }
 .hero-actions{
   display:flex;gap:14px;align-items:center;
@@ -485,15 +486,36 @@ h1.hero-title em:hover{
   to  {transform:translate(-2px,-2px) rotate(570deg) translateX(108px) rotate(-570deg)}
 }
 .hero-scroll{
-  position:absolute;bottom:36px;left:80px;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
+  position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
   opacity:0;animation:fadein 1s 1.5s forwards;
+  cursor:pointer;
 }
-.scroll-line{
-  width:1px;height:48px;
-  background:linear-gradient(to bottom,transparent,rgba(109,40,217,.5));
-  animation:scrl 1.9s ease-in-out infinite;
+.scroll-label{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:#7c3aed;
+  text-shadow:0 0 18px rgba(124,58,237,.4),0 0 40px rgba(124,58,237,.2);
 }
+.scroll-chevrons{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.scroll-chevrons span{
+  display:block;width:16px;height:16px;
+  border-right:2px solid #7c3aed;
+  border-bottom:2px solid #7c3aed;
+  transform:rotate(45deg);
+  animation:chevron-fall 1.6s ease-in-out infinite;
+  filter:drop-shadow(0 0 4px rgba(124,58,237,.6));
+}
+.scroll-chevrons span:nth-child(1){animation-delay:0s;opacity:.3}
+.scroll-chevrons span:nth-child(2){animation-delay:.15s;opacity:.65}
+.scroll-chevrons span:nth-child(3){animation-delay:.30s;opacity:1}
+@keyframes chevron-fall{
+  0%,100%{transform:rotate(45deg) translateY(-3px);opacity:.2}
+  50%{transform:rotate(45deg) translateY(3px);opacity:1}
+}
+.scroll-line{display:none}
 @keyframes scrl{
   0%  {transform:scaleY(0);transform-origin:top;opacity:0}
   50% {transform:scaleY(1);opacity:1}
@@ -531,7 +553,7 @@ section{position:relative;z-index:5}
 
 #advisors .section-sub,
 #how .section-sub,
-#specialties .section-sub{ color:rgba(255,255,255,.70) }
+#specialties .section-sub{ color:#ffffff }
 
 #cta-section .cta-sub{ color:rgba(255,255,255,.65) }
 
@@ -546,29 +568,30 @@ section{position:relative;z-index:5}
 /* ── Liquid Glass — pure frozen white ice ── */
 .glass{
   background:linear-gradient(145deg,
-    rgba(255,255,255,.90) 0%,
-    rgba(255,255,255,.68) 55%,
-    rgba(255,255,255,.50) 100%);
-  border:1px solid rgba(255,255,255,.80);
-  border-top:1px solid rgba(255,255,255,.98);
-  backdrop-filter:blur(32px) saturate(140%) brightness(1.14);
-  -webkit-backdrop-filter:blur(32px) saturate(140%) brightness(1.14);
+    rgba(255,255,255,.97) 0%,
+    rgba(255,255,255,.94) 55%,
+    rgba(255,255,255,.92) 100%);
+  border:1px solid rgba(255,255,255,.95);
+  border-top:1px solid rgba(255,255,255,1);
+  /* Desaturate + overexpose backdrop — strips any color bleed from purple bg */
+  backdrop-filter:blur(40px) saturate(0%) brightness(600%);
+  -webkit-backdrop-filter:blur(40px) saturate(0%) brightness(600%);
   border-radius:24px;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.98),
-    inset 0 -1px 0 rgba(230,235,245,.25),
-    0 16px 48px rgba(0,0,0,.09),
-    0 4px 14px rgba(0,0,0,.06),
-    0 0 0 1px rgba(255,255,255,.55);
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 -1px 0 rgba(255,255,255,.40),
+    0 16px 48px rgba(0,0,0,.12),
+    0 4px 14px rgba(0,0,0,.07),
+    0 0 0 1px rgba(255,255,255,.80);
   position:relative;overflow:hidden;
 }
 .glass::before{
   content:'';position:absolute;inset:0;
   border-radius:inherit;
   background:linear-gradient(138deg,
-    rgba(255,255,255,.90) 0%,
-    rgba(255,255,255,.28) 48%,
-    rgba(255,255,255,.06) 100%);
+    rgba(255,255,255,.60) 0%,
+    rgba(255,255,255,.10) 48%,
+    rgba(255,255,255,.04) 100%);
   pointer-events:none;
 }
 /* Cursor-tracking spotlight — hidden until JS sets --mx/--my on hover */
@@ -592,11 +615,14 @@ section{position:relative;z-index:5}
 
 /* ── ADVISORS SECTION ── */
 #advisors{
-  padding:120px 80px;
+  padding:60px 80px 50px;
+  height:100vh;
+  overflow:hidden;
+  scroll-snap-align:start;
 }
 .advisors-head{
   display:grid;grid-template-columns:1fr auto;align-items:end;
-  margin-bottom:64px;
+  margin-bottom:28px;
 }
 .advisors-grid{
   display:grid;
@@ -604,72 +630,86 @@ section{position:relative;z-index:5}
   gap:20px;
 }
 .advisor-card{
-  padding:28px 24px;
+  padding:0;
   border-radius:24px;
+  display:flex;flex-direction:column;
+  height:calc(100vh - 220px);
   transition:transform .35s cubic-bezier(.22,.97,.54,1.05),box-shadow .35s;
 }
-.advisor-card:hover{transform:translateY(-6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 20px 56px rgba(0,0,0,.14),0 0 0 1px rgba(255,255,255,.70)}
+.advisor-card:hover{transform:translateY(-6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 20px 56px rgba(0,0,0,.16),0 0 0 1px rgba(255,255,255,.80)}
+/* 50% photo area at top */
 .advisor-avatar{
-  width:72px;height:72px;border-radius:50%;
-  overflow:hidden;margin-bottom:18px;
-  border:2px solid rgba(255,255,255,.70);
-  box-shadow:0 4px 16px rgba(0,0,0,.10);
-  flex-shrink:0;
+  width:100%;flex:0 0 50%;
+  border-radius:22px 22px 0 0;
+  overflow:hidden;margin-bottom:0;
+  border:none;box-shadow:none;
 }
-.advisor-avatar img{width:100%;height:100%;object-fit:cover}
+.advisor-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .advisor-avatar-grad{
   width:100%;height:100%;
   display:flex;align-items:center;justify-content:center;
   font-family:'Playfair Display',serif;
-  font-size:26px;font-weight:700;color:#fff;
+  font-size:52px;font-weight:700;color:#fff;
+}
+/* 50% body below photo */
+.advisor-card-body{
+  flex:0 0 50%;
+  padding:22px 26px 24px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
 }
 .advisor-name{
   font-family:'Playfair Display',serif;
-  font-size:19px;font-weight:700;
-  color:#111;margin-bottom:4px;
+  font-size:20px;font-weight:800;
+  color:#000;margin-bottom:4px;
 }
 .advisor-spec{
-  font-size:11px;font-weight:600;letter-spacing:.14em;
+  font-size:10.5px;font-weight:700;letter-spacing:.15em;
   text-transform:uppercase;color:var(--p);
-  margin-bottom:12px;
+  margin-bottom:10px;
 }
 .advisor-bio{
-  font-size:13px;color:rgba(0,0,0,.52);
-  line-height:1.68;margin-bottom:18px;
+  font-size:13px;color:#222;
+  line-height:1.65;margin-bottom:16px;
+  flex:1;
 }
 .advisor-footer{
   display:flex;align-items:center;justify-content:space-between;
-  margin-top:auto;
+  margin-bottom:14px;
 }
 .advisor-rating{
   display:flex;align-items:center;gap:5px;
-  font-size:13px;font-weight:600;color:rgba(0,0,0,.65);
+  font-size:13px;font-weight:700;color:#000;
 }
-.advisor-stars{color:var(--p);letter-spacing:1px;font-size:11px}
+.advisor-stars{color:var(--p);letter-spacing:1px;font-size:12px}
 .advisor-status{
   display:inline-flex;align-items:center;gap:5px;
-  padding:4px 10px;border-radius:100px;
+  padding:4px 11px;border-radius:100px;
   font-size:10px;font-weight:700;letter-spacing:.09em;
   text-transform:uppercase;
 }
-.status-online{background:rgba(22,163,74,.08);color:#15803d;border:1px solid rgba(22,163,74,.22)}
-.status-busy{background:rgba(217,119,6,.08);color:#b45309;border:1px solid rgba(217,119,6,.2)}
+.status-online{background:rgba(22,163,74,.10);color:#15803d;border:1px solid rgba(22,163,74,.28)}
+.status-busy{background:rgba(147,51,234,.10);color:var(--p);border:1px solid rgba(147,51,234,.30)}
 .advisor-btn{
   display:block;width:100%;
-  padding:11px 0;margin-top:20px;
-  background:rgba(255,255,255,.55);
-  border:1px solid rgba(255,255,255,.80);
-  border-radius:100px;color:var(--p);
-  font-size:13px;font-weight:600;letter-spacing:.04em;
+  padding:12px 0;
+  background:var(--p);
+  border:none;
+  border-radius:100px;color:#fff;
+  font-size:13px;font-weight:700;letter-spacing:.05em;
   font-family:'Space Grotesk',sans-serif;
   text-align:center;cursor:none;text-decoration:none;
-  transition:background .2s,border-color .2s,color .2s;
+  box-shadow:0 3px 0 rgba(60,10,120,.40),0 6px 18px rgba(109,40,217,.28);
+  transition:filter .15s,transform .08s cubic-bezier(.34,1.56,.64,1),box-shadow .08s;
 }
-.advisor-btn:hover{background:var(--p);border-color:var(--p);color:#fff}
+.advisor-btn:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 5px 0 rgba(60,10,120,.40),0 10px 28px rgba(109,40,217,.42)}
 
 /* ── HOW IT WORKS ── */
 #how{
-  padding:120px 80px;
+  padding:60px 80px;
+  height:100vh;
+  overflow:hidden;
+  scroll-snap-align:start;
 }
 .how-grid{
   display:grid;grid-template-columns:1fr 1fr;
@@ -680,14 +720,13 @@ section{position:relative;z-index:5}
 }
 .how-step{
   display:flex;gap:24px;align-items:flex-start;
-  padding:28px 28px;
+  padding:26px 28px;
   border-radius:20px;
   cursor:none;
-  transition:background .3s,border-color .3s;
+  transition:transform .35s cubic-bezier(.22,.97,.54,1.05), box-shadow .35s;
 }
 .how-step.active{
-  background:rgba(255,255,255,.18);
-  border-color:rgba(255,255,255,.55) !important;
+  transform:translateX(6px);
 }
 .step-num{
   min-width:42px;height:42px;
@@ -707,10 +746,10 @@ section{position:relative;z-index:5}
 .step-text h3{
   font-family:'Playfair Display',serif;
   font-size:19px;font-weight:700;
-  color:#111;margin-bottom:8px;
+  color:#000;margin-bottom:8px;
 }
 .step-text p{
-  font-size:14px;color:rgba(0,0,0,.52);line-height:1.7;
+  font-size:14px;color:#222;line-height:1.7;
 }
 .how-visual{
   padding:36px;
@@ -757,11 +796,14 @@ section{position:relative;z-index:5}
 
 /* ── SPECIALTIES / TESTIMONIALS ── */
 #specialties{
-  padding:120px 80px;
+  padding:60px 80px;
+  height:100vh;
+  overflow:hidden;
+  scroll-snap-align:start;
 }
 .spec-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:24px;margin-top:64px;
+  gap:18px;margin-top:28px;
 }
 .spec-card{
   padding:36px 32px;
@@ -797,7 +839,7 @@ section{position:relative;z-index:5}
 /* Testimonials row */
 .testi-row{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:20px;margin-top:72px;
+  gap:16px;margin-top:28px;
 }
 .testi-card{
   padding:28px 28px;border-radius:22px;
@@ -822,8 +864,11 @@ section{position:relative;z-index:5}
 
 /* ── CTA SECTION ── */
 #cta-section{
-  padding:140px 80px;
+  padding:0 80px;
+  height:100vh;
+  display:flex;align-items:center;justify-content:center;
   text-align:center;
+  scroll-snap-align:start;
 }
 .cta-inner{
   max-width:660px;margin:0 auto;
@@ -915,6 +960,10 @@ footer{
   footer{padding:28px 24px;flex-direction:column;gap:10px;text-align:center}
 }
 </style>
+<script>
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  window.addEventListener('load',()=>window.scrollTo(0,0));
+</script>
 </head>
 <body>
 
@@ -955,7 +1004,7 @@ footer{
 <nav id="nav">
   <a href="#" class="nav-logo"><img src="logo.png" alt="Luminary" class="nav-logo-img"></a>
   <div class="nav-links">
-    <a href="#advisors">Advisors</a>
+    <a href="#advisors">Psychics</a>
     <a href="#how">How it works</a>
     <a href="#specialties">Specialties</a>
   </div>
@@ -965,18 +1014,14 @@ footer{
 <!-- ── HERO ── -->
 <section id="hero">
   <div class="hero-left">
-    <div class="hero-badge" id="heroBadge">
-      <div class="badge-dot"></div>
-      AI-Matched Psychic Readings
-    </div>
     <h1 class="hero-title" id="heroTitle">
-      See beyond<br>
-      the <em>veil</em> of<br>
-      tomorrow
+      Your questions<br>
+      deserve a <em>clearer</em><br>
+      answer
     </h1>
     <p class="hero-sub" id="heroSub">
-      Connect with gifted advisors — tarot, astrology,
-      mediumship. AI-matched to your unique energy in seconds.
+      Speak with gifted psychics and readers — tarot, astrology, mediumship.
+      Honest guidance, whenever you need it.
     </p>
     <div class="hero-actions" id="heroActions">
       <a href="#cta-section" class="btn-primary">Start Free Session</a>
@@ -991,12 +1036,11 @@ footer{
     <div class="stat-num">12K+</div>
     <div class="stat-lbl">Readings Done</div>
   </div>
-  <div class="stat-float stat-rating" id="statRating">
-    <div class="stat-num">4.9<span class="star">★</span></div>
-    <div class="stat-lbl">Avg Rating</div>
-  </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
+  <div class="hero-scroll" onclick="document.getElementById('advisors').scrollIntoView({behavior:'smooth'})">
+    <div class="scroll-label">View available psychics</div>
+    <div class="scroll-chevrons">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 </section>
 
@@ -1004,11 +1048,11 @@ footer{
 <section id="advisors">
   <div class="advisors-head">
     <div>
-      <div class="section-label">Our Gifted Advisors</div>
-      <h2 class="section-title">Meet your <em style="color:var(--pl);font-style:italic">guide</em></h2>
-      <p class="section-sub">Each advisor is verified, rated, and AI-matched to your specific question and energy signature.</p>
+      <div class="section-label" style="color:#000000">Our Gifted Advisors</div>
+      <h2 class="section-title">Meet your <em style="color:#000000;font-style:italic">guide</em></h2>
+      <p class="section-sub" style="color:#ffffff">Every psychic and reader on Luminary is hand-picked, reviewed by our community, and trusted to show up with genuine care for the people they speak with.</p>
     </div>
-    <a href="#" class="btn-ghost" style="white-space:nowrap">View All →</a>
+    <a href="#" class="btn-ghost" style="white-space:nowrap;background:#ffffff;border-color:#ffffff;color:#111111;">View All →</a>
   </div>
 
   <div class="advisors-grid">
@@ -1019,16 +1063,16 @@ footer{
       <div class="advisor-avatar">
         <img src="Media/51XD69TCESL._AC_UF894,1000_QL80_.jpg" alt="Luna Rosé" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#7c3aed,#a78bfa)&quot;>L</div>'">
       </div>
-      <div class="advisor-name">Luna Rosé</div>
-      <div class="advisor-spec">Tarot · Clairvoyance</div>
-      <div class="advisor-bio">Specializes in love, relationships, and life transitions. 12 years of practice with 4,200+ verified readings.</div>
-      <div class="advisor-footer">
-        <div class="advisor-rating">
-          <span class="advisor-stars">★★★★★</span> 4.97
+      <div class="advisor-card-body">
+        <div class="advisor-name">Luna Rosé</div>
+        <div class="advisor-spec">Tarot · Clairvoyance</div>
+        <div class="advisor-bio">Specializes in love, relationships, and life transitions. 12 years of practice with 4,200+ verified readings.</div>
+        <div class="advisor-footer">
+          <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.97</div>
+          <span class="advisor-status status-online">● Online</span>
         </div>
-        <span class="advisor-status status-online">● Online</span>
+        <a href="#" class="advisor-btn">Connect Now</a>
       </div>
-      <a href="#" class="advisor-btn">Connect Now</a>
     </div>
 
     <!-- Advisor 2 -->
@@ -1037,16 +1081,16 @@ footer{
       <div class="advisor-avatar">
         <img src="Media/71QKgvoSR8L._AC_UF894,1000_QL80_.jpg" alt="Orion Vale" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#5b21b6,#7c3aed)&quot;>O</div>'">
       </div>
-      <div class="advisor-name">Orion Vale</div>
-      <div class="advisor-spec">Astrology · Numerology</div>
-      <div class="advisor-bio">Vedic and Western astrology master. Birth chart readings, timing forecasts, and karmic path analysis.</div>
-      <div class="advisor-footer">
-        <div class="advisor-rating">
-          <span class="advisor-stars">★★★★★</span> 4.95
+      <div class="advisor-card-body">
+        <div class="advisor-name">Orion Vale</div>
+        <div class="advisor-spec">Astrology · Numerology</div>
+        <div class="advisor-bio">Vedic and Western astrology master. Birth chart readings, timing forecasts, and karmic path analysis.</div>
+        <div class="advisor-footer">
+          <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.95</div>
+          <span class="advisor-status status-online">● Online</span>
         </div>
-        <span class="advisor-status status-online">● Online</span>
+        <a href="#" class="advisor-btn">Connect Now</a>
       </div>
-      <a href="#" class="advisor-btn">Connect Now</a>
     </div>
 
     <!-- Advisor 3 -->
@@ -1055,16 +1099,16 @@ footer{
       <div class="advisor-avatar">
         <div class="advisor-avatar-grad" style="background:linear-gradient(135deg,#312e81,#7c3aed)">S</div>
       </div>
-      <div class="advisor-name">Seraphine</div>
-      <div class="advisor-spec">Mediumship · Energy Healing</div>
-      <div class="advisor-bio">Connects with passed loved ones and spiritual guides. Certified Reiki master and energy clearing specialist.</div>
-      <div class="advisor-footer">
-        <div class="advisor-rating">
-          <span class="advisor-stars">★★★★★</span> 4.93
+      <div class="advisor-card-body">
+        <div class="advisor-name">Seraphine</div>
+        <div class="advisor-spec">Mediumship · Energy Healing</div>
+        <div class="advisor-bio">Connects with passed loved ones and spiritual guides. Certified Reiki master and energy clearing specialist.</div>
+        <div class="advisor-footer">
+          <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.93</div>
+          <span class="advisor-status status-busy">◑ In Session</span>
         </div>
-        <span class="advisor-status status-busy">◑ In Session</span>
+        <a href="#" class="advisor-btn">Join Waitlist</a>
       </div>
-      <a href="#" class="advisor-btn">Join Waitlist</a>
     </div>
 
     <!-- Advisor 4 -->
@@ -1073,16 +1117,16 @@ footer{
       <div class="advisor-avatar">
         <div class="advisor-avatar-grad" style="background:linear-gradient(135deg,#4c1d95,#a78bfa)">C</div>
       </div>
-      <div class="advisor-name">Celeste Moon</div>
-      <div class="advisor-spec">Dream Analysis · Past Life</div>
-      <div class="advisor-bio">Dream interpreter and past-life regression guide. Helps clients uncover subconscious blocks and soul-level patterns.</div>
-      <div class="advisor-footer">
-        <div class="advisor-rating">
-          <span class="advisor-stars">★★★★★</span> 4.91
+      <div class="advisor-card-body">
+        <div class="advisor-name">Celeste Moon</div>
+        <div class="advisor-spec">Dream Analysis · Past Life</div>
+        <div class="advisor-bio">Dream interpreter and past-life regression guide. Helps clients uncover subconscious blocks and soul-level patterns.</div>
+        <div class="advisor-footer">
+          <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.91</div>
+          <span class="advisor-status status-online">● Online</span>
         </div>
-        <span class="advisor-status status-online">● Online</span>
+        <a href="#" class="advisor-btn">Connect Now</a>
       </div>
-      <a href="#" class="advisor-btn">Connect Now</a>
     </div>
 
   </div>
@@ -1092,9 +1136,9 @@ footer{
 <section id="how">
   <div class="how-grid">
     <div>
-      <div class="section-label">The Process</div>
-      <h2 class="section-title">Three steps to <em style="color:var(--pl);font-style:italic">clarity</em></h2>
-      <p class="section-sub" style="color:rgba(0,0,0,.52);margin-bottom:48px">No cold calls, no guesswork. Our AI reads your energy signature and finds your perfect match.</p>
+      <div class="section-label" style="color:#000000">The Process</div>
+      <h2 class="section-title">Three steps to <em style="color:#000000;font-style:italic">clarity</em></h2>
+      <p class="section-sub" style="color:#ffffff;margin-bottom:48px">Choose what weighs on you. Connect with a psychic who truly sees it. Leave with answers that actually feel true.</p>
 
       <div class="how-steps">
         <div class="how-step glass active" id="step1">
@@ -1579,6 +1623,127 @@ waterMesh.position.set(SX, -3.10, 0);
 waterMesh.renderOrder = 2;
 scene.add(waterMesh);
 
+// ── Dust & Sparks ─────────────────────────────────────────────────────────────
+const __PR = Math.min(window.devicePixelRatio, 4);
+
+function randShell(rMin, rMax){
+  const theta = Math.random() * Math.PI * 2;
+  const phi   = Math.acos(2 * Math.random() - 1);
+  const r     = rMin + Math.random() * (rMax - rMin);
+  return [r*Math.sin(phi)*Math.cos(theta), r*Math.sin(phi)*Math.sin(theta), r*Math.cos(phi)];
+}
+
+// ─ Layer 1: floating dust motes ───────────────────────────────────────────────
+const DUST_N = 700;
+const dPos   = new Float32Array(DUST_N*3);
+const dSz    = new Float32Array(DUST_N);
+const dSpd   = new Float32Array(DUST_N);
+const dPh    = new Float32Array(DUST_N);
+const dCol   = new Float32Array(DUST_N*3);
+for(let i=0;i<DUST_N;i++){
+  const [x,y,z]=randShell(1.8,8.0);
+  dPos[i*3]=x; dPos[i*3+1]=y; dPos[i*3+2]=z;
+  dSz[i]  = 0.038 + Math.random()*0.062;
+  dSpd[i] = 0.14  + Math.random()*0.22;
+  dPh[i]  = Math.random()*Math.PI*2;
+  const t = Math.random();
+  dCol[i*3]  = 0.82+t*0.12; dCol[i*3+1]=0.78+t*0.10; dCol[i*3+2]=0.94+t*0.06;
+}
+const dustGeo=new THREE.BufferGeometry();
+dustGeo.setAttribute('position', new THREE.BufferAttribute(dPos,3));
+dustGeo.setAttribute('aSize',    new THREE.BufferAttribute(dSz,1));
+dustGeo.setAttribute('aSpeed',   new THREE.BufferAttribute(dSpd,1));
+dustGeo.setAttribute('aPhase',   new THREE.BufferAttribute(dPh,1));
+dustGeo.setAttribute('aColor',   new THREE.BufferAttribute(dCol,3));
+const dustMat=new THREE.ShaderMaterial({
+  uniforms:{uTime:{value:0},uPR:{value:__PR}},
+  transparent:true,depthWrite:false,blending:THREE.NormalBlending,
+  vertexShader:`
+    attribute float aSize; attribute float aSpeed; attribute float aPhase; attribute vec3 aColor;
+    uniform float uTime; uniform float uPR;
+    varying float vAlpha; varying vec3 vColor;
+    void main(){
+      vec3 pos=position;
+      pos.x+=sin(uTime*0.23*aSpeed+aPhase      )*0.55;
+      pos.y+=sin(uTime*0.17*aSpeed+aPhase*1.71 )*0.48;
+      pos.z+=cos(uTime*0.19*aSpeed+aPhase*2.31 )*0.38;
+      vec4 mv=modelViewMatrix*vec4(pos,1.0);
+      gl_Position=projectionMatrix*mv;
+      gl_PointSize=aSize*uPR*(820.0/-mv.z);
+      vAlpha=0.38+0.28*sin(uTime*aSpeed*1.9+aPhase*4.0);
+      vColor=aColor;
+    }`,
+  fragmentShader:`
+    varying float vAlpha; varying vec3 vColor;
+    void main(){
+      vec2 uv=gl_PointCoord-0.5; float d=length(uv);
+      if(d>0.5)discard;
+      float a=(1.0-smoothstep(0.12,0.5,d))*vAlpha;
+      gl_FragColor=vec4(vColor,a*0.68);
+    }`
+});
+const dustMesh=new THREE.Points(dustGeo,dustMat);
+dustMesh.renderOrder=0;
+scene.add(dustMesh);
+
+// ─ Layer 2: twinkling sparks ─────────────────────────────────────────────────
+const SPARK_N=180;
+const sPos=new Float32Array(SPARK_N*3);
+const sSz =new Float32Array(SPARK_N);
+const sSpd=new Float32Array(SPARK_N);
+const sPh =new Float32Array(SPARK_N);
+const sCol=new Float32Array(SPARK_N*3);
+const sPal=[[1.0,1.0,1.0],[0.86,0.60,1.0],[0.70,0.38,1.0],[0.92,0.88,1.0],[1.0,0.90,0.96]];
+for(let i=0;i<SPARK_N;i++){
+  const [x,y,z]=randShell(1.6,6.5);
+  sPos[i*3]=x; sPos[i*3+1]=y; sPos[i*3+2]=z;
+  sSz[i] = 0.055+Math.random()*0.10;
+  sSpd[i]= 0.28 +Math.random()*0.52;
+  sPh[i] = Math.random()*Math.PI*2;
+  const c=sPal[Math.floor(Math.random()*sPal.length)];
+  sCol[i*3]=c[0]; sCol[i*3+1]=c[1]; sCol[i*3+2]=c[2];
+}
+const sparkGeo=new THREE.BufferGeometry();
+sparkGeo.setAttribute('position', new THREE.BufferAttribute(sPos,3));
+sparkGeo.setAttribute('aSize',    new THREE.BufferAttribute(sSz,1));
+sparkGeo.setAttribute('aSpeed',   new THREE.BufferAttribute(sSpd,1));
+sparkGeo.setAttribute('aPhase',   new THREE.BufferAttribute(sPh,1));
+sparkGeo.setAttribute('aColor',   new THREE.BufferAttribute(sCol,3));
+const sparkMat=new THREE.ShaderMaterial({
+  uniforms:{uTime:{value:0},uPR:{value:__PR}},
+  transparent:true,depthWrite:false,blending:THREE.NormalBlending,
+  vertexShader:`
+    attribute float aSize; attribute float aSpeed; attribute float aPhase; attribute vec3 aColor;
+    uniform float uTime; uniform float uPR;
+    varying float vAlpha; varying vec3 vColor;
+    void main(){
+      vec3 pos=position;
+      pos.x+=sin(uTime*0.31*aSpeed+aPhase*1.1)*0.72;
+      pos.y+=sin(uTime*0.24*aSpeed+aPhase*0.9)*0.58;
+      pos.z+=cos(uTime*0.27*aSpeed+aPhase*1.5)*0.52;
+      vec4 mv=modelViewMatrix*vec4(pos,1.0);
+      gl_Position=projectionMatrix*mv;
+      gl_PointSize=aSize*uPR*(820.0/-mv.z);
+      float life=sin(uTime*aSpeed+aPhase*6.2832);
+      vAlpha=clamp(life*life,0.0,1.0);
+      vColor=aColor;
+    }`,
+  fragmentShader:`
+    varying float vAlpha; varying vec3 vColor;
+    void main(){
+      vec2 uv=gl_PointCoord-0.5; float d=length(uv);
+      if(d>0.5)discard;
+      float core=1.0-smoothstep(0.0,0.18,d);
+      float halo=1.0-smoothstep(0.18,0.5,d);
+      float a=(core*0.95+halo*0.55)*vAlpha;
+      vec3 col=vColor+core*0.35;
+      gl_FragColor=vec4(col,a*0.88);
+    }`
+});
+const sparkMesh=new THREE.Points(sparkGeo,sparkMat);
+sparkMesh.renderOrder=4;
+scene.add(sparkMesh);
+
 // ── Scroll-reactive state (updated by GSAP ScrollTrigger) ────────────────────
 const state = {
   sphereScale:   1,
@@ -1651,6 +1816,14 @@ const clock=new THREE.Clock();
   waterMesh.scale.setScalar(state.sphereScale);
   waterMesh.material.uniforms.uTime.value = t;
 
+  // Dust & sparks — follow sphere X, scale with sphere
+  dustMat.uniforms.uTime.value  = t;
+  sparkMat.uniforms.uTime.value = t;
+  dustMesh.position.x  = state.sphereX;
+  sparkMesh.position.x = state.sphereX;
+  dustMesh.scale.setScalar(state.sphereScale);
+  sparkMesh.scale.setScalar(state.sphereScale);
+
   renderer.render(scene, camera);
 })();
 
@@ -1679,7 +1852,7 @@ document.querySelectorAll('a,button,.advisor-card,.spec-card,.testi-card,.how-st
 });
 
 // ── Nav buttons — physical press interaction ──────────────────────────────────
-document.querySelectorAll('.nav-links a').forEach(btn=>{
+document.querySelectorAll('.nav-links a, .nav-cta').forEach(btn=>{
   btn.addEventListener('mousedown', ()=>{
     btn.style.transform='translateY(2px) scale(.96)';
     btn.style.boxShadow='0 0px 0 rgba(60,10,120,.45),0 2px 8px rgba(109,40,217,.20),inset 0 2px 5px rgba(0,0,0,.22)';
@@ -1689,6 +1862,146 @@ document.querySelectorAll('.nav-links a').forEach(btn=>{
     btn.style.boxShadow='';
   }));
 });
+
+// ── Card outer glow frame effect ──────────────────────────────────────────────
+(function(){
+  const ns = 'http://www.w3.org/2000/svg';
+
+  document.querySelectorAll('.advisor-card, .how-step').forEach(card => {
+    // Wrap card so SVG can live outside overflow:hidden
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative;border-radius:26px;';
+    card.parentNode.insertBefore(wrap, card);
+    wrap.appendChild(card);
+
+    // SVG sits on the wrapper, drawn OUTSIDE the card bounds
+    const svg = document.createElementNS(ns, 'svg');
+    svg.style.cssText = 'position:absolute;pointer-events:none;z-index:30;overflow:visible;opacity:0;';
+    wrap.appendChild(svg);
+
+    const uid = Math.random().toString(36).slice(2);
+    const defs = document.createElementNS(ns, 'defs');
+
+    // Glow filter
+    const filter = document.createElementNS(ns, 'filter');
+    filter.id = 'gf_'+uid;
+    filter.setAttribute('x','-20%'); filter.setAttribute('y','-20%');
+    filter.setAttribute('width','140%'); filter.setAttribute('height','140%');
+    const blur = document.createElementNS(ns,'feGaussianBlur');
+    blur.setAttribute('stdDeviation','7'); blur.setAttribute('result','b');
+    const merge = document.createElementNS(ns,'feMerge');
+    ['b','SourceGraphic'].forEach(i=>{
+      const n=document.createElementNS(ns,'feMergeNode'); n.setAttribute('in',i); merge.appendChild(n);
+    });
+    filter.appendChild(blur); filter.appendChild(merge);
+
+    // Sweeping arc gradient
+    const grad = document.createElementNS(ns,'linearGradient');
+    grad.id = 'gg_'+uid; grad.setAttribute('gradientUnits','userSpaceOnUse');
+    [['0%','#9333ea','0'],['30%','#c084fc','1'],['50%','#ffffff','1'],['70%','#c084fc','1'],['100%','#9333ea','0']]
+      .forEach(([o,c,op])=>{ const s=document.createElementNS(ns,'stop'); s.setAttribute('offset',o); s.setAttribute('stop-color',c); s.setAttribute('stop-opacity',op); grad.appendChild(s); });
+
+    defs.appendChild(filter); defs.appendChild(grad); svg.appendChild(defs);
+
+    // Three rect layers: soft outer glow, crisp arc, thin base line
+    const glowRect  = document.createElementNS(ns,'rect');
+    const arcRect   = document.createElementNS(ns,'rect');
+    const baseRect  = document.createElementNS(ns,'rect');
+    [glowRect,arcRect,baseRect].forEach(r=>svg.appendChild(r));
+
+    let raf=null, active=false, progress=0, arcOff=0, baseOff=0;
+
+    // Pulse ring for click burst
+    const pulseRect = document.createElementNS(ns,'rect');
+    pulseRect.setAttribute('fill','none');
+    pulseRect.setAttribute('stroke','rgba(192,132,252,0.9)');
+    pulseRect.setAttribute('stroke-width','3');
+    pulseRect.style.cssText='opacity:0;transition:none;';
+    svg.appendChild(pulseRect);
+
+    function setup(){
+      const w=card.offsetWidth, h=card.offsetHeight;
+      const pad=16, r=30;
+      svg.setAttribute('viewBox',`${-pad} ${-pad} ${w+pad*2} ${h+pad*2}`);
+      svg.style.left=`${-pad}px`; svg.style.top=`${-pad}px`;
+      svg.style.width=`${w+pad*2}px`; svg.style.height=`${h+pad*2}px`;
+
+      grad.setAttribute('x1','0'); grad.setAttribute('y1','0');
+      grad.setAttribute('x2',String(w)); grad.setAttribute('y2',String(h));
+
+      const per=2*(w+h);
+      [glowRect,arcRect,baseRect].forEach(rect=>{
+        rect.setAttribute('x','0'); rect.setAttribute('y','0');
+        rect.setAttribute('width',String(w)); rect.setAttribute('height',String(h));
+        rect.setAttribute('rx',String(r)); rect.setAttribute('fill','none');
+      });
+      pulseRect.setAttribute('x','0'); pulseRect.setAttribute('y','0');
+      pulseRect.setAttribute('width',String(w)); pulseRect.setAttribute('height',String(h));
+      pulseRect.setAttribute('rx',String(r));
+
+      // Outer bloom — full solid border, heavily blurred
+      glowRect.setAttribute('stroke','rgba(168,85,247,0.7)');
+      glowRect.setAttribute('stroke-width','14');
+      glowRect.setAttribute('filter',`url(#gf_${uid})`);
+      glowRect.removeAttribute('stroke-dasharray');
+      glowRect.removeAttribute('stroke-linecap');
+
+      // Mid glow — medium blur, slightly brighter
+      arcRect.setAttribute('stroke','rgba(192,132,252,0.55)');
+      arcRect.setAttribute('stroke-width','6');
+      arcRect.setAttribute('filter',`url(#gf_${uid})`);
+      arcRect.removeAttribute('stroke-dasharray');
+      arcRect.removeAttribute('stroke-linecap');
+
+      // Crisp 1px border on top — sharp edge
+      baseRect.setAttribute('stroke','rgba(192,132,252,0.90)');
+      baseRect.setAttribute('stroke-width','1.5');
+      baseRect.removeAttribute('stroke-dasharray');
+    }
+
+    let pulse=0;
+    function tick(){
+      if(active) progress=Math.min(1,progress+0.06);
+      else       progress=Math.max(0,progress-0.04);
+
+      pulse += 0.04;
+      // Gentle breathing: glow expands/contracts in opacity
+      const breathe = 0.72 + 0.28 * Math.sin(pulse);
+      svg.style.opacity = progress * breathe;
+
+      if(progress>0) raf=requestAnimationFrame(tick);
+      else raf=null;
+    }
+
+    // Click burst — pulse ring expands and fades
+    card.addEventListener('mousedown',()=>{
+      const w=card.offsetWidth, h=card.offsetHeight;
+      // Reset
+      pulseRect.style.transition='none';
+      pulseRect.style.opacity='0.9';
+      pulseRect.setAttribute('transform','scale(1)');
+      pulseRect.setAttribute('transform-origin',`${w/2} ${h/2}`);
+      // Animate outward
+      requestAnimationFrame(()=>{
+        pulseRect.style.transition='transform 0.55s cubic-bezier(0.2,0,0.2,1), opacity 0.55s ease-out';
+        pulseRect.setAttribute('transform',`scale(1.06)`);
+        pulseRect.style.opacity='0';
+      });
+      // Card lift + glow burst
+      card.style.transition='transform 0.12s cubic-bezier(.34,1.56,.64,1), box-shadow 0.12s ease';
+      card.style.transform='translateY(-10px) scale(1.025)';
+      card.style.boxShadow='0 0 0 2px rgba(147,51,234,0.5), 0 30px 70px rgba(147,51,234,0.35), 0 10px 30px rgba(0,0,0,0.18)';
+    });
+    ['mouseup','mouseleave'].forEach(ev=>card.addEventListener(ev,()=>{
+      card.style.transition='transform 0.35s cubic-bezier(.22,.97,.54,1.05), box-shadow 0.35s ease';
+      card.style.transform='';
+      card.style.boxShadow='';
+    }));
+
+    card.addEventListener('mouseenter',()=>{ setup(); active=true; if(!raf) tick(); });
+    card.addEventListener('mouseleave',()=>{ active=false; });
+  });
+})();
 
 // ── Glass cursor spotlight — tracks mouse inside each card ────────────────────
 document.querySelectorAll('.glass').forEach(card=>{
@@ -1729,7 +2042,6 @@ window.addEventListener('scroll',()=>{
   const nav = document.getElementById('nav');
   const hh  = document.getElementById('hero')?.offsetHeight || innerHeight;
   nav.classList.toggle('scrolled', scrollY > 50);
-  nav.classList.toggle('dark-nav', scrollY > hh * 0.85);
 },{passive:true});
 
 // ─── Register GSAP plugins ────────────────────────────────────────────────────
@@ -1746,9 +2058,9 @@ gsap.from('#statReadings', {opacity:0,y:14,duration:.7, delay:.82, ease:'power3.
 gsap.from('#statRating',   {opacity:0,y:14,duration:.7, delay:.94, ease:'power3.out',clearProps:'transform'});
 gsap.from('#sphere-aura',  {opacity:0,duration:1.2,delay:1.0,ease:'power2.out'});
 
-// ─── Lenis smooth scroll ──────────────────────────────────────────────────────
+// ─── Lenis smooth scroll (lerp only, snap handled by CSS) ─────────────────────
 try {
-  const lenis=new Lenis({lerp:.1,smoothWheel:true});
+  const lenis=new Lenis({lerp:.08,smoothWheel:false});
   lenis.on('scroll',ScrollTrigger.update);
   gsap.ticker.add(t=>lenis.raf(t*1000));
   gsap.ticker.lagSmoothing(0);
