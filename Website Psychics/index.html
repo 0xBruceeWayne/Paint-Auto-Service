@@ -53,7 +53,6 @@ body{
   pointer-events:none;
   display:block;
   width:100%;height:100%;
-  will-change:opacity;
 }
 
 /* ── Cursor ── */
@@ -615,32 +614,39 @@ section{position:relative;z-index:5}
 
 /* ── ADVISORS SECTION ── */
 #advisors{
-  padding:60px 80px 50px;
+  padding:110px 80px 60px;
   height:100vh;
   overflow:hidden;
   scroll-snap-align:start;
+  display:flex;flex-direction:column;
+  justify-content:center;
 }
 .advisors-head{
   display:grid;grid-template-columns:1fr auto;align-items:end;
-  margin-bottom:28px;
+  margin-bottom:24px;flex-shrink:0;
 }
+#advisors .section-label{ margin-bottom:6px;font-size:11.5px }
+#advisors .section-title{ font-size:clamp(24px,2.6vw,38px);margin-bottom:7px;line-height:1.05 }
+#advisors .section-sub{ font-size:13.5px;line-height:1.5;max-width:420px }
 .advisors-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:20px;
+  gap:14px;
+  flex:none;
+  height:min(calc(100vh - 320px),420px);
 }
 .advisor-card{
   padding:0;
-  border-radius:24px;
+  border-radius:20px;
   display:flex;flex-direction:column;
-  height:calc(100vh - 220px);
+  height:100%;min-height:0;
   transition:transform .35s cubic-bezier(.22,.97,.54,1.05),box-shadow .35s;
 }
 .advisor-card:hover{transform:translateY(-6px);box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 20px 56px rgba(0,0,0,.16),0 0 0 1px rgba(255,255,255,.80)}
 /* 50% photo area at top */
 .advisor-avatar{
   width:100%;flex:0 0 50%;
-  border-radius:22px 22px 0 0;
+  border-radius:18px 18px 0 0;
   overflow:hidden;margin-bottom:0;
   border:none;box-shadow:none;
 }
@@ -653,29 +659,30 @@ section{position:relative;z-index:5}
 }
 /* 50% body below photo */
 .advisor-card-body{
-  flex:0 0 50%;
-  padding:22px 26px 24px;
+  flex:1 1 0;
+  padding:11px 16px 11px;
   display:flex;flex-direction:column;
-  overflow:hidden;
+  justify-content:space-between;
+  overflow:hidden;min-height:0;
 }
+.advisor-card-body-top{ display:flex;flex-direction:column }
 .advisor-name{
   font-family:'Playfair Display',serif;
-  font-size:20px;font-weight:800;
-  color:#000;margin-bottom:4px;
+  font-size:15px;font-weight:800;
+  color:#000;margin-bottom:2px;
 }
 .advisor-spec{
-  font-size:10.5px;font-weight:700;letter-spacing:.15em;
+  font-size:9px;font-weight:700;letter-spacing:.13em;
   text-transform:uppercase;color:var(--p);
-  margin-bottom:10px;
+  margin-bottom:5px;
 }
 .advisor-bio{
-  font-size:13px;color:#222;
-  line-height:1.65;margin-bottom:16px;
-  flex:1;
+  font-size:11.5px;color:#222;
+  line-height:1.5;margin-bottom:0;
 }
 .advisor-footer{
   display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:14px;
+  margin-bottom:7px;
 }
 .advisor-rating{
   display:flex;align-items:center;gap:5px;
@@ -692,7 +699,7 @@ section{position:relative;z-index:5}
 .status-busy{background:rgba(147,51,234,.10);color:var(--p);border:1px solid rgba(147,51,234,.30)}
 .advisor-btn{
   display:block;width:100%;
-  padding:12px 0;
+  padding:10px 0;
   background:var(--p);
   border:none;
   border-radius:100px;color:#fff;
@@ -706,37 +713,39 @@ section{position:relative;z-index:5}
 
 /* ── HOW IT WORKS ── */
 #how{
-  padding:60px 80px;
+  padding:110px 80px 50px;
   height:100vh;
   overflow:hidden;
   scroll-snap-align:start;
+  display:flex;flex-direction:column;
+  justify-content:center;
 }
-.how-grid{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:80px;align-items:center;
+.how-header{
+  margin-bottom:24px;flex-shrink:0;
 }
+#how .section-label{ margin-bottom:5px;font-size:11.5px }
+#how .section-title{ font-size:clamp(22px,2.4vw,34px);margin-bottom:6px;line-height:1.05 }
+#how .section-sub{ font-size:13px;line-height:1.45;max-width:560px }
 .how-steps{
-  display:flex;flex-direction:column;gap:6px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:stretch;
 }
 .how-step{
-  display:flex;gap:24px;align-items:flex-start;
-  padding:26px 28px;
-  border-radius:20px;
+  display:flex;flex-direction:column;
+  padding:22px 24px 24px;
+  border-radius:18px;
   cursor:none;
   transition:transform .35s cubic-bezier(.22,.97,.54,1.05), box-shadow .35s;
 }
-.how-step.active{
-  transform:translateX(6px);
-}
+.how-step.active{ transform:translateY(-3px) }
 .step-num{
-  min-width:42px;height:42px;
-  border-radius:12px;
+  min-width:36px;height:36px;width:36px;
+  border-radius:10px;
   background:rgba(255,255,255,.22);
   border:1px solid rgba(255,255,255,.55);
   display:flex;align-items:center;justify-content:center;
   font-family:'Playfair Display',serif;
-  font-size:18px;font-weight:700;color:var(--p);
-  flex-shrink:0;
+  font-size:16px;font-weight:700;color:var(--p);
+  flex-shrink:0;margin-bottom:14px;
   transition:background .3s,box-shadow .3s;
 }
 .how-step.active .step-num{
@@ -745,12 +754,120 @@ section{position:relative;z-index:5}
 }
 .step-text h3{
   font-family:'Playfair Display',serif;
-  font-size:19px;font-weight:700;
-  color:#000;margin-bottom:8px;
+  font-size:17px;font-weight:700;
+  color:#000;margin-bottom:6px;
 }
-.step-text p{
-  font-size:14px;color:#222;line-height:1.7;
+.step-text p{ font-size:13px;color:#222;line-height:1.6 }
+
+/* ── AI Matcher chat widget ── */
+.how-matcher{
+  margin-top:18px;
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(40px) saturate(0%) brightness(600%);
+  -webkit-backdrop-filter:blur(40px) saturate(0%) brightness(600%);
+  border:1px solid rgba(255,255,255,.95);
+  border-top:1px solid #fff;
+  border-radius:20px;
+  box-shadow:inset 0 1px 0 #fff, 0 16px 48px rgba(0,0,0,.11), 0 0 0 1px rgba(255,255,255,.8);
+  padding:20px 28px 22px;
+  display:flex;flex-direction:column;gap:14px;
+  position:relative;overflow:hidden;
+  min-height:138px;
 }
+.how-matcher::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(138deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.03) 100%);
+  pointer-events:none;
+}
+.matcher-top{
+  display:flex;align-items:center;gap:14px;
+}
+.matcher-ai-dot{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  background:radial-gradient(circle at 38% 35%,#c4b5fd,#7c3aed 60%,#4c1d95);
+  box-shadow:0 0 12px rgba(124,58,237,.45),0 0 24px rgba(124,58,237,.18);
+  position:relative;
+}
+.matcher-ai-dot::after{
+  content:'';position:absolute;inset:3px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.6),transparent 65%);
+}
+@keyframes matcher-pulse{
+  0%,100%{box-shadow:0 0 12px rgba(124,58,237,.45),0 0 24px rgba(124,58,237,.18)}
+  50%{box-shadow:0 0 18px rgba(124,58,237,.7),0 0 36px rgba(124,58,237,.32)}
+}
+.matcher-ai-dot{ animation:matcher-pulse 2.4s ease-in-out infinite }
+.matcher-question{
+  font-family:'Playfair Display',serif;
+  font-size:17px;font-weight:700;color:#111;
+  flex:1;line-height:1.3;
+  transition:opacity .3s,transform .3s;
+}
+.matcher-progress{
+  display:flex;gap:5px;align-items:center;margin-left:auto;padding-left:16px;
+}
+.matcher-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(147,51,234,.22);
+  transition:background .3s,transform .3s;
+}
+.matcher-dot.active{ background:var(--p);transform:scale(1.3) }
+.matcher-dot.done{ background:rgba(147,51,234,.55) }
+.matcher-options{
+  display:flex;flex-wrap:wrap;gap:8px;
+  transition:opacity .25s,transform .25s;
+}
+.matcher-chip{
+  padding:7px 16px;border-radius:100px;
+  background:rgba(147,51,234,.07);
+  border:1.5px solid rgba(147,51,234,.22);
+  color:#7c3aed;font-size:12.5px;font-weight:600;
+  font-family:'Space Grotesk',sans-serif;
+  cursor:none;
+  transition:background .18s,border-color .18s,transform .18s,color .18s;
+}
+.matcher-chip:hover{
+  background:rgba(147,51,234,.14);border-color:rgba(147,51,234,.55);
+  transform:translateY(-1px);
+}
+.matcher-chip.selected{
+  background:var(--p);border-color:var(--p);color:#fff;transform:scale(.97);
+}
+/* result state */
+.matcher-result{
+  display:none;align-items:center;gap:18px;
+}
+.matcher-result.show{ display:flex }
+.matcher-result-avatar{
+  width:52px;height:52px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#7c3aed,#a78bfa);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#fff;
+  box-shadow:0 4px 18px rgba(124,58,237,.35);
+}
+.matcher-result-info{ flex:1 }
+.matcher-result-name{
+  font-family:'Playfair Display',serif;font-size:18px;font-weight:800;color:#111;
+  margin-bottom:2px;
+}
+.matcher-result-sub{ font-size:12px;color:#555;margin-bottom:0 }
+.matcher-result-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 22px;border-radius:100px;
+  background:var(--p);color:#fff;
+  font-size:13px;font-weight:700;font-family:'Space Grotesk',sans-serif;
+  text-decoration:none;cursor:none;
+  box-shadow:0 3px 0 rgba(60,10,120,.35),0 6px 18px rgba(109,40,217,.25);
+  transition:filter .15s,transform .08s;
+  white-space:nowrap;
+}
+.matcher-result-cta:hover{ filter:brightness(1.12);transform:translateY(-2px) }
+.matcher-restart{
+  background:none;border:none;font-size:11.5px;color:rgba(0,0,0,.38);
+  font-family:'Space Grotesk',sans-serif;cursor:none;padding:0;
+  text-decoration:underline;transition:color .15s;margin-top:2px;display:block;
+}
+.matcher-restart:hover{ color:var(--p) }
 .how-visual{
   padding:36px;
   border-radius:28px;
@@ -1032,10 +1149,6 @@ footer{
     </div>
   </div>
 
-  <div class="stat-float stat-readings" id="statReadings">
-    <div class="stat-num">12K+</div>
-    <div class="stat-lbl">Readings Done</div>
-  </div>
   <div class="hero-scroll" onclick="document.getElementById('advisors').scrollIntoView({behavior:'smooth'})">
     <div class="scroll-label">View available psychics</div>
     <div class="scroll-chevrons">
@@ -1050,7 +1163,7 @@ footer{
     <div>
       <div class="section-label" style="color:#000000">Our Gifted Advisors</div>
       <h2 class="section-title">Meet your <em style="color:#000000;font-style:italic">guide</em></h2>
-      <p class="section-sub" style="color:#ffffff">Every psychic and reader on Luminary is hand-picked, reviewed by our community, and trusted to show up with genuine care for the people they speak with.</p>
+      <p class="section-sub" style="color:#ffffff">Hand-picked, community-reviewed psychics and readers — trusted to show up with genuine care.</p>
     </div>
     <a href="#" class="btn-ghost" style="white-space:nowrap;background:#ffffff;border-color:#ffffff;color:#111111;">View All →</a>
   </div>
@@ -1064,14 +1177,18 @@ footer{
         <img src="Media/51XD69TCESL._AC_UF894,1000_QL80_.jpg" alt="Luna Rosé" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#7c3aed,#a78bfa)&quot;>L</div>'">
       </div>
       <div class="advisor-card-body">
-        <div class="advisor-name">Luna Rosé</div>
-        <div class="advisor-spec">Tarot · Clairvoyance</div>
-        <div class="advisor-bio">Specializes in love, relationships, and life transitions. 12 years of practice with 4,200+ verified readings.</div>
-        <div class="advisor-footer">
-          <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.97</div>
-          <span class="advisor-status status-online">● Online</span>
+        <div class="advisor-card-body-top">
+          <div class="advisor-name">Luna Rosé</div>
+          <div class="advisor-spec">Tarot · Clairvoyance</div>
+          <div class="advisor-bio">Specializes in love, relationships, and life transitions. 12 years of practice with 4,200+ verified readings.</div>
         </div>
-        <a href="#" class="advisor-btn">Connect Now</a>
+        <div>
+          <div class="advisor-footer">
+            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.97</div>
+            <span class="advisor-status status-online">● Online</span>
+          </div>
+          <a href="#" class="advisor-btn">Connect Now</a>
+        </div>
       </div>
     </div>
 
@@ -1082,14 +1199,18 @@ footer{
         <img src="Media/71QKgvoSR8L._AC_UF894,1000_QL80_.jpg" alt="Orion Vale" onerror="this.parentNode.innerHTML='<div class=&quot;advisor-avatar-grad&quot; style=&quot;background:linear-gradient(135deg,#5b21b6,#7c3aed)&quot;>O</div>'">
       </div>
       <div class="advisor-card-body">
-        <div class="advisor-name">Orion Vale</div>
-        <div class="advisor-spec">Astrology · Numerology</div>
-        <div class="advisor-bio">Vedic and Western astrology master. Birth chart readings, timing forecasts, and karmic path analysis.</div>
-        <div class="advisor-footer">
-          <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.95</div>
-          <span class="advisor-status status-online">● Online</span>
+        <div class="advisor-card-body-top">
+          <div class="advisor-name">Orion Vale</div>
+          <div class="advisor-spec">Astrology · Numerology</div>
+          <div class="advisor-bio">Vedic and Western astrology master. Birth chart readings, timing forecasts, and karmic path analysis.</div>
         </div>
-        <a href="#" class="advisor-btn">Connect Now</a>
+        <div>
+          <div class="advisor-footer">
+            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.95</div>
+            <span class="advisor-status status-online">● Online</span>
+          </div>
+          <a href="#" class="advisor-btn">Connect Now</a>
+        </div>
       </div>
     </div>
 
@@ -1100,14 +1221,18 @@ footer{
         <div class="advisor-avatar-grad" style="background:linear-gradient(135deg,#312e81,#7c3aed)">S</div>
       </div>
       <div class="advisor-card-body">
-        <div class="advisor-name">Seraphine</div>
-        <div class="advisor-spec">Mediumship · Energy Healing</div>
-        <div class="advisor-bio">Connects with passed loved ones and spiritual guides. Certified Reiki master and energy clearing specialist.</div>
-        <div class="advisor-footer">
-          <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.93</div>
-          <span class="advisor-status status-busy">◑ In Session</span>
+        <div class="advisor-card-body-top">
+          <div class="advisor-name">Seraphine</div>
+          <div class="advisor-spec">Mediumship · Energy Healing</div>
+          <div class="advisor-bio">Connects with passed loved ones and spiritual guides. Certified Reiki master and energy clearing specialist.</div>
         </div>
-        <a href="#" class="advisor-btn">Join Waitlist</a>
+        <div>
+          <div class="advisor-footer">
+            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.93</div>
+            <span class="advisor-status status-busy">◑ In Session</span>
+          </div>
+          <a href="#" class="advisor-btn">Join Waitlist</a>
+        </div>
       </div>
     </div>
 
@@ -1118,14 +1243,18 @@ footer{
         <div class="advisor-avatar-grad" style="background:linear-gradient(135deg,#4c1d95,#a78bfa)">C</div>
       </div>
       <div class="advisor-card-body">
-        <div class="advisor-name">Celeste Moon</div>
-        <div class="advisor-spec">Dream Analysis · Past Life</div>
-        <div class="advisor-bio">Dream interpreter and past-life regression guide. Helps clients uncover subconscious blocks and soul-level patterns.</div>
-        <div class="advisor-footer">
-          <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.91</div>
-          <span class="advisor-status status-online">● Online</span>
+        <div class="advisor-card-body-top">
+          <div class="advisor-name">Celeste Moon</div>
+          <div class="advisor-spec">Dream Analysis · Past Life</div>
+          <div class="advisor-bio">Dream interpreter and past-life regression guide. Helps clients uncover subconscious blocks and soul-level patterns.</div>
         </div>
-        <a href="#" class="advisor-btn">Connect Now</a>
+        <div>
+          <div class="advisor-footer">
+            <div class="advisor-rating"><span class="advisor-stars">★★★★★</span> 4.91</div>
+            <span class="advisor-status status-online">● Online</span>
+          </div>
+          <a href="#" class="advisor-btn">Connect Now</a>
+        </div>
       </div>
     </div>
 
@@ -1134,54 +1263,59 @@ footer{
 
 <!-- ── HOW IT WORKS ── -->
 <section id="how">
-  <div class="how-grid">
-    <div>
-      <div class="section-label" style="color:#000000">The Process</div>
-      <h2 class="section-title">Three steps to <em style="color:#000000;font-style:italic">clarity</em></h2>
-      <p class="section-sub" style="color:#ffffff;margin-bottom:48px">Choose what weighs on you. Connect with a psychic who truly sees it. Leave with answers that actually feel true.</p>
-
-      <div class="how-steps">
-        <div class="how-step glass active" id="step1">
-          <div class="step-num">1</div>
-          <div class="step-text">
-            <h3>Share what you seek</h3>
-            <p>Tell us your question — love, career, loss, life direction. The more you share, the more precise the match.</p>
-          </div>
-        </div>
-        <div class="how-step glass" id="step2">
-          <div class="step-num">2</div>
-          <div class="step-text">
-            <h3>AI matches your energy</h3>
-            <p>Our system analyzes 40+ compatibility signals — birth chart resonance, specialty depth, reading style — and surfaces your top 3 advisors.</p>
-          </div>
-        </div>
-        <div class="how-step glass" id="step3">
-          <div class="step-num">3</div>
-          <div class="step-text">
-            <h3>Begin your reading</h3>
-            <p>Connect via text, voice, or video. First 5 minutes free. Sessions are recorded and saved for you to revisit.</p>
-          </div>
-        </div>
+  <div class="how-header">
+    <div class="section-label" style="color:#000000">The Process</div>
+    <h2 class="section-title">Three steps to <em style="color:#000000;font-style:italic">clarity</em></h2>
+    <p class="section-sub" style="color:#ffffff">Choose what weighs on you. Connect with a psychic who truly sees it. Leave with answers that actually feel true.</p>
+  </div>
+  <div class="how-steps">
+    <div class="how-step glass active" id="step1">
+      <div class="step-num">1</div>
+      <div class="step-text">
+        <h3>Share what you seek</h3>
+        <p>Tell us your question — love, career, loss, life direction. The more you share, the more precise the match.</p>
       </div>
     </div>
+    <div class="how-step glass" id="step2">
+      <div class="step-num">2</div>
+      <div class="step-text">
+        <h3>Find your reader</h3>
+        <p>Browse gifted psychics by specialty, style, and availability. Every reader is reviewed and trusted by our community.</p>
+      </div>
+    </div>
+    <div class="how-step glass" id="step3">
+      <div class="step-num">3</div>
+      <div class="step-text">
+        <h3>Begin your reading</h3>
+        <p>Connect via text, voice, or video. First 5 minutes free. Sessions are recorded and saved for you to revisit.</p>
+      </div>
+    </div>
+  </div>
 
-    <div class="how-visual glass">
-      <div class="glass-shimmer"></div>
-      <div class="how-visual-inner">
-        <div class="how-orb" id="howOrb"></div>
-        <div class="how-tags">
-          <span class="how-tag">Tarot</span>
-          <span class="how-tag">Love</span>
-          <span class="how-tag">Career</span>
-          <span class="how-tag">Astrology</span>
-          <span class="how-tag">Past Life</span>
-          <span class="how-tag">Dreams</span>
-        </div>
-        <div class="how-match-line"></div>
-        <div style="padding:14px 20px;border-radius:12px;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.88);backdrop-filter:blur(16px);font-size:12px;color:var(--p);letter-spacing:.08em;text-transform:uppercase;font-weight:700">
-          98% Match Found
+  <!-- AI Matcher widget -->
+  <div class="how-matcher" id="howMatcher">
+    <!-- Q&A state -->
+    <div id="matcherQA">
+      <div class="matcher-top">
+        <div class="matcher-ai-dot"></div>
+        <div class="matcher-question" id="matcherQ">What's weighing on your mind right now?</div>
+        <div class="matcher-progress" id="matcherProgress">
+          <div class="matcher-dot active" data-i="0"></div>
+          <div class="matcher-dot" data-i="1"></div>
+          <div class="matcher-dot" data-i="2"></div>
         </div>
       </div>
+      <div class="matcher-options" id="matcherOptions"></div>
+    </div>
+    <!-- Result state -->
+    <div class="matcher-result" id="matcherResult">
+      <div class="matcher-result-avatar" id="matcherResultAvatar">L</div>
+      <div class="matcher-result-info">
+        <div class="matcher-result-name" id="matcherResultName">Luna Rosé</div>
+        <div class="matcher-result-sub" id="matcherResultSub">Tarot · Clairvoyance &nbsp;·&nbsp; ★★★★★ 4.97 &nbsp;·&nbsp; ● Online now</div>
+        <button class="matcher-restart" id="matcherRestart">Start over</button>
+      </div>
+      <a href="#advisors" class="matcher-result-cta">Connect Now →</a>
     </div>
   </div>
 </section>
@@ -1748,6 +1882,7 @@ scene.add(sparkMesh);
 const state = {
   sphereScale:   1,
   sphereX:       SX,
+  sphereY:       0,   // animated by hero cinematic exit
   sphereOpacity: 1,
   ambientOpacity:0,
   bgBrightness:  1,
@@ -1783,7 +1918,9 @@ const clock=new THREE.Clock();
 
   // Sphere group transforms
   const sGroup = [interior, galaxyGroup, glass, ...rings];
-  sGroup.forEach(o=>{ if(o.position) o.position.x = state.sphereX; });
+  sGroup.forEach(o=>{
+    if(o.position){ o.position.x = state.sphereX; o.position.y = state.sphereY; }
+  });;
 
   const s = state.sphereScale;
   const GS = 0.56; // galaxy fits inside sphere with clear dark rim
@@ -1812,15 +1949,15 @@ const clock=new THREE.Clock();
 
   // Water reflection — follows sphere position and scale
   waterMesh.position.x = state.sphereX;
-  waterMesh.position.y = -3.10 * state.sphereScale;
+  waterMesh.position.y = -3.10 * state.sphereScale + state.sphereY;
   waterMesh.scale.setScalar(state.sphereScale);
   waterMesh.material.uniforms.uTime.value = t;
 
-  // Dust & sparks — follow sphere X, scale with sphere
+  // Dust & sparks — follow sphere X+Y, scale with sphere
   dustMat.uniforms.uTime.value  = t;
   sparkMat.uniforms.uTime.value = t;
-  dustMesh.position.x  = state.sphereX;
-  sparkMesh.position.x = state.sphereX;
+  dustMesh.position.x  = state.sphereX;  dustMesh.position.y  = state.sphereY;
+  sparkMesh.position.x = state.sphereX;  sparkMesh.position.y = state.sphereY;
   dustMesh.scale.setScalar(state.sphereScale);
   sparkMesh.scale.setScalar(state.sphereScale);
 
@@ -1921,7 +2058,8 @@ document.querySelectorAll('.nav-links a, .nav-cta').forEach(btn=>{
 
     function setup(){
       const w=card.offsetWidth, h=card.offsetHeight;
-      const pad=16, r=30;
+      const r=parseFloat(getComputedStyle(card).borderTopLeftRadius)||24;
+      const pad=14;
       svg.setAttribute('viewBox',`${-pad} ${-pad} ${w+pad*2} ${h+pad*2}`);
       svg.style.left=`${-pad}px`; svg.style.top=`${-pad}px`;
       svg.style.width=`${w+pad*2}px`; svg.style.height=`${h+pad*2}px`;
@@ -1933,11 +2071,11 @@ document.querySelectorAll('.nav-links a, .nav-cta').forEach(btn=>{
       [glowRect,arcRect,baseRect].forEach(rect=>{
         rect.setAttribute('x','0'); rect.setAttribute('y','0');
         rect.setAttribute('width',String(w)); rect.setAttribute('height',String(h));
-        rect.setAttribute('rx',String(r)); rect.setAttribute('fill','none');
+        rect.setAttribute('rx',String(r)); rect.setAttribute('ry',String(r)); rect.setAttribute('fill','none');
       });
       pulseRect.setAttribute('x','0'); pulseRect.setAttribute('y','0');
       pulseRect.setAttribute('width',String(w)); pulseRect.setAttribute('height',String(h));
-      pulseRect.setAttribute('rx',String(r));
+      pulseRect.setAttribute('rx',String(r)); pulseRect.setAttribute('ry',String(r));
 
       // Outer bloom — full solid border, heavily blurred
       glowRect.setAttribute('stroke','rgba(168,85,247,0.7)');
@@ -2059,14 +2197,144 @@ gsap.from('#statRating',   {opacity:0,y:14,duration:.7, delay:.94, ease:'power3.
 gsap.from('#sphere-aura',  {opacity:0,duration:1.2,delay:1.0,ease:'power2.out'});
 
 // ─── Lenis smooth scroll (lerp only, snap handled by CSS) ─────────────────────
+let lenis = null;
 try {
-  const lenis=new Lenis({lerp:.08,smoothWheel:false});
+  lenis=new Lenis({lerp:.08,smoothWheel:false});
   lenis.on('scroll',ScrollTrigger.update);
   gsap.ticker.add(t=>lenis.raf(t*1000));
   gsap.ticker.lagSmoothing(0);
 } catch(e) {
   console.warn('Lenis unavailable — native scroll active');
 }
+
+// ─── Hero cinematic exit ──────────────────────────────────────────────────────
+(function(){
+  const hero    = document.getElementById('hero');
+  const bg      = document.getElementById('bg');
+  const aura    = document.getElementById('sphere-aura');
+  const title   = document.getElementById('heroTitle');
+  const sub     = document.getElementById('heroSub');
+  const actions = document.getElementById('heroActions');
+  const scInd   = document.querySelector('.hero-scroll');
+
+  // Camera FOV 58°, z=9 → visible Y range ≈ ±5 units at z=0.
+  // Sphere at Y=0, radius 2.65. To exit above viewport + clear nav: Y=10 is safe.
+  const SPHERE_Y_EXIT  = 10;
+  const SPHERE_DUR     = 0.95;   // sphere is master clock — snap fires only after this
+
+  let animating = false;
+  let hasExited = false;
+
+  // ── IntersectionObserver: manage canvas visibility when navigating via links ──
+  new IntersectionObserver(entries => {
+    const ratio = entries[0].intersectionRatio;
+    if (animating || hasExited) return;
+    gsap.to(bg,   { opacity: ratio > 0.08 ? 1 : 0, duration: 0.45, overwrite: true });
+    gsap.to(aura, { opacity: ratio > 0.08 ? 1 : 0, duration: 0.45, overwrite: true });
+  }, { threshold: [0, 0.08, 0.4, 1] }).observe(hero);
+
+  // ── Commit scroll — fires only after all animations complete ─────────────
+  function commitScroll() {
+    hasExited = true;
+    animating = false;
+    hero.style.overflow = '';
+    document.body.style.overflowX = '';
+    document.documentElement.style.scrollSnapType = 'none';
+    document.getElementById('advisors').scrollIntoView({ behavior: 'instant' });
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.documentElement.style.scrollSnapType = '';
+    }));
+  }
+
+  // ── Cinematic exit timeline ───────────────────────────────────────────────
+  function exitHero() {
+    if (animating || hasExited) return;
+    animating = true;
+
+    // Allow text to slide off the left edge of the section
+    hero.style.overflow    = 'visible';
+    document.body.style.overflowX = 'hidden'; // prevents horizontal scrollbar
+
+    // We need __bgState for sphere — grab it lazily (module is async)
+    const st = window.__bgState;
+
+    const tl = gsap.timeline({ onComplete: commitScroll });
+
+    // ① Scroll indicator — first to go
+    tl.to(scInd, { opacity: 0, y: 16, duration: 0.18, ease: 'power2.in' }, 0);
+
+    // ② Sphere rises in 3D space (power3.in = slow start → fast end → "launch" feel)
+    //    Nav bar (z-index 100) naturally masks the canvas (z-index 15) at the top,
+    //    so the sphere physically disappears behind the nav as it exits the viewport.
+    if (st) {
+      tl.to(st, { sphereY: SPHERE_Y_EXIT, duration: SPHERE_DUR, ease: 'power3.in' }, 0);
+      // Glass ball fades as it clears the nav bar (~60% through sphere journey)
+      tl.to(st, { sphereOpacity: 0, duration: SPHERE_DUR * 0.72, ease: 'power2.in' }, SPHERE_DUR * 0.28);
+    }
+
+    // ③ Canvas fades to 0 (covers particles/water the shader owns) — pure opacity, no transform
+    tl.to(bg, { opacity: 0, duration: SPHERE_DUR, ease: 'power2.inOut' }, 0.1);
+
+    // ④ Aura rings — expand + dissolve
+    tl.to(aura, { opacity: 0, scale: 1.10, duration: 0.40, ease: 'power2.in' }, 0.04);
+
+    // ⑤ Buttons — dissolve with micro upward drift
+    tl.to(actions, { opacity: 0, y: -10, scale: 0.95, duration: 0.28, ease: 'power1.in' }, 0.07);
+
+    // ⑥ Subtitle — hard horizontal slide left (overflow:visible makes this visible past edge)
+    tl.to(sub, {
+      x: -(window.innerWidth + 200),
+      opacity: 0,
+      duration: 0.52, ease: 'power3.in'
+    }, 0.10);
+
+    // ⑦ Title — slides left fractionally behind subtitle, cascade weight
+    tl.to(title, {
+      x: -(window.innerWidth + 200),
+      opacity: 0,
+      duration: 0.60, ease: 'power3.in'
+    }, 0.17);
+
+    // Total master duration = SPHERE_DUR (0.95s) — scroll only fires after this
+  }
+
+  // ── Full reset on return to hero ─────────────────────────────────────────
+  function resetHero() {
+    animating = false;
+    hasExited = false;
+    hero.style.overflow    = '';
+    document.body.style.overflowX = '';
+    gsap.killTweensOf([bg, aura, title, sub, actions, scInd]);
+    gsap.set([bg, aura, title, sub, actions, scInd], { clearProps: 'all' });
+    // Reset Three.js state so sphere re-appears at origin
+    const st = window.__bgState;
+    if (st) { st.sphereY = 0; st.sphereOpacity = 1; }
+  }
+
+  // ── Window-level wheel intercept ─────────────────────────────────────────
+  // During animation (animating=true): preventDefault still fires → CSS snap blocked
+  // exitHero() guards internally → no double-fire
+  window.addEventListener('wheel', e => {
+    if (window.scrollY > 40) return;    // not on hero → pass through immediately
+    if (e.deltaY <= 4)        return;    // ignore trackpad micro-inertia
+    e.preventDefault();
+    exitHero();
+  }, { passive: false });
+
+  // ── Touch swipe ──────────────────────────────────────────────────────────
+  let ty0 = 0;
+  window.addEventListener('touchstart', e => { ty0 = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener('touchmove',  e => {
+    if (window.scrollY > 40) return;
+    if (ty0 - e.touches[0].clientY > 22) { e.preventDefault(); exitHero(); }
+  }, { passive: false });
+
+  // ── Reset when user scrolls back to hero ─────────────────────────────────
+  ScrollTrigger.create({
+    trigger: '#hero', start: 'top 5%',
+    onEnterBack: resetHero
+  });
+})();
 
 // ─── Scroll-reactive Three.js background ─────────────────────────────────────
 // Wait a tick so the module sets up window.__bgState
@@ -2141,10 +2409,10 @@ ScrollTrigger.create({
 revealCards('.advisor-card', 0.12);
 
 // How it works
-gsap.set('.how-grid > *', {y:36,opacity:0});
+gsap.set('.how-step, .how-matcher', {y:36,opacity:0});
 ScrollTrigger.create({
   trigger:'#how', start:'top 80%',
-  onEnter:()=>gsap.to('.how-grid > *',{y:0,opacity:1,duration:.85,stagger:.15,ease:'power3.out'}),
+  onEnter:()=>gsap.to('.how-step, .how-matcher',{y:0,opacity:1,duration:.85,stagger:.12,ease:'power3.out'}),
   once:true,
 });
 
@@ -2182,6 +2450,100 @@ ScrollTrigger.create({
   onEnter:()=>gsap.to('.cta-inner > *',{y:0,opacity:1,duration:.8,stagger:.1,ease:'power3.out'}),
   once:true,
 });
+
+// ── AI Matcher ──────────────────────────────────────────────
+(function(){
+  const questions = [
+    {
+      q: "What's weighing on your mind right now?",
+      opts: ["Love & relationships","Career & purpose","Loss or grief","Life direction"]
+    },
+    {
+      q: "What kind of guidance resonates with you?",
+      opts: ["Deep clarity on a situation","Signs from beyond","Cosmic timing & patterns","Healing & energy work"]
+    },
+    {
+      q: "How do you like to receive guidance?",
+      opts: ["Honest and direct","Gentle and nurturing","Symbolic & intuitive","Grounded and practical"]
+    }
+  ];
+
+  const readers = [
+    { name:"Luna Rosé",   sub:"Tarot · Clairvoyance · ★★★★★ 4.97 · ● Online now", avatar:"L", grad:"linear-gradient(135deg,#7c3aed,#a78bfa)" },
+    { name:"Orion Vale",  sub:"Astrology · Numerology · ★★★★★ 4.95 · ● Online now", avatar:"O", grad:"linear-gradient(135deg,#5b21b6,#7c3aed)" },
+    { name:"Seraphine",   sub:"Mediumship · Energy Healing · ★★★★★ 4.93 · ◑ In Session", avatar:"S", grad:"linear-gradient(135deg,#312e81,#7c3aed)" },
+    { name:"Celeste Moon",sub:"Dream Analysis · Past Life · ★★★★★ 4.91 · ● Online now", avatar:"C", grad:"linear-gradient(135deg,#4c1d95,#a78bfa)" }
+  ];
+
+  let qi = 0, answers = [];
+
+  const qEl    = document.getElementById('matcherQ');
+  const optsEl = document.getElementById('matcherOptions');
+  const dotsEl = document.querySelectorAll('.matcher-dot');
+  const qaEl   = document.getElementById('matcherQA');
+  const resEl  = document.getElementById('matcherResult');
+
+  function renderOptions(){
+    optsEl.innerHTML = '';
+    questions[qi].opts.forEach(opt => {
+      const chip = document.createElement('button');
+      chip.className = 'matcher-chip';
+      chip.textContent = opt;
+      chip.addEventListener('click', () => pick(opt, chip));
+      optsEl.appendChild(chip);
+    });
+    // animate in
+    gsap.fromTo(optsEl, {opacity:0,y:8},{opacity:1,y:0,duration:.32,ease:'power2.out'});
+  }
+
+  function pick(opt, chip){
+    chip.classList.add('selected');
+    answers.push(opt);
+    setTimeout(() => advance(), 340);
+  }
+
+  function advance(){
+    qi++;
+    dotsEl.forEach((d,i) => {
+      d.classList.toggle('active', i === qi);
+      d.classList.toggle('done',   i < qi);
+    });
+    if(qi < questions.length){
+      gsap.to([qEl,optsEl],{opacity:0,y:-10,duration:.22,ease:'power2.in', onComplete(){
+        qEl.textContent = questions[qi].q;
+        gsap.fromTo(qEl,{opacity:0,y:10},{opacity:1,y:0,duration:.3,ease:'power2.out'});
+        renderOptions();
+      }});
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult(){
+    const r = readers[Math.floor(Math.random()*readers.length)];
+    document.getElementById('matcherResultName').textContent   = r.name;
+    document.getElementById('matcherResultSub').innerHTML      = r.sub;
+    document.getElementById('matcherResultAvatar').textContent = r.avatar;
+    document.getElementById('matcherResultAvatar').style.background = r.grad;
+    gsap.to(qaEl,{opacity:0,duration:.28,ease:'power2.in',onComplete:()=>{
+      qaEl.style.display='none';
+      resEl.classList.add('show');
+      gsap.fromTo(resEl,{opacity:0,y:12},{opacity:1,y:0,duration:.45,ease:'power3.out'});
+    }});
+  }
+
+  document.getElementById('matcherRestart').addEventListener('click',()=>{
+    qi=0; answers=[];
+    resEl.classList.remove('show');
+    qaEl.style.display='';
+    qEl.textContent = questions[0].q;
+    dotsEl.forEach((d,i)=>{ d.classList.toggle('active',i===0); d.classList.remove('done'); });
+    gsap.fromTo(qaEl,{opacity:0,y:8},{opacity:1,y:0,duration:.35,ease:'power2.out'});
+    renderOptions();
+  });
+
+  renderOptions();
+})();
 </script>
 
 <!-- ── Scroll-driven video background ── -->
