@@ -11,6 +11,7 @@
     :root {
       --red: #e02020;
       --red-dark: #a01010;
+      --red-light: #ff4d4d;
       --bg: #ffffff;
       --bg-section: #f5f5f6;
       --bg-dark: #0d0d0d;
@@ -143,7 +144,7 @@
   margin-bottom: 1.5rem;
 }
 .hero-title span {
-  color: var(--red);
+  color: var(--red-light);
   transition: color 0.35s ease, text-shadow 0.35s ease, filter 0.35s ease;
   cursor: default;
   position: relative;
@@ -326,7 +327,7 @@
 /* Icon */
 .stat-card-icon {
   width: 52px; height: 52px;
-  color: var(--red);
+  color: var(--red-light);
   margin: 0 auto 1.4rem;
   filter: drop-shadow(0 0 8px rgba(224,32,32,0.5));
   position: relative; z-index: 1;
@@ -344,14 +345,14 @@
 .stat-num {
   font-size: clamp(3.4rem, 5.5vw, 5.2rem);
   font-weight: 700;
-  color: var(--red);
+  color: var(--red-light);
   line-height: 1;
-  text-shadow: 0 0 32px rgba(224,32,32,0.38);
+  text-shadow: 0 0 32px rgba(255,77,77,0.42);
 }
 .stat-suffix {
   font-size: clamp(1.7rem, 2.6vw, 2.4rem);
   font-weight: 700;
-  color: var(--red);
+  color: var(--red-light);
 }
 .stat-label {
   font-size: 0.82rem;
@@ -391,7 +392,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.section-title span { color: var(--red); }
+.section-title span { color: var(--red-light); }
 
 .services-grid {
   display: grid;
@@ -1053,7 +1054,7 @@
   color: var(--white);
 }
 .parallax-band .section-title span {
-  color: var(--red);
+  color: var(--red-light);
 }
 .parallax-band .band-sub {
   color: rgba(255,255,255,0.55);
@@ -1605,7 +1606,7 @@
       </div>
       <div class="card-top-border"></div>
       <h3>Vopsire Auto</h3>
-      <p>Vopsire profesională pentru un finish impecabil și durabil</p>
+      <p>Aplicare vopsea în cabină presurizată, cu potrivire exactă la codul original al producătorului</p>
     </div>
 
     <div class="service-card reveal">
@@ -1617,8 +1618,8 @@
         </svg>
       </div>
       <div class="card-top-border"></div>
-      <h3>Reparații Caroserie</h3>
-      <p>Eliminăm loviturile și zgârieturile rapid și eficient</p>
+      <h3>Reparații Bară & Plastice</h3>
+      <p>Recondiționare bare, praguri și elemente din plastic prin sudură termică și retopire</p>
     </div>
 
     <div class="service-card reveal">
@@ -1630,7 +1631,7 @@
       </div>
       <div class="card-top-border"></div>
       <h3>Tinichigerie</h3>
-      <p>Intervenții precise asupra structurii caroseriei</p>
+      <p>Îndreptare tablă, sudură MIG și înlocuire panouri deformate după coliziune</p>
     </div>
 
     <div class="service-card reveal">
@@ -1641,8 +1642,8 @@
         </svg>
       </div>
       <div class="card-top-border"></div>
-      <h3>Polish & Lustruire</h3>
-      <p>Redăm strălucirea originală a lacului mașinii tale</p>
+      <h3>Polish & Ceramic Coating</h3>
+      <p>Corecție vopsea în trei pași și strat ceramic protector pentru luciu de lungă durată</p>
     </div>
 
     <div class="service-card reveal">
@@ -1656,8 +1657,8 @@
         </svg>
       </div>
       <div class="card-top-border"></div>
-      <h3>Suspensie & Frâne</h3>
-      <p>Diagnoză și reparare a sistemelor de suspensie, frânare și direcție</p>
+      <h3>Geometrie & Suspensie</h3>
+      <p>Aliniere computerizată 3D a axelor și reparații complete sistem suspensie</p>
     </div>
 
     <div class="service-card reveal">
@@ -1668,8 +1669,8 @@
         </svg>
       </div>
       <div class="card-top-border"></div>
-      <h3>Mecanică Generală</h3>
-      <p>Diagnoză și repararea sistemelor mecanice ale vehiculului</p>
+      <h3>Mecanică & Frâne</h3>
+      <p>Revizii periodice, diagnoză OBD computerizată și sistem complet de frânare</p>
     </div>
 
   </div>
@@ -2079,10 +2080,10 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
     const cy = r.top  + r.height / 2;
     const dx = (e.clientX - cx) / (r.width  / 2);
     const dy = (e.clientY - cy) / (r.height / 2);
-    const rx = -dy * 9;
-    const ry =  dx * 9;
+    const rx = -dy * 3.15;
+    const ry =  dx * 3.15;
     card.style.transform =
-      `perspective(700px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateZ(10px)`;
+      `perspective(700px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateZ(3.5px)`;
     card.style.setProperty('--gx', ((e.clientX - r.left) / r.width  * 100) + '%');
     card.style.setProperty('--gy', ((e.clientY - r.top)  / r.height * 100) + '%');
   });
