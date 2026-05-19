@@ -529,7 +529,8 @@
   min-width: 220px;
   position: relative;
   /* Carbon fibre — matches .service-card / .daune-points li */
-  background-color: #191919;
+  background-color: #191919 !important;
+  color: #f1f1f1 !important;
   background-image:
     repeating-linear-gradient(45deg,  rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
     repeating-linear-gradient(-45deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
@@ -678,7 +679,8 @@
   align-items: flex-start;
   gap: 1.1rem;
   /* Carbon fibre — identical to .service-card */
-  background-color: #191919;
+  background-color: #191919 !important;
+  color: #f1f1f1 !important;
   background-image:
     repeating-linear-gradient(45deg,  rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
     repeating-linear-gradient(-45deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
@@ -2268,6 +2270,74 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
       card.style.setProperty('--gy', ((t.clientY - r.top)  / r.height * 100) + '%');
     }, { passive: true });
   });
+})();
+
+/* ═══════════════════════════════════════════════════════
+   PAGE-BY-PAGE SCROLL SNAP — wheel/keyboard fallback
+   Belt-and-suspenders alongside CSS scroll-snap so that
+   any wheel tick / arrow / space scrolls EXACTLY one section.
+═══════════════════════════════════════════════════════ */
+(function () {
+  const sections = Array.from(document.querySelectorAll(
+    '#hero, .daune-section, .services-section, .stats-strip, .parallax-band, #gallery, .contact-section, .site-footer'
+  ));
+  if (!sections.length) return;
+
+  let isAnimating = false;
+  let cooldown = 0;
+
+  function currentIndex() {
+    const y = window.scrollY + window.innerHeight * 0.35;
+    let idx = 0;
+    sections.forEach((s, i) => { if (s.offsetTop <= y) idx = i; });
+    return idx;
+  }
+
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(sections.length - 1, idx));
+    isAnimating = true;
+    sections[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    clearTimeout(cooldown);
+    cooldown = setTimeout(() => { isAnimating = false; }, 750);
+  }
+
+  // Wheel (desktop trackpad/mouse)
+  let wheelTimer = 0;
+  window.addEventListener('wheel', (e) => {
+    // Allow native scrolling inside elements that scroll themselves (modals etc)
+    if (e.target.closest('[data-allow-scroll]')) return;
+    if (isAnimating) { e.preventDefault(); return; }
+    if (Math.abs(e.deltaY) < 8) return;
+    e.preventDefault();
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => {
+      goTo(currentIndex() + (e.deltaY > 0 ? 1 : -1));
+    }, 20);
+  }, { passive: false });
+
+  // Keyboard
+  window.addEventListener('keydown', (e) => {
+    if (isAnimating) return;
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag)) return;
+    const i = currentIndex();
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); goTo(i + 1); }
+    else if (e.key === 'ArrowUp'   || e.key === 'PageUp')                { e.preventDefault(); goTo(i - 1); }
+    else if (e.key === 'Home')                                            { e.preventDefault(); goTo(0); }
+    else if (e.key === 'End')                                             { e.preventDefault(); goTo(sections.length - 1); }
+  });
+
+  // Touch (mobile) — flick = one section
+  let touchStartY = 0;
+  window.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  window.addEventListener('touchend', (e) => {
+    if (isAnimating) return;
+    const dy = touchStartY - (e.changedTouches[0]?.clientY ?? touchStartY);
+    if (Math.abs(dy) < 50) return;
+    goTo(currentIndex() + (dy > 0 ? 1 : -1));
+  }, { passive: true });
 })();
 
   </script>
