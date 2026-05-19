@@ -26,9 +26,15 @@
     html {
       height: 100%;
       scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
       overflow-y: scroll;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
+      /* slower, gentler native snap on supporting browsers */
+      scroll-snap-stop: normal;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
     }
     body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100%; overflow-x: hidden; }
     #navbar {
@@ -2273,46 +2279,83 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
 })();
 
 /* ═══════════════════════════════════════════════════════
-   PAGE-BY-PAGE SCROLL SNAP — wheel/keyboard fallback
-   Belt-and-suspenders alongside CSS scroll-snap so that
-   any wheel tick / arrow / space scrolls EXACTLY one section.
+   PAGE-BY-PAGE SCROLL — buttery custom tween
+   • Always lands page at TOP on load (no second-screen bug)
+   • One wheel tick / one flick = exactly one section
+   • 950ms easeInOutCubic — silky, never jumpy
 ═══════════════════════════════════════════════════════ */
 (function () {
+  // Don't restore prior scroll position, and always start at the hero.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+  window.addEventListener('load', () => {
+    // Strip any leftover hash so the browser can't auto-scroll to a section.
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    window.scrollTo(0, 0);
+  });
+
   const sections = Array.from(document.querySelectorAll(
     '#hero, .daune-section, .services-section, .stats-strip, .parallax-band, #gallery, .contact-section, .site-footer'
   ));
   if (!sections.length) return;
 
+  const DURATION = 950;          // ms per snap — longer = smoother
+  const COOLDOWN = 1000;         // ms input lock during a snap
+  const WHEEL_THRESHOLD = 12;    // ignore micro-twitches below this delta
+  const TOUCH_THRESHOLD = 60;    // px before a flick counts
+
   let isAnimating = false;
-  let cooldown = 0;
+  let lockUntil = 0;
+
+  const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
   function currentIndex() {
-    const y = window.scrollY + window.innerHeight * 0.35;
+    const y = window.scrollY + window.innerHeight * 0.5;
     let idx = 0;
-    sections.forEach((s, i) => { if (s.offsetTop <= y) idx = i; });
+    for (let i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop <= y) idx = i;
+    }
     return idx;
+  }
+
+  function tweenTo(targetY) {
+    const startY = window.scrollY;
+    const dy = targetY - startY;
+    if (Math.abs(dy) < 2) return;
+    const t0 = performance.now();
+    isAnimating = true;
+    function frame(now) {
+      const p = Math.min(1, (now - t0) / DURATION);
+      window.scrollTo(0, startY + dy * easeInOutCubic(p));
+      if (p < 1) requestAnimationFrame(frame);
+      else {
+        isAnimating = false;
+        lockUntil = performance.now() + 120; // tiny tail-lock to swallow inertia
+      }
+    }
+    requestAnimationFrame(frame);
   }
 
   function goTo(idx) {
     idx = Math.max(0, Math.min(sections.length - 1, idx));
-    isAnimating = true;
-    sections[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
-    clearTimeout(cooldown);
-    cooldown = setTimeout(() => { isAnimating = false; }, 750);
+    tweenTo(sections[idx].offsetTop);
   }
 
-  // Wheel (desktop trackpad/mouse)
-  let wheelTimer = 0;
+  // Wheel — coalesce trackpad inertia into single ticks
+  let lastWheelDir = 0;
   window.addEventListener('wheel', (e) => {
-    // Allow native scrolling inside elements that scroll themselves (modals etc)
     if (e.target.closest('[data-allow-scroll]')) return;
-    if (isAnimating) { e.preventDefault(); return; }
-    if (Math.abs(e.deltaY) < 8) return;
+    if (isAnimating || performance.now() < lockUntil) { e.preventDefault(); return; }
+    if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
+    const dir = e.deltaY > 0 ? 1 : -1;
+    // Ignore continued inertia in the same direction during the cooldown window
+    if (dir === lastWheelDir && performance.now() < lockUntil + COOLDOWN) {
+      e.preventDefault();
+      return;
+    }
     e.preventDefault();
-    clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => {
-      goTo(currentIndex() + (e.deltaY > 0 ? 1 : -1));
-    }, 20);
+    lastWheelDir = dir;
+    goTo(currentIndex() + dir);
   }, { passive: false });
 
   // Keyboard
@@ -2327,7 +2370,7 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
     else if (e.key === 'End')                                             { e.preventDefault(); goTo(sections.length - 1); }
   });
 
-  // Touch (mobile) — flick = one section
+  // Touch — single flick advances exactly one section
   let touchStartY = 0;
   window.addEventListener('touchstart', (e) => {
     touchStartY = e.touches[0].clientY;
@@ -2335,9 +2378,23 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
   window.addEventListener('touchend', (e) => {
     if (isAnimating) return;
     const dy = touchStartY - (e.changedTouches[0]?.clientY ?? touchStartY);
-    if (Math.abs(dy) < 50) return;
+    if (Math.abs(dy) < TOUCH_THRESHOLD) return;
     goTo(currentIndex() + (dy > 0 ? 1 : -1));
   }, { passive: true });
+
+  // Anchor links (nav) — same smooth tween
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      const target = document.getElementById(id) || document.querySelector('.' + id);
+      if (!target) return;
+      e.preventDefault();
+      const idx = sections.indexOf(target);
+      if (idx >= 0) goTo(idx);
+      else tweenTo(target.offsetTop);
+    });
+  });
 })();
 
   </script>
