@@ -514,8 +514,45 @@
 }
 
 .contact-section {
-  padding: 3rem 5vw;
+  padding: 3rem 5vw 0;
   background: var(--bg);
+  position: relative;
+}
+/* ── Footer bar — anchored at bottom of contact section ── */
+.footer-bar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  background: var(--bg-dark);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 0.85rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  z-index: 5;
+}
+.footer-bar-logo { height: 32px; object-fit: contain; flex-shrink: 0; }
+.footer-bar-copy {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+.footer-bar-socials { display: flex; gap: 0.75rem; flex-shrink: 0; }
+.footer-bar-socials a {
+  width: 34px; height: 34px;
+  color: rgba(255,255,255,0.65);
+  transition: color 0.2s, transform 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.footer-bar-socials a:hover { color: var(--red-light); transform: translateY(-2px); }
+.footer-bar-socials svg { width: 20px; height: 20px; }
+@media (max-width: 700px) {
+  .footer-bar { flex-wrap: wrap; padding: 0.7rem 1rem; gap: 0.6rem; }
+  .footer-bar-copy { order: 3; flex-basis: 100%; font-size: 0.7rem; }
+  .footer-bar-logo { height: 26px; }
 }
 .contact-cards {
   display: flex;
@@ -612,7 +649,7 @@
 .map-wrap {
   position: relative;
   max-width: 900px;
-  margin: 3rem auto 0;
+  margin: 2rem auto 90px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -621,7 +658,7 @@
 .map-wrap iframe {
   display: block;
   width: 100%;
-  height: 360px;
+  height: 300px;
   border: none;
 }
 .map-gps-btn {
@@ -1844,6 +1881,20 @@
       Navighează cu GPS
     </a>
   </div>
+
+  <!-- ── Footer bar, anchored to bottom of contact section ── -->
+  <div class="footer-bar">
+    <img src="assets/logo-clean.png" alt="Paint Auto Service" class="footer-bar-logo" />
+    <p class="footer-bar-copy">© 2026 Paint Auto Service. Toate drepturile rezervate.</p>
+    <div class="footer-bar-socials">
+      <a href="#" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a href="#" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+    </div>
+  </div>
 </section>
 
 <!-- ── Floating call button — replace +40700000000 with real number ── -->
@@ -1854,18 +1905,6 @@
   </svg>
 </a>
 
-<footer class="site-footer">
-  <img src="assets/logo-clean.png" alt="Paint Auto Service" class="footer-logo" />
-  <div class="footer-socials">
-    <a href="#" aria-label="Facebook">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-    </a>
-    <a href="#" aria-label="Instagram">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-    </a>
-  </div>
-  <p class="footer-copy">© 2026 Paint Auto Service. Toate drepturile rezervate.</p>
-</footer>
   <script>
     const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
@@ -2288,7 +2327,7 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
   });
 
   const sections = Array.from(document.querySelectorAll(
-    '#hero, .daune-section, .services-section, .stats-strip, .parallax-band, #gallery, .contact-section, .site-footer'
+    '#hero, .daune-section, .services-section, .stats-strip, .parallax-band, #gallery, .contact-section'
   ));
   if (!sections.length) return;
 
