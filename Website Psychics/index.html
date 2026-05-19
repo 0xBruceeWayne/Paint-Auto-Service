@@ -340,8 +340,9 @@ h1.hero-title em:hover{
 /* Ring 1 — inner, solid, has a bright glowing dot */
 .aura-ring-1{
   width:308px;height:308px;
-  border-width:1px;
-  border-color:rgba(124,58,237,.38);
+  border-width:1.5px;
+  border-color:rgba(88,28,180,1);
+  box-shadow:0 0 16px 2px rgba(88,28,180,.50),inset 0 0 10px rgba(88,28,180,.20);
   animation:aura-cw 20s linear infinite;
 }
 .aura-ring-1::before{
@@ -362,7 +363,8 @@ h1.hero-title em:hover{
 .aura-ring-2{
   width:440px;height:440px;
   border-width:1px;
-  border-color:rgba(109,40,217,.22);
+  border-color:rgba(88,28,180,.90);
+  box-shadow:0 0 12px 1px rgba(88,28,180,.35);
   animation:aura-ccw 32s linear infinite;
 }
 .aura-ring-2::before{
@@ -383,7 +385,7 @@ h1.hero-title em:hover{
 .aura-ring-3{
   width:590px;height:590px;
   border-width:1px;
-  border-color:rgba(91,33,182,.12);
+  border-color:rgba(88,28,180,.65);
   border-style:dashed;
   animation:aura-cw 58s linear infinite;
 }
@@ -535,19 +537,19 @@ h1.hero-title em:hover{
 .scroll-label{
   font-family:'Space Grotesk',sans-serif;
   font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
-  color:#7c3aed;
-  text-shadow:0 0 18px rgba(124,58,237,.4),0 0 40px rgba(124,58,237,.2);
+  color:#9333ea;
+  text-shadow:0 0 14px rgba(147,51,234,.70),0 0 32px rgba(147,51,234,.35);
 }
 .scroll-chevrons{
   display:flex;flex-direction:column;align-items:center;gap:2px;
 }
 .scroll-chevrons span{
   display:block;width:16px;height:16px;
-  border-right:2px solid #7c3aed;
-  border-bottom:2px solid #7c3aed;
+  border-right:2px solid #9333ea;
+  border-bottom:2px solid #9333ea;
   transform:rotate(45deg);
   animation:chevron-fall 1.6s ease-in-out infinite;
-  filter:drop-shadow(0 0 4px rgba(124,58,237,.6));
+  filter:drop-shadow(0 0 5px rgba(147,51,234,.80));
 }
 .scroll-chevrons span:nth-child(1){animation-delay:0s;opacity:.3}
 .scroll-chevrons span:nth-child(2){animation-delay:.15s;opacity:.65}
@@ -1148,6 +1150,7 @@ section{position:relative;z-index:5}
 /* Flip wrapper — sets 3D perspective */
 .tarot-card-wrapper{
   perspective:1400px;
+  transform-style:preserve-3d;
   height:min(calc(100vh - 340px), 400px);
   min-height:260px;
   cursor:pointer;
@@ -1173,14 +1176,7 @@ section{position:relative;z-index:5}
   width:100%;height:100%;
   position:relative;
   transform-style:preserve-3d;
-  transition:transform .85s cubic-bezier(.4,0,.2,1);
   border-radius:22px;
-}
-.tarot-card.flipped{
-  transform:rotateY(180deg);
-}
-.tarot-card:not(.flipped):hover{
-  transform:rotateY(6deg) translateY(-4px);
 }
 
 /* Both faces */
@@ -1877,7 +1873,7 @@ footer{
           <div class="tarot-back-title">The Star</div>
           <div class="tarot-back-divider"></div>
           <p class="tarot-back-message">You are guided by light even in the darkest hour. Trust in your own strength — renewal is closer than it appears. What feels impossible today is already in motion. <em>Believe in what you cannot yet see.</em></p>
-          <a href="#cta-section" class="tarot-back-cta" onclick="event.stopPropagation();document.getElementById('cta-section').scrollIntoView({behavior:'smooth'})">Speak with a reader →</a>
+          <a href="#advisors" class="tarot-back-cta" onclick="event.stopPropagation();document.getElementById('advisors').scrollIntoView({behavior:'smooth'})">Speak with a guide →</a>
         </div>
 
       </div>
@@ -1905,7 +1901,7 @@ footer{
           <div class="tarot-back-title">The Sun</div>
           <div class="tarot-back-divider"></div>
           <p class="tarot-back-message">A new chapter full of radiance opens before you. Your confidence and joy are your greatest gifts today. The world is ready for you — step forward without hesitation. <em>Your light is needed.</em></p>
-          <a href="#cta-section" class="tarot-back-cta" onclick="event.stopPropagation();document.getElementById('cta-section').scrollIntoView({behavior:'smooth'})">Speak with a reader →</a>
+          <a href="#advisors" class="tarot-back-cta" onclick="event.stopPropagation();document.getElementById('advisors').scrollIntoView({behavior:'smooth'})">Speak with a guide →</a>
         </div>
 
       </div>
@@ -1933,7 +1929,7 @@ footer{
           <div class="tarot-back-title">Strength</div>
           <div class="tarot-back-divider"></div>
           <p class="tarot-back-message">The quiet power within you is greater than any storm outside. Face what comes with calm and courage — not force, but presence. You already carry everything you need. <em>You are stronger than you know.</em></p>
-          <a href="#cta-section" class="tarot-back-cta" onclick="event.stopPropagation();document.getElementById('cta-section').scrollIntoView({behavior:'smooth'})">Speak with a reader →</a>
+          <a href="#advisors" class="tarot-back-cta" onclick="event.stopPropagation();document.getElementById('advisors').scrollIntoView({behavior:'smooth'})">Speak with a guide →</a>
         </div>
 
       </div>
@@ -1981,8 +1977,8 @@ footer{
 <section id="testimonials">
 
   <div style="text-align:center;max-width:580px;margin:0 auto 28px">
-    <div class="section-label">Stories</div>
-    <h2 class="section-title" style="margin-bottom:0">What seekers <em style="color:#000000;font-style:italic">say</em></h2>
+    <div class="section-label" style="color:#000000">Stories</div>
+    <h2 class="section-title" style="margin-bottom:0">Clients <em style="color:#000000;font-style:italic">testimonials</em></h2>
   </div>
 
   <div class="testi-row">
@@ -2562,11 +2558,15 @@ const clock=new THREE.Clock();
 
   camX+=(tx-camX)*.042; camY+=(ty-camY)*.042;
 
+  // Floating oscillation — gentle bob when sphere is visible on hero
+  const floatAmt = (!window.__sphereExited && window.scrollY < window.innerHeight * 0.3)
+    ? Math.sin(t * 0.72) * 0.06 : 0;
+
   // Sphere group transforms
   const sGroup = [interior, galaxyGroup, glass, ...rings];
   sGroup.forEach(o=>{
-    if(o.position){ o.position.x = state.sphereX; o.position.y = state.sphereY; }
-  });;
+    if(o.position){ o.position.x = state.sphereX; o.position.y = state.sphereY + floatAmt; }
+  });
 
   const s = state.sphereScale;
   const GS = 0.56; // galaxy fits inside sphere with clear dark rim
@@ -2883,7 +2883,7 @@ try {
   // Camera FOV 58°, z=9 → visible Y range ≈ ±5.
   // Sphere radius 2.65. Needs Y > 7.65 to fully exit viewport top.
   const SPHERE_Y_EXIT = 9;
-  const SPHERE_DUR    = 1.05;
+  const SPHERE_DUR    = 0.72;
 
   let animating = false;
   let hasExited = false;
@@ -2931,14 +2931,13 @@ try {
     tl.to(scInd, { opacity: 0, y: 14, duration: 0.16, ease: 'power2.in' }, 0);
 
     if (st) {
-      // Linear rise: constant speed = always visibly moving, no sluggish start
+      // Pure linear rise — constant velocity, zero perceptible lag
       tl.to(st, {
         sphereY: SPHERE_Y_EXIT,
         duration: SPHERE_DUR,
-        ease: 'power1.inOut',
+        ease: 'none',
       }, 0);
-      // Fade starts immediately and runs the full duration — sphere is
-      // already 80% transparent by the time it reaches the nav bar
+      // Opacity fades in sync with rise
       tl.to(st, {
         sphereOpacity: 0,
         duration: SPHERE_DUR,
@@ -3018,10 +3017,13 @@ try {
 })();
 
 // ─── Scroll-reactive Three.js background ─────────────────────────────────────
-// Wait a tick so the module sets up window.__bgState
-requestAnimationFrame(()=>{
+// Retry until module finishes setting up window.__bgState (module loads async)
+(function waitForBg(attempts){
   const st = window.__bgState;
-  if(!st) return;
+  if(!st){
+    if(attempts < 60) requestAnimationFrame(()=>waitForBg(attempts+1));
+    return;
+  }
 
   // Hero → Advisors: sphere drifts up-right, scales down slightly
   ScrollTrigger.create({
@@ -3069,7 +3071,7 @@ requestAnimationFrame(()=>{
       if (!window.__sphereExited) window.__bgState.sphereOpacity = Math.max(0, 0.2 - p * 0.2);
     }
   });
-});
+})(0);
 
 // ─── Section scroll reveals ───────────────────────────────────────────────────
 function revealCards(selector, stagger=0.1){
@@ -3181,26 +3183,112 @@ ScrollTrigger.create({
     once: true,
   });
 
-  // Cursor spotlight on card wrappers (reuse the site's glass --mx/--my pattern)
-  document.querySelectorAll('.tarot-card-wrapper').forEach(wrapper => {
-    wrapper.addEventListener('mousemove', e => {
-      const r = wrapper.getBoundingClientRect();
-      const mx = ((e.clientX - r.left) / r.width  * 100).toFixed(1) + '%';
-      const my = ((e.clientY - r.top)  / r.height * 100).toFixed(1) + '%';
-      wrapper.querySelector('.tarot-back')?.style.setProperty('--mx', mx);
-      wrapper.querySelector('.tarot-back')?.style.setProperty('--my', my);
-    });
-  });
+  // Message pools — fresh random pick every reveal
+  const MESSAGES = {
+    1: [ // The Star
+      { icon:'⭐', body:'You are guided by light even in the darkest hour. Trust in your own strength — renewal is closer than it appears.', em:'Believe in what you cannot yet see.' },
+      { icon:'🌠', body:'The universe has been listening. What you planted in silence is about to bloom in ways you never expected.', em:'Your moment is arriving.' },
+      { icon:'💫', body:'A door you stopped believing in is quietly opening. Step toward it without needing to see the whole path.', em:'Hope is not naïve — it is wisdom.' },
+      { icon:'✨', body:'Your energy is shifting. The patterns that once held you are loosening. Something luminous is coming through.', em:'You are already becoming it.' },
+      { icon:'⭐', body:'Even stars take time to be seen. Your light has not dimmed — the world is simply turning toward it now.', em:'Your time is not lost, it was saved.' },
+    ],
+    2: [ // The Sun
+      { icon:'🌟', body:'A new chapter full of radiance opens before you. Your confidence and joy are your greatest gifts today.', em:'Your light is needed.' },
+      { icon:'☀️', body:'Everything you have been working through quietly is about to pay off in a very visible way. Own it fully.', em:'You earned this warmth.' },
+      { icon:'🌻', body:'Joy is not something you need to chase today — it is already here, in the small things you keep overlooking.', em:'Slow down and feel it.' },
+      { icon:'🌟', body:'People around you are drawn to your energy without realising why. You carry a frequency that heals.', em:'Shine without apology.' },
+      { icon:'☀️', body:'This is a season of yes. The universe is aligned in your favour. Move boldly — hesitation is the only obstacle.', em:'Go. Now is your time.' },
+    ],
+    3: [ // Strength
+      { icon:'🔥', body:'The quiet power within you is greater than any storm outside. Face what comes with calm and courage.', em:'You are stronger than you know.' },
+      { icon:'🦁', body:'You have already survived the hardest version of this. What stands before you now is smaller than it looks.', em:'You have done this before.' },
+      { icon:'⚡', body:'Real strength is not the absence of fear — it is choosing to move despite it. You are already doing that.', em:'That is everything.' },
+      { icon:'🔥', body:'Something you thought broke you was actually forging you. The hardness you feel now is armour being made.', em:'Trust the process that hurts.' },
+      { icon:'🌿', body:'Gentleness with yourself is not weakness. The most courageous thing you can do today is rest and trust.', em:'Strength includes softness.' },
+    ],
+  };
 
-  // GSAP flip polish — add a subtle z-index lift during flip
-  document.querySelectorAll('.tarot-card-wrapper').forEach(wrapper => {
+  // Per-wrapper tilt state — stored so click can stop it
+  const tiltState = new WeakMap();
+
+  const allWrappers = [...document.querySelectorAll('.tarot-card-wrapper')];
+
+  allWrappers.forEach(wrapper => {
+    const ts = { raf: null, curX: 0, curY: 0, targetX: 0, targetY: 0, flipped: false };
+    tiltState.set(wrapper, ts);
+
+    // ── Tilt ──
+    wrapper.addEventListener('mousemove', e => {
+      if (ts.flipped) return;
+      const r = wrapper.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width  - 0.5;
+      const ny = (e.clientY - r.top)  / r.height - 0.5;
+      ts.targetY =  nx * 15;
+      ts.targetX = -ny * 10;
+      wrapper.querySelector('.tarot-back')?.style.setProperty('--mx', ((nx+0.5)*100).toFixed(1)+'%');
+      wrapper.querySelector('.tarot-back')?.style.setProperty('--my', ((ny+0.5)*100).toFixed(1)+'%');
+    });
+
+    function animTilt() {
+      ts.curX += (ts.targetX - ts.curX) * 0.12;
+      ts.curY += (ts.targetY - ts.curY) * 0.12;
+      wrapper.style.transform = `perspective(1400px) rotateX(${ts.curX.toFixed(2)}deg) rotateY(${ts.curY.toFixed(2)}deg)`;
+      ts.raf = requestAnimationFrame(animTilt);
+    }
+
+    wrapper.addEventListener('mouseenter', () => {
+      if (ts.flipped) return;
+      ts.raf = requestAnimationFrame(animTilt);
+    });
+    wrapper.addEventListener('mouseleave', () => {
+      cancelAnimationFrame(ts.raf);
+      ts.targetX = 0; ts.targetY = 0;
+      (function returnFlat(){
+        ts.curX += (0 - ts.curX) * 0.1;
+        ts.curY += (0 - ts.curY) * 0.1;
+        wrapper.style.transform = `perspective(1400px) rotateX(${ts.curX.toFixed(2)}deg) rotateY(${ts.curY.toFixed(2)}deg)`;
+        if (Math.abs(ts.curX) > 0.05 || Math.abs(ts.curY) > 0.05) requestAnimationFrame(returnFlat);
+        else wrapper.style.transform = '';
+      })();
+    });
+
+    // ── Click to reveal ──
     wrapper.addEventListener('click', () => {
+      if (wrapper.classList.contains('tarot-locked')) return;
+      if (ts.flipped) return;
+      ts.flipped = true;
+
+      // Stop tilt RAF and clear wrapper transform so it doesn't interfere with flip
+      cancelAnimationFrame(ts.raf);
+      wrapper.style.transform = '';
+
+      // Pick random message
+      const cardId = parseInt(wrapper.dataset.card, 10);
+      const pool   = MESSAGES[cardId] || MESSAGES[1];
+      const msg    = pool[Math.floor(Math.random() * pool.length)];
+
+      const backIcon = wrapper.querySelector('.tarot-back-icon');
+      const backMsg  = wrapper.querySelector('.tarot-back-message');
+      if (backIcon) backIcon.textContent = msg.icon;
+      if (backMsg)  backMsg.innerHTML = msg.body + ' <em>' + msg.em + '</em>';
+
+      // GSAP drives the flip — no CSS class conflict, no inline transform override
       const card = wrapper.querySelector('.tarot-card');
-      const wasFlipped = card.classList.contains('flipped');
-      // Quick scale pulse on reveal
-      if (!wasFlipped) {
-        gsap.fromTo(card, { scale: 0.97 }, { scale: 1, duration: 0.9, ease: 'elastic.out(1,0.55)', delay: 0.42 });
-      }
+      gsap.to(card, {
+        rotationY: 180,
+        duration: 0.78,
+        ease: 'power2.inOut',
+        transformOrigin: '50% 50%',
+      });
+
+      // Lock all other cards
+      allWrappers.forEach(w => {
+        if (w !== wrapper) {
+          w.classList.add('tarot-locked');
+          const ots = tiltState.get(w);
+          if (ots) { cancelAnimationFrame(ots.raf); w.style.transform = ''; }
+        }
+      });
     });
   });
 })();

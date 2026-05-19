@@ -367,7 +367,7 @@
   position: relative; z-index: 1;
 }
 .services-section {
-  padding: 7rem 5vw;
+  padding: 3rem 5vw;
   background: var(--bg-section);
 }
 .section-header {
@@ -510,7 +510,7 @@
 }
 
 .contact-section {
-  padding: 7rem 5vw;
+  padding: 3rem 5vw;
   background: var(--bg);
 }
 .contact-cards {
@@ -1140,12 +1140,19 @@
 .site-footer {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100svh;
+  height: 100svh;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-/* Footer doesn't need to be full height */
 .site-footer {
-  min-height: unset;
+  height: auto;
+  min-height: 0;
   scroll-snap-align: start;
+  overflow: visible;
 }
 /* Center short sections vertically so content doesn't sit at the very top */
 .stats-strip {
