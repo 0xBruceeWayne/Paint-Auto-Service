@@ -1,0 +1,9 @@
+# Nested third-party / submodule-orphan dirs — kept local, not deployed
+GPTeam/
+Website Car Rent Dan/
+
+# OS noise
+.DS_Store
+
+# Playwright caches
+**/.playwright-mcp/
