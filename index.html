@@ -25,16 +25,10 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html {
       height: 100%;
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
       overflow-y: scroll;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
-      /* slower, gentler native snap on supporting browsers */
-      scroll-snap-stop: normal;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
+      /* JS controller owns the snap; no native CSS snap so the two don't fight */
     }
     body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100%; overflow-x: hidden; }
     #navbar {
@@ -1172,7 +1166,6 @@
 #gallery,
 .contact-section,
 .site-footer {
-  scroll-snap-align: start;
   height: 100svh;
   min-height: 100svh !important;
   max-height: 100svh;
@@ -1187,7 +1180,6 @@
 .site-footer {
   height: auto;
   min-height: 0;
-  scroll-snap-align: start;
   overflow: visible;
 }
 /* Center short sections vertically so content doesn't sit at the very top */
@@ -2279,17 +2271,16 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
 })();
 
 /* ═══════════════════════════════════════════════════════
-   PAGE-BY-PAGE SCROLL — buttery custom tween
-   • Always lands page at TOP on load (no second-screen bug)
-   • One wheel tick / one flick = exactly one section
-   • 950ms easeInOutCubic — silky, never jumpy
+   PAGE-BY-PAGE SCROLL — instant trigger, smooth glide
+   • Wheel pulse fires the snap on the FIRST delta over threshold
+   • 600ms easeOutQuart — fast start, silky landing
+   • All trackpad inertia after the trigger is swallowed (no queueing)
 ═══════════════════════════════════════════════════════ */
 (function () {
-  // Don't restore prior scroll position, and always start at the hero.
+  // Always boot at the top of the page.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
   window.addEventListener('load', () => {
-    // Strip any leftover hash so the browser can't auto-scroll to a section.
     if (location.hash) history.replaceState(null, '', location.pathname + location.search);
     window.scrollTo(0, 0);
   });
@@ -2299,15 +2290,15 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
   ));
   if (!sections.length) return;
 
-  const DURATION = 950;          // ms per snap — longer = smoother
-  const COOLDOWN = 1000;         // ms input lock during a snap
-  const WHEEL_THRESHOLD = 12;    // ignore micro-twitches below this delta
-  const TOUCH_THRESHOLD = 60;    // px before a flick counts
+  const DURATION = 600;          // ms — short enough to feel instant, long enough to glide
+  const WHEEL_THRESHOLD = 4;     // any real wheel pulse triggers immediately
+  const TOUCH_THRESHOLD = 50;    // px before a flick counts
 
   let isAnimating = false;
-  let lockUntil = 0;
+  let animTargetIdx = -1;
+  let rafId = 0;
 
-  const easeInOutCubic = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
 
   function currentIndex() {
     const y = window.scrollY + window.innerHeight * 0.5;
@@ -2318,47 +2309,40 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
     return idx;
   }
 
-  function tweenTo(targetY) {
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(sections.length - 1, idx));
+    if (idx === animTargetIdx && isAnimating) return; // already heading there
+    animTargetIdx = idx;
     const startY = window.scrollY;
+    const targetY = sections[idx].offsetTop;
     const dy = targetY - startY;
-    if (Math.abs(dy) < 2) return;
+    if (Math.abs(dy) < 2) { isAnimating = false; return; }
+    cancelAnimationFrame(rafId);
     const t0 = performance.now();
     isAnimating = true;
     function frame(now) {
       const p = Math.min(1, (now - t0) / DURATION);
-      window.scrollTo(0, startY + dy * easeInOutCubic(p));
-      if (p < 1) requestAnimationFrame(frame);
-      else {
+      window.scrollTo(0, startY + dy * easeOutQuart(p));
+      if (p < 1) {
+        rafId = requestAnimationFrame(frame);
+      } else {
         isAnimating = false;
-        lockUntil = performance.now() + 120; // tiny tail-lock to swallow inertia
+        animTargetIdx = -1;
       }
     }
-    requestAnimationFrame(frame);
+    rafId = requestAnimationFrame(frame);
   }
 
-  function goTo(idx) {
-    idx = Math.max(0, Math.min(sections.length - 1, idx));
-    tweenTo(sections[idx].offsetTop);
-  }
-
-  // Wheel — coalesce trackpad inertia into single ticks
-  let lastWheelDir = 0;
+  // ── Wheel: fire on first real pulse, ignore everything until anim ends ──
   window.addEventListener('wheel', (e) => {
     if (e.target.closest('[data-allow-scroll]')) return;
-    if (isAnimating || performance.now() < lockUntil) { e.preventDefault(); return; }
     if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
-    const dir = e.deltaY > 0 ? 1 : -1;
-    // Ignore continued inertia in the same direction during the cooldown window
-    if (dir === lastWheelDir && performance.now() < lockUntil + COOLDOWN) {
-      e.preventDefault();
-      return;
-    }
     e.preventDefault();
-    lastWheelDir = dir;
-    goTo(currentIndex() + dir);
+    if (isAnimating) return; // drop inertia / chained wheels mid-snap
+    goTo(currentIndex() + (e.deltaY > 0 ? 1 : -1));
   }, { passive: false });
 
-  // Keyboard
+  // ── Keyboard ──
   window.addEventListener('keydown', (e) => {
     if (isAnimating) return;
     const tag = (document.activeElement && document.activeElement.tagName) || '';
@@ -2370,11 +2354,9 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
     else if (e.key === 'End')                                             { e.preventDefault(); goTo(sections.length - 1); }
   });
 
-  // Touch — single flick advances exactly one section
+  // ── Touch ──
   let touchStartY = 0;
-  window.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-  }, { passive: true });
+  window.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
   window.addEventListener('touchend', (e) => {
     if (isAnimating) return;
     const dy = touchStartY - (e.changedTouches[0]?.clientY ?? touchStartY);
@@ -2382,7 +2364,7 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
     goTo(currentIndex() + (dy > 0 ? 1 : -1));
   }, { passive: true });
 
-  // Anchor links (nav) — same smooth tween
+  // ── Anchor links use the same smooth tween ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href').slice(1);
@@ -2392,7 +2374,6 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
       e.preventDefault();
       const idx = sections.indexOf(target);
       if (idx >= 0) goTo(idx);
-      else tweenTo(target.offsetTop);
     });
   });
 })();
