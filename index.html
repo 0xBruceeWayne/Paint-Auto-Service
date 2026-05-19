@@ -2292,23 +2292,30 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
   ));
   if (!sections.length) return;
 
-  const DURATION = 550;          // ms — short enough to feel instant, long enough to glide
+  const DURATION = 1150;         // ms — long, glassy, buttery glide
   const WHEEL_THRESHOLD = 4;     // any real wheel pulse triggers immediately
   const TOUCH_THRESHOLD = 50;    // px before a flick counts
-  const POST_SNAP_LOCKOUT = 260; // ms after a snap to swallow trailing inertia
+  const POST_SNAP_LOCKOUT = 220; // ms after a snap to swallow trailing inertia
 
   let isAnimating = false;
   let animTargetIdx = -1;
   let rafId = 0;
   let acceptWheelAfter = 0;      // wheel events before this timestamp are ignored
 
-  const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+  // Smooth symmetric S-curve — slow in, fast middle, slow settle. Looks expensive.
+  const easeInOutCubic = (t) =>
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  function sectionTop(el) {
+    // Live measurement — beats offsetTop when ancestors transform/animate.
+    return Math.round(el.getBoundingClientRect().top + window.scrollY);
+  }
 
   function currentIndex() {
     const y = window.scrollY + window.innerHeight * 0.5;
     let idx = 0;
     for (let i = 0; i < sections.length; i++) {
-      if (sections[i].offsetTop <= y) idx = i;
+      if (sectionTop(sections[i]) <= y) idx = i;
     }
     return idx;
   }
@@ -2318,22 +2325,28 @@ document.querySelectorAll('.service-card, .daune-points li').forEach(card => {
     if (idx === animTargetIdx && isAnimating) return; // already heading there
     animTargetIdx = idx;
     const startY = window.scrollY;
-    const targetY = sections[idx].offsetTop;
-    const dy = targetY - startY;
+    let targetY = sectionTop(sections[idx]);
+    let dy = targetY - startY;
     if (Math.abs(dy) < 2) { isAnimating = false; return; }
     cancelAnimationFrame(rafId);
     const t0 = performance.now();
     isAnimating = true;
     function frame(now) {
+      // Re-measure each frame so reveal animations or font-load shifts can't desync.
+      targetY = sectionTop(sections[idx]);
+      dy = targetY - startY;
       const p = Math.min(1, (now - t0) / DURATION);
-      window.scrollTo(0, startY + dy * easeOutQuart(p));
+      const y = p < 1
+        ? startY + dy * easeInOutCubic(p)
+        : targetY; // land EXACTLY on integer pixel
+      window.scrollTo(0, y);
       if (p < 1) {
         rafId = requestAnimationFrame(frame);
       } else {
+        // Final hard-snap to kill any sub-pixel drift the browser introduced.
+        window.scrollTo(0, sectionTop(sections[idx]));
         isAnimating = false;
         animTargetIdx = -1;
-        // Block the very next wheel events until the user's trackpad
-        // inertia from the triggering gesture has actually stopped.
         acceptWheelAfter = performance.now() + POST_SNAP_LOCKOUT;
       }
     }
