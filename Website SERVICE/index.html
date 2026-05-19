@@ -24,10 +24,13 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html {
-      scroll-behavior: smooth;
       height: 100%;
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
     }
-    body { background: var(--bg); color: var(--text); font-family: var(--font); height: 100%; overflow-x: hidden; overflow-y: scroll; scroll-snap-type: y mandatory; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100%; overflow-x: hidden; }
     #navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -524,17 +527,34 @@
 .contact-card {
   flex: 1;
   min-width: 220px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
+  position: relative;
+  /* Carbon fibre — matches .service-card / .daune-points li */
+  background-color: #191919;
+  background-image:
+    repeating-linear-gradient(45deg,  rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.055) 0px, rgba(255,255,255,0.055) 1px, transparent 1px, transparent 7px),
+    repeating-linear-gradient(45deg,  rgba(0,0,0,0.22)        0px, rgba(0,0,0,0.22)        1px, transparent 1px, transparent 7px);
+  background-size: 7px 7px;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px;
   padding: 2.5rem 2rem;
   text-align: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  color: #f1f1f1;
+  box-shadow:
+    0 4px 24px rgba(0,0,0,0.45),
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 -1px 0 rgba(0,0,0,0.55) inset;
   transition: transform 0.3s, box-shadow 0.3s;
 }
+.contact-card h3 { color: #ffffff; }
+.contact-card p, .contact-card a { color: #d6d6d6; }
+.contact-card a:hover { color: var(--red); }
 .contact-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 36px rgba(224,32,32,0.1);
+  box-shadow:
+    0 14px 40px rgba(224,32,32,0.25),
+    0 1px 0 rgba(255,255,255,0.08) inset,
+    0 -1px 0 rgba(0,0,0,0.55) inset;
 }
 .contact-icon {
   width: 44px;
@@ -746,9 +766,15 @@
 /* ── Placeholder sections ── */
 .placeholder-section {
   padding: 7rem 5vw;
-  background: var(--bg-section);
+  background-color: #0d0d0d;
+  background-image:
+    repeating-linear-gradient(45deg,  rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 9px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 9px);
+  color: #e8e8e8;
   text-align: center;
 }
+.placeholder-section .section-title { color: #ffffff; }
+.placeholder-section .placeholder-note { color: #a8a8a8 !important; }
 .placeholder-section .section-pre { margin-bottom: 0.75rem; }
 .placeholder-section .section-title { margin-bottom: 1rem; }
 .placeholder-section .placeholder-note {
@@ -1139,15 +1165,17 @@
 .contact-section,
 .site-footer {
   scroll-snap-align: start;
-  scroll-snap-stop: always;
   height: 100svh;
-  min-height: 0;
+  min-height: 100svh !important;
+  max-height: 100svh;
   box-sizing: border-box;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+/* Override #hero's earlier min-height: 100vh which conflicts with svh on mobile */
+#hero { min-height: 100svh !important; height: 100svh; }
 .site-footer {
   height: auto;
   min-height: 0;
@@ -1490,7 +1518,7 @@
         </div>
 
       </div>
-      <img src="images/turbine.png" alt="Turbocharger" class="hero-image" />
+      <img src="assets/turbo-render.png" alt="Turbocharger" class="hero-image" loading="eager" decoding="async" onerror="this.onerror=null;this.src='images/turbine.png';" />
 
       <!-- Symbols that float ON TOP of the turbo -->
       <!-- Thermometer -->
@@ -1750,7 +1778,7 @@
 </section>
 
 <!-- ── Gallery section ── -->
-<section id="gallery" class="placeholder-section" style="background: var(--bg);">
+<section id="gallery" class="placeholder-section">
   <div class="section-header reveal">
     <p class="section-pre">Lucrările Noastre</p>
     <h2 class="section-title">GALERIE <span>FOTO</span></h2>
